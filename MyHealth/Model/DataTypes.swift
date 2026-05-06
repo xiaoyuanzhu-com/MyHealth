@@ -41,7 +41,9 @@ enum HealthDataTypes {
         var s: Set<HKObjectType> = []
         s.formUnion(allQuantityTypes.map { $0 as HKObjectType })
         s.formUnion(allCategoryTypes.map { $0 as HKObjectType })
-        s.formUnion(allCorrelationTypes.map { $0 as HKObjectType })
+        // Correlation types (blood pressure, food) cannot be authorized
+        // directly — HealthKit requires auth on their underlying quantities,
+        // which are already included above. Querying correlations still works.
         s.formUnion(characteristicTypes.map { $0 as HKObjectType })
         s.formUnion(clinicalTypes.map { $0 as HKObjectType })
         s.insert(workoutType)
