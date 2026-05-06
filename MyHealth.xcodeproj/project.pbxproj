@@ -1,0 +1,583 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54AC311B9681A008227307 /* AnchorStore.swift */; };
+		2F613F00CB42BC0BF52D6B1A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF9AD261DDA01065DD3618 /* ContentView.swift */; };
+		32134F769D08F1527E190904 /* BatchWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2C80136581E494739D880 /* BatchWriter.swift */; };
+		3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */; };
+		3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */; };
+		42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */; };
+		54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98456748D6490844950A6C5 /* SyncCoordinator.swift */; };
+		559B81DD118ADF866C2E548E /* HealthKitAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */; };
+		56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF03E11BDF9492948F52769 /* DataTypes.swift */; };
+		89F98CD39E913E13692633B7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */; };
+		8A394384C14621A0AE3FBBF8 /* SyncManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7324912DA650CC460C2D1B9 /* SyncManifest.swift */; };
+		90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */; };
+		966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */; };
+		96D0CC2B182F8AE13759411F /* ManifestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80424CB17C15EC333D4CE614 /* ManifestTests.swift */; };
+		97EB61DC9153742631E77037 /* HealthSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */; };
+		BB253AEEE603E832745D386F /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250EB3920731157AAEE8D1CB /* PKCETests.swift */; };
+		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
+		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
+		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
+		D965ACC26957F80745510056 /* SyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */; };
+		DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */; };
+		E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */; };
+		EEB0B60F5041330524E0A2C3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F78E991A61CA16CED1E2142 /* RootView.swift */; };
+		EEF3135E028BE5D0B05EB458 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496681E72CDBB0477FB660D4 /* OnboardingView.swift */; };
+		EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F50952E1DA754F2F6CF611 /* PKCE.swift */; };
+		F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */; };
+		FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C317B907897869E73E2FAA /* TokenStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DB1D9B1A2B1BAA74114832D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 32797708C7859F703E9262C5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 325C456C21C430ADDC0D62D9;
+			remoteInfo = MyHealth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitReader.swift; sourceTree = "<group>"; };
+		071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDriveClient.swift; sourceTree = "<group>"; };
+		07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBClient.swift; sourceTree = "<group>"; };
+		1C54AC311B9681A008227307 /* AnchorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorStore.swift; sourceTree = "<group>"; };
+		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
+		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
+		2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3F78E991A61CA16CED1E2142 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
+		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
+		496681E72CDBB0477FB660D4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSync.swift; sourceTree = "<group>"; };
+		60AA1719224422B218DC46DE /* MyHealth.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAuth.swift; sourceTree = "<group>"; };
+		74C317B907897869E73E2FAA /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
+		80424CB17C15EC333D4CE614 /* ManifestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManifestTests.swift; sourceTree = "<group>"; };
+		85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHealthApp.swift; sourceTree = "<group>"; };
+		8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitAuth.swift; sourceTree = "<group>"; };
+		8AF03E11BDF9492948F52769 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
+		8DBF9AD261DDA01065DD3618 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		97A2C80136581E494739D880 /* BatchWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchWriter.swift; sourceTree = "<group>"; };
+		9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSample.swift; sourceTree = "<group>"; };
+		D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MyHealthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7324912DA650CC460C2D1B9 /* SyncManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManifest.swift; sourceTree = "<group>"; };
+		D98456748D6490844950A6C5 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
+		EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEncoder.swift; sourceTree = "<group>"; };
+		F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD8C6AE802541CC898EBB34D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */,
+				966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0F099F3A016728F459E6D67F /* MyLifeDB */ = {
+			isa = PBXGroup;
+			children = (
+				70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */,
+				07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */,
+				28F50952E1DA754F2F6CF611 /* PKCE.swift */,
+				74C317B907897869E73E2FAA /* TokenStore.swift */,
+			);
+			path = MyLifeDB;
+			sourceTree = "<group>";
+		};
+		22144979E3A15F717F63CAAD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60AA1719224422B218DC46DE /* MyHealth.app */,
+				D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3FBCE3F3D013D7E47A2894BA = {
+			isa = PBXGroup;
+			children = (
+				80D5EC60A84796D1016AEA0B /* MyHealth */,
+				5FFCB00E7A3D81789423937B /* Tests */,
+				22144979E3A15F717F63CAAD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		54619BEF487634FB4E872EBA /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				8DBF9AD261DDA01065DD3618 /* ContentView.swift */,
+				496681E72CDBB0477FB660D4 /* OnboardingView.swift */,
+				3F78E991A61CA16CED1E2142 /* RootView.swift */,
+				2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */,
+				F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FFCB00E7A3D81789423937B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */,
+				80424CB17C15EC333D4CE614 /* ManifestTests.swift */,
+				250EB3920731157AAEE8D1CB /* PKCETests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		80D5EC60A84796D1016AEA0B /* MyHealth */ = {
+			isa = PBXGroup;
+			children = (
+				85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */,
+				CE4C224362A742C37DB92B55 /* GoogleDrive */,
+				940A6FE78E509B537382339A /* Health */,
+				A93349502B4DAD547C336929 /* Model */,
+				0F099F3A016728F459E6D67F /* MyLifeDB */,
+				C4CE67FEC011289BE75B818E /* Sync */,
+				54619BEF487634FB4E872EBA /* UI */,
+			);
+			path = MyHealth;
+			sourceTree = "<group>";
+		};
+		940A6FE78E509B537382339A /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */,
+				037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */,
+				EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
+		A93349502B4DAD547C336929 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8AF03E11BDF9492948F52769 /* DataTypes.swift */,
+				9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */,
+				D7324912DA650CC460C2D1B9 /* SyncManifest.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C4CE67FEC011289BE75B818E /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				1C54AC311B9681A008227307 /* AnchorStore.swift */,
+				5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */,
+				97A2C80136581E494739D880 /* BatchWriter.swift */,
+				D98456748D6490844950A6C5 /* SyncCoordinator.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
+		CE4C224362A742C37DB92B55 /* GoogleDrive */ = {
+			isa = PBXGroup;
+			children = (
+				48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */,
+				071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */,
+			);
+			path = GoogleDrive;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		325C456C21C430ADDC0D62D9 /* MyHealth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16A23D358F2F9C53EFDA532D /* Build configuration list for PBXNativeTarget "MyHealth" */;
+			buildPhases = (
+				7104F391DA17FEA7D8A6B28C /* Sources */,
+				DD8C6AE802541CC898EBB34D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyHealth;
+			packageProductDependencies = (
+				B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */,
+				36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */,
+			);
+			productName = MyHealth;
+			productReference = 60AA1719224422B218DC46DE /* MyHealth.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5D864417F46FC750884E620E /* MyHealthTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9F15C72B9C5EBBE9EE979E2 /* Build configuration list for PBXNativeTarget "MyHealthTests" */;
+			buildPhases = (
+				ACA83C169864D5DA5B5A506F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2DC27284FEA914A965CE2289 /* PBXTargetDependency */,
+			);
+			name = MyHealthTests;
+			packageProductDependencies = (
+			);
+			productName = MyHealthTests;
+			productReference = D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		32797708C7859F703E9262C5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					325C456C21C430ADDC0D62D9 = {
+						DevelopmentTeam = "";
+					};
+					5D864417F46FC750884E620E = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 04A8F95859FB4E4998967F03 /* Build configuration list for PBXProject "MyHealth" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3FBCE3F3D013D7E47A2894BA;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 22144979E3A15F717F63CAAD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				325C456C21C430ADDC0D62D9 /* MyHealth */,
+				5D864417F46FC750884E620E /* MyHealthTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7104F391DA17FEA7D8A6B28C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */,
+				E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */,
+				32134F769D08F1527E190904 /* BatchWriter.swift in Sources */,
+				C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */,
+				2F613F00CB42BC0BF52D6B1A /* ContentView.swift in Sources */,
+				56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */,
+				C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */,
+				42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */,
+				559B81DD118ADF866C2E548E /* HealthKitAuth.swift in Sources */,
+				3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */,
+				97EB61DC9153742631E77037 /* HealthSample.swift in Sources */,
+				CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */,
+				DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */,
+				EEF3135E028BE5D0B05EB458 /* OnboardingView.swift in Sources */,
+				EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */,
+				EEB0B60F5041330524E0A2C3 /* RootView.swift in Sources */,
+				F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */,
+				89F98CD39E913E13692633B7 /* SettingsView.swift in Sources */,
+				54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */,
+				8A394384C14621A0AE3FBBF8 /* SyncManifest.swift in Sources */,
+				D965ACC26957F80745510056 /* SyncStatusView.swift in Sources */,
+				FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACA83C169864D5DA5B5A506F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */,
+				96D0CC2B182F8AE13759411F /* ManifestTests.swift in Sources */,
+				BB253AEEE603E832745D386F /* PKCETests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2DC27284FEA914A965CE2289 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 325C456C21C430ADDC0D62D9 /* MyHealth */;
+			targetProxy = DB1D9B1A2B1BAA74114832D6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		07CE9DEDCBDF7A4D226C8E9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MyHealth/MyHealth.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MyHealth/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3941B34B5BB3B9ACA9BABCE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		549B4DD50F0C24471422B763 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MyHealth/MyHealth.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MyHealth/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8D086F1FB8429EE6110116CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyHealth.app/MyHealth";
+			};
+			name = Debug;
+		};
+		9D33BA75AAFA591C1172BF56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyHealth.app/MyHealth";
+			};
+			name = Release;
+		};
+		DE8E5D2133DBB9236E0CE659 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04A8F95859FB4E4998967F03 /* Build configuration list for PBXProject "MyHealth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE8E5D2133DBB9236E0CE659 /* Debug */,
+				3941B34B5BB3B9ACA9BABCE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		16A23D358F2F9C53EFDA532D /* Build configuration list for PBXNativeTarget "MyHealth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07CE9DEDCBDF7A4D226C8E9E /* Debug */,
+				549B4DD50F0C24471422B763 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F9F15C72B9C5EBBE9EE979E2 /* Build configuration list for PBXNativeTarget "MyHealthTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D086F1FB8429EE6110116CF /* Debug */,
+				9D33BA75AAFA591C1172BF56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 32797708C7859F703E9262C5 /* Project object */;
+}

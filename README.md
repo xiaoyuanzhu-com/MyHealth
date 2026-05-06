@@ -16,23 +16,19 @@ MyHealth has no App Store presence. You build it from source on your own Mac and
 - macOS with Xcode 15.0+
 - An iPhone running iOS 17 or later
 - Free or paid Apple Developer account (free works for personal sideload)
-- [`xcodegen`](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — used to materialise the `.xcodeproj` from `project.yml`
 
-### Generate the Xcode project
+### Open the project
 
 ```sh
-xcodegen
 open MyHealth.xcodeproj
 ```
-
-The repo only checks in source files; the Xcode project file is generated on demand and is `.gitignore`d.
 
 ### Configure Google Sign-In (optional)
 
 If you want Google Drive sync:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an iOS OAuth client.
-2. Bundle ID: `org.foss.myhealth.ios` (or change it in `project.yml` if you want).
+2. Bundle ID: `org.foss.myhealth.ios` (or change it in Xcode if you want).
 3. Copy the **iOS URL scheme** (the reversed client ID, e.g. `com.googleusercontent.apps.123-abc`) and the **client ID** into `MyHealth/Info.plist`, replacing the `REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID` placeholders in two places.
 
 If you skip this step, MyLifeDB sync still works.
