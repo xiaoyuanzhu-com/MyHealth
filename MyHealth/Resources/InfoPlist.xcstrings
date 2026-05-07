@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "NSHealthClinicalHealthRecordsShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyHealth reads your Apple Health Clinical Records so it can sync them to the destinations you authorize." }
+        },
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyHealth 会读取你的 Apple 健康临床记录，以便同步到你授权的目标位置。" }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyHealth reads your Apple Health data so it can sync it to MyLifeDB and Google Drive — only to destinations you authorize. Nothing is sent anywhere else." }
+        },
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyHealth 会读取你的 Apple 健康数据，以便同步到 MyLifeDB 与 Google Drive — 仅同步到你授权的目标位置，不会发送到其他任何地方。" }
+        }
+      }
+    }
+  }
+}

@@ -58,7 +58,7 @@ struct DriveDetailView: View {
         working = true
         defer { working = false }
         guard let presenter = await UIApplication.shared.firstKeyWindow?.rootViewController else {
-            error = "No window to present Google sign-in."
+            error = String(localized: "No window to present Google sign-in.")
             return
         }
         do {

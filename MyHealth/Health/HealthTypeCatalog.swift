@@ -38,21 +38,21 @@ enum HealthTypeGroup: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .activity: return "Activity"
-        case .heart: return "Heart"
-        case .bodyMeasurements: return "Body Measurements"
-        case .sleep: return "Sleep"
-        case .mobility: return "Mobility"
-        case .respiratory: return "Respiratory"
-        case .hearing: return "Hearing"
-        case .vitals: return "Vitals"
-        case .nutrition: return "Nutrition"
-        case .cycleTracking: return "Cycle Tracking"
-        case .mindfulness: return "Mindfulness"
-        case .symptoms: return "Symptoms"
-        case .characteristics: return "Characteristics"
-        case .clinical: return "Clinical Records"
-        case .other: return "Other"
+        case .activity: return String(localized: "Activity")
+        case .heart: return String(localized: "Heart")
+        case .bodyMeasurements: return String(localized: "Body Measurements")
+        case .sleep: return String(localized: "Sleep")
+        case .mobility: return String(localized: "Mobility")
+        case .respiratory: return String(localized: "Respiratory")
+        case .hearing: return String(localized: "Hearing")
+        case .vitals: return String(localized: "Vitals")
+        case .nutrition: return String(localized: "Nutrition")
+        case .cycleTracking: return String(localized: "Cycle Tracking")
+        case .mindfulness: return String(localized: "Mindfulness")
+        case .symptoms: return String(localized: "Symptoms")
+        case .characteristics: return String(localized: "Characteristics")
+        case .clinical: return String(localized: "Clinical Records")
+        case .other: return String(localized: "Other")
         }
     }
 }
@@ -178,36 +178,36 @@ enum HealthTypeCatalog {
 
     private static func defaultDescription(for group: HealthTypeGroup) -> String {
         switch group {
-        case .activity: return "Activity and energy data recorded by Apple Health."
-        case .heart: return "Heart-related measurements recorded by Apple Health."
-        case .bodyMeasurements: return "Body measurement recorded by Apple Health."
-        case .sleep: return "Sleep data recorded by Apple Health."
-        case .mobility: return "Walking and mobility data recorded by Apple Health."
-        case .respiratory: return "Respiratory measurement recorded by Apple Health."
-        case .hearing: return "Audio and hearing data recorded by Apple Health."
-        case .vitals: return "Vital sign recorded by Apple Health."
-        case .nutrition: return "Dietary intake recorded by Apple Health."
-        case .cycleTracking: return "Cycle tracking data recorded by Apple Health."
-        case .mindfulness: return "Mindfulness session recorded by Apple Health."
-        case .symptoms: return "Symptom logged in Apple Health."
-        case .characteristics: return "Profile attribute stored in Apple Health."
-        case .clinical: return "Clinical health record imported into Apple Health."
-        case .other: return "Data recorded by Apple Health."
+        case .activity: return String(localized: "Activity and energy data recorded by Apple Health.")
+        case .heart: return String(localized: "Heart-related measurements recorded by Apple Health.")
+        case .bodyMeasurements: return String(localized: "Body measurement recorded by Apple Health.")
+        case .sleep: return String(localized: "Sleep data recorded by Apple Health.")
+        case .mobility: return String(localized: "Walking and mobility data recorded by Apple Health.")
+        case .respiratory: return String(localized: "Respiratory measurement recorded by Apple Health.")
+        case .hearing: return String(localized: "Audio and hearing data recorded by Apple Health.")
+        case .vitals: return String(localized: "Vital sign recorded by Apple Health.")
+        case .nutrition: return String(localized: "Dietary intake recorded by Apple Health.")
+        case .cycleTracking: return String(localized: "Cycle tracking data recorded by Apple Health.")
+        case .mindfulness: return String(localized: "Mindfulness session recorded by Apple Health.")
+        case .symptoms: return String(localized: "Symptom logged in Apple Health.")
+        case .characteristics: return String(localized: "Profile attribute stored in Apple Health.")
+        case .clinical: return String(localized: "Clinical health record imported into Apple Health.")
+        case .other: return String(localized: "Data recorded by Apple Health.")
         }
     }
 
     // MARK: - Per-identifier overrides
 
     private static let nameOverrides: [String: String] = [
-        HKObjectType.workoutType().identifier: "Workouts",
-        HKSeriesType.workoutRoute().identifier: "Workout Routes",
-        HKObjectType.electrocardiogramType().identifier: "ECG",
-        HKObjectType.audiogramSampleType().identifier: "Audiogram",
-        HKQuantityTypeIdentifier.bodyMassIndex.rawValue: "Body Mass Index",
-        HKQuantityTypeIdentifier.vo2Max.rawValue: "VO\u{2082} Max",
-        HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue: "Heart Rate Variability",
-        HKQuantityTypeIdentifier.forcedExpiratoryVolume1.rawValue: "Forced Expiratory Volume (1s)",
-        HKQuantityTypeIdentifier.uvExposure.rawValue: "UV Exposure",
+        HKObjectType.workoutType().identifier: String(localized: "Workouts"),
+        HKSeriesType.workoutRoute().identifier: String(localized: "Workout Routes"),
+        HKObjectType.electrocardiogramType().identifier: String(localized: "ECG"),
+        HKObjectType.audiogramSampleType().identifier: String(localized: "Audiogram"),
+        HKQuantityTypeIdentifier.bodyMassIndex.rawValue: String(localized: "Body Mass Index"),
+        HKQuantityTypeIdentifier.vo2Max.rawValue: String(localized: "VO\u{2082} Max"),
+        HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue: String(localized: "Heart Rate Variability"),
+        HKQuantityTypeIdentifier.forcedExpiratoryVolume1.rawValue: String(localized: "Forced Expiratory Volume (1s)"),
+        HKQuantityTypeIdentifier.uvExposure.rawValue: String(localized: "UV Exposure"),
     ]
 
     private static let iconOverrides: [String: String] = [
@@ -237,33 +237,33 @@ enum HealthTypeCatalog {
 
     private static let descriptionOverrides: [String: String] = [
         HKQuantityTypeIdentifier.stepCount.rawValue:
-            "Steps taken, recorded by Apple Watch or iPhone.",
+            String(localized: "Steps taken, recorded by Apple Watch or iPhone."),
         HKQuantityTypeIdentifier.heartRate.rawValue:
-            "Instantaneous heart rate readings in beats per minute.",
+            String(localized: "Instantaneous heart rate readings in beats per minute."),
         HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue:
-            "SDNN measurement of heart rate variability, in milliseconds.",
+            String(localized: "SDNN measurement of heart rate variability, in milliseconds."),
         HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
-            "Energy burned by movement, in kilocalories.",
+            String(localized: "Energy burned by movement, in kilocalories."),
         HKQuantityTypeIdentifier.basalEnergyBurned.rawValue:
-            "Resting metabolic energy expenditure, in kilocalories.",
+            String(localized: "Resting metabolic energy expenditure, in kilocalories."),
         HKQuantityTypeIdentifier.appleExerciseTime.rawValue:
-            "Minutes counted toward your Exercise ring.",
+            String(localized: "Minutes counted toward your Exercise ring."),
         HKQuantityTypeIdentifier.appleStandTime.rawValue:
-            "Minutes spent standing, counted toward your Stand ring.",
+            String(localized: "Minutes spent standing, counted toward your Stand ring."),
         HKQuantityTypeIdentifier.bodyMass.rawValue:
-            "Weight measurements, in kilograms.",
+            String(localized: "Weight measurements, in kilograms."),
         HKQuantityTypeIdentifier.height.rawValue:
-            "Height measurements, in meters.",
+            String(localized: "Height measurements, in meters."),
         HKQuantityTypeIdentifier.vo2Max.rawValue:
-            "Cardio fitness — maximum oxygen consumption during exercise.",
+            String(localized: "Cardio fitness — maximum oxygen consumption during exercise."),
         HKObjectType.workoutType().identifier:
-            "Recorded workout sessions including duration, energy, and (when available) GPS route.",
+            String(localized: "Recorded workout sessions including duration, energy, and (when available) GPS route."),
         HKObjectType.electrocardiogramType().identifier:
-            "Single-lead ECG recordings from Apple Watch.",
+            String(localized: "Single-lead ECG recordings from Apple Watch."),
         HKCategoryTypeIdentifier.sleepAnalysis.rawValue:
-            "Sleep stages and durations recorded automatically or entered manually.",
+            String(localized: "Sleep stages and durations recorded automatically or entered manually."),
         HKCategoryTypeIdentifier.mindfulSession.rawValue:
-            "Logged mindfulness or breathing sessions.",
+            String(localized: "Logged mindfulness or breathing sessions."),
     ]
 
     // MARK: - Group assignments

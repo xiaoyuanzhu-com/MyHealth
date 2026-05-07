@@ -41,7 +41,7 @@ final class SyncCoordinator: ObservableObject {
     func runOnce(enabledDestinations: Set<Destination>) async {
         let started = Date()
         do {
-            status = .running(stage: "Loading manifest")
+            status = .running(stage: String(localized: "Loading manifest"))
             let mldSession = try TokenStore.load()
             let mldClient = mldSession.map { MyLifeDBClient(session: $0) }
 
@@ -60,11 +60,11 @@ final class SyncCoordinator: ObservableObject {
             }
 
             // 2. Read new samples.
-            status = .running(stage: "Reading HealthKit")
+            status = .running(stage: String(localized: "Reading HealthKit"))
             let result = try await reader.readBatch(anchors: anchors)
 
             // 3. Write JSONL batch files locally.
-            status = .running(stage: "Writing batch")
+            status = .running(stage: String(localized: "Writing batch"))
             let writer = try BatchWriter()
             defer { writer.cleanup() }
             var files: [SyncManifest.FileRef] = []
@@ -108,7 +108,7 @@ final class SyncCoordinator: ObservableObject {
             var didUploadDrive = false
 
             if enabledDestinations.contains(.myLifeDB), let mld = mldClient, !files.isEmpty {
-                status = .running(stage: "Uploading to MyLifeDB")
+                status = .running(stage: String(localized: "Uploading to MyLifeDB"))
                 for file in files {
                     let local = writer.dir.appendingPathComponent(file.name)
                     let remote = "syncs/\(writer.batchID)/\(file.name)"
@@ -122,7 +122,7 @@ final class SyncCoordinator: ObservableObject {
             }
 
             if enabledDestinations.contains(.googleDrive), DriveAuth.currentUser != nil {
-                status = .running(stage: "Uploading to Google Drive")
+                status = .running(stage: String(localized: "Uploading to Google Drive"))
                 let drive = GoogleDriveClient()
                 if !files.isEmpty {
                     for file in files {

@@ -1,0 +1,748 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "About" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "关于" }
+        }
+      }
+    },
+    "Account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "账户" }
+        }
+      }
+    },
+    "Activity" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "活动" }
+        }
+      }
+    },
+    "Activity and energy data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的活动与能量数据。" }
+        }
+      }
+    },
+    "Audio and hearing data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的音频与听力数据。" }
+        }
+      }
+    },
+    "Audiogram" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "听力图" }
+        }
+      }
+    },
+    "Authorize" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "授权" }
+        }
+      }
+    },
+    "Background Sync" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "后台同步" }
+        }
+      }
+    },
+    "Body measurement recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的身体测量数据。" }
+        }
+      }
+    },
+    "Body Mass Index" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "体重指数" }
+        }
+      }
+    },
+    "Body Measurements" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "身体数据" }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "取消" }
+        }
+      }
+    },
+    "Cardio fitness — maximum oxygen consumption during exercise." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "有氧体能 — 运动时的最大耗氧量。" }
+        }
+      }
+    },
+    "Characteristics" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "个人特征" }
+        }
+      }
+    },
+    "Clinical health record imported into Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "导入到 Apple 健康的临床健康记录。" }
+        }
+      }
+    },
+    "Clinical Records" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "临床记录" }
+        }
+      }
+    },
+    "Connected" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "已连接" }
+        }
+      }
+    },
+    "Cycle Tracking" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "经期追踪" }
+        }
+      }
+    },
+    "Cycle tracking data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的经期追踪数据。" }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "数据" }
+        }
+      }
+    },
+    "Data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的数据。" }
+        }
+      }
+    },
+    "Dietary intake recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的饮食摄入数据。" }
+        }
+      }
+    },
+    "Drive" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "Drive" }
+        }
+      }
+    },
+    "ECG" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "心电图" }
+        }
+      }
+    },
+    "Email" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "邮箱" }
+        }
+      }
+    },
+    "End of data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "数据结束" }
+        }
+      }
+    },
+    "Energy burned by movement, in kilocalories." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "活动消耗的能量，单位千卡。" }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "错误" }
+        }
+      }
+    },
+    "Forced Expiratory Volume (1s)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "用力呼气量（1 秒）" }
+        }
+      }
+    },
+    "Google Drive" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "Google Drive" }
+        }
+      }
+    },
+    "Hearing" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "听力" }
+        }
+      }
+    },
+    "Heart" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "心脏" }
+        }
+      }
+    },
+    "Heart Rate Variability" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "心率变异性" }
+        }
+      }
+    },
+    "Heart-related measurements recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的心脏相关测量数据。" }
+        }
+      }
+    },
+    "HealthKit only shows the permission sheet for types you haven't been asked about. To change an existing decision, open the Health app — Profile — Apps and Services — MyHealth." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "HealthKit 仅会为尚未询问过的数据类型显示权限弹窗。如需修改已有的授权设置，请打开「健康」应用 — 个人资料 — 应用与服务 — MyHealth。" }
+        }
+      }
+    },
+    "Height measurements, in meters." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "身高测量值，单位米。" }
+        }
+      }
+    },
+    "Instance" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "实例" }
+        }
+      }
+    },
+    "Instance URL" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "实例 URL" }
+        }
+      }
+    },
+    "Instantaneous heart rate readings in beats per minute." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "每分钟瞬时心率读数。" }
+        }
+      }
+    },
+    "Last batch" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "上次批次" }
+        }
+      }
+    },
+    "Loading manifest" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "加载清单" }
+        }
+      }
+    },
+    "Logged mindfulness or breathing sessions." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "记录的正念或呼吸练习。" }
+        }
+      }
+    },
+    "Manage Access" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "管理权限" }
+        }
+      }
+    },
+    "Manage HealthKit Access" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "管理 HealthKit 权限" }
+        }
+      }
+    },
+    "Mindfulness" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "正念" }
+        }
+      }
+    },
+    "Mindfulness session recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的正念练习。" }
+        }
+      }
+    },
+    "Minutes counted toward your Exercise ring." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "计入「运动」圆环的分钟数。" }
+        }
+      }
+    },
+    "Minutes spent standing, counted toward your Stand ring." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "计入「站立」圆环的站立分钟数。" }
+        }
+      }
+    },
+    "Mobility" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "活动能力" }
+        }
+      }
+    },
+    "MyLifeDB" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyLifeDB" }
+        }
+      }
+    },
+    "MyLifeDB Connect docs" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "MyLifeDB Connect 文档" }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "姓名" }
+        }
+      }
+    },
+    "No data found." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "未找到数据。" }
+        }
+      }
+    },
+    "No preview available for this type." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "此类型暂无预览。" }
+        }
+      }
+    },
+    "No window to present Google sign-in." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "没有可用窗口来展示 Google 登录界面。" }
+        }
+      }
+    },
+    "Not connected" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "未连接" }
+        }
+      }
+    },
+    "Not requested" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "未请求" }
+        }
+      }
+    },
+    "Not signed in" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "未登录" }
+        }
+      }
+    },
+    "Nutrition" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "营养" }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "好" }
+        }
+      }
+    },
+    "Open Health App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "打开「健康」应用" }
+        }
+      }
+    },
+    "Other" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "其他" }
+        }
+      }
+    },
+    "Path" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "路径" }
+        }
+      }
+    },
+    "Please enter a valid URL" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "请输入有效的 URL" }
+        }
+      }
+    },
+    "Profile attribute stored in Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "存储在 Apple 健康中的个人资料属性。" }
+        }
+      }
+    },
+    "Reading HealthKit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "读取 HealthKit" }
+        }
+      }
+    },
+    "Recent samples" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "最近样本" }
+        }
+      }
+    },
+    "Recorded workout sessions including duration, energy, and (when available) GPS route." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "记录的训练，包括时长、能量消耗，以及（如有）GPS 路线。" }
+        }
+      }
+    },
+    "Request via HealthKit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "通过 HealthKit 请求" }
+        }
+      }
+    },
+    "Requested" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "已请求" }
+        }
+      }
+    },
+    "Respiratory" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "呼吸" }
+        }
+      }
+    },
+    "Respiratory measurement recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的呼吸测量数据。" }
+        }
+      }
+    },
+    "Resting metabolic energy expenditure, in kilocalories." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "静息代谢能量消耗，单位千卡。" }
+        }
+      }
+    },
+    "Retry sync" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "重试同步" }
+        }
+      }
+    },
+    "Run daily in background" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "每日后台运行" }
+        }
+      }
+    },
+    "Scope" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "权限范围" }
+        }
+      }
+    },
+    "SDNN measurement of heart rate variability, in milliseconds." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "心率变异性 SDNN 测量值，单位毫秒。" }
+        }
+      }
+    },
+    "Sign In with Google" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "使用 Google 登录" }
+        }
+      }
+    },
+    "Sign Out" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "退出登录" }
+        }
+      }
+    },
+    "Signed in" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "已登录" }
+        }
+      }
+    },
+    "Single-lead ECG recordings from Apple Watch." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "来自 Apple Watch 的单导联心电图记录。" }
+        }
+      }
+    },
+    "Sleep" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "睡眠" }
+        }
+      }
+    },
+    "Sleep data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的睡眠数据。" }
+        }
+      }
+    },
+    "Sleep stages and durations recorded automatically or entered manually." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "自动记录或手动输入的睡眠阶段与时长。" }
+        }
+      }
+    },
+    "Source code on GitHub" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "GitHub 源代码" }
+        }
+      }
+    },
+    "Steps taken, recorded by Apple Watch or iPhone." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple Watch 或 iPhone 记录的步数。" }
+        }
+      }
+    },
+    "Symptom logged in Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "在 Apple 健康中记录的症状。" }
+        }
+      }
+    },
+    "Symptoms" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "症状" }
+        }
+      }
+    },
+    "Sync" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "同步" }
+        }
+      }
+    },
+    "Sync now" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "立即同步" }
+        }
+      }
+    },
+    "Sync Targets" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "同步目标" }
+        }
+      }
+    },
+    "Synced files are written to a folder named **MyHealth** in your Google Drive." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "已同步的文件会写入到 Google Drive 中名为 **MyHealth** 的文件夹。" }
+        }
+      }
+    },
+    "Syncing…" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "同步中…" }
+        }
+      }
+    },
+    "Uploading to Google Drive" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "上传至 Google Drive" }
+        }
+      }
+    },
+    "Uploading to MyLifeDB" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "上传至 MyLifeDB" }
+        }
+      }
+    },
+    "URL" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "URL" }
+        }
+      }
+    },
+    "UV Exposure" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "紫外线暴露" }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "版本" }
+        }
+      }
+    },
+    "Vital sign recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的生命体征数据。" }
+        }
+      }
+    },
+    "Vitals" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "生命体征" }
+        }
+      }
+    },
+    "VO₂ Max" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "VO₂ Max" }
+        }
+      }
+    },
+    "Walking and mobility data recorded by Apple Health." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的步行与活动能力数据。" }
+        }
+      }
+    },
+    "Weight measurements, in kilograms." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "体重测量值，单位千克。" }
+        }
+      }
+    },
+    "Workout Routes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "训练路线" }
+        }
+      }
+    },
+    "Workouts" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "训练" }
+        }
+      }
+    },
+    "Writing batch" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : { "state" : "translated", "value" : "写入批次" }
+        }
+      }
+    }
+  }
+}

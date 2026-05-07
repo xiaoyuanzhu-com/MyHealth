@@ -54,7 +54,7 @@ struct MyLifeDBDetailView: View {
 
     private func authorize() async {
         guard let url = URL(string: instanceURL) else {
-            error = "Please enter a valid URL"
+            error = String(localized: "Please enter a valid URL")
             return
         }
         working = true

@@ -37,6 +37,8 @@
 		EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F50952E1DA754F2F6CF611 /* PKCE.swift */; };
 		F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */; };
 		FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C317B907897869E73E2FAA /* TokenStore.swift */; };
+		B118C00100000000000000A1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A3 /* Localizable.xcstrings */; };
+		B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A4 /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +82,8 @@
 		D7324912DA650CC460C2D1B9 /* SyncManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManifest.swift; sourceTree = "<group>"; };
 		D98456748D6490844950A6C5 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEncoder.swift; sourceTree = "<group>"; };
+		B118C00100000000000000A3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B118C00100000000000000A4 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,10 +159,20 @@
 				940A6FE78E509B537382339A /* Health */,
 				A93349502B4DAD547C336929 /* Model */,
 				0F099F3A016728F459E6D67F /* MyLifeDB */,
+				B118C00100000000000000A5 /* Resources */,
 				C4CE67FEC011289BE75B818E /* Sync */,
 				54619BEF487634FB4E872EBA /* UI */,
 			);
 			path = MyHealth;
+			sourceTree = "<group>";
+		};
+		B118C00100000000000000A5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B118C00100000000000000A3 /* Localizable.xcstrings */,
+				B118C00100000000000000A4 /* InfoPlist.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		940A6FE78E509B537382339A /* Health */ = {
@@ -212,6 +226,7 @@
 			buildPhases = (
 				7104F391DA17FEA7D8A6B28C /* Sources */,
 				DD8C6AE802541CC898EBB34D /* Frameworks */,
+				B118C00100000000000000A6 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -246,6 +261,18 @@
 		};
 /* End PBXNativeTarget section */
 
+/* Begin PBXResourcesBuildPhase section */
+		B118C00100000000000000A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B118C00100000000000000A1 /* Localizable.xcstrings in Resources */,
+				B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXProject section */
 		32797708C7859F703E9262C5 /* Project object */ = {
 			isa = PBXProject;
@@ -264,6 +291,7 @@
 			knownRegions = (
 				Base,
 				en,
+				"zh-Hans",
 			);
 			mainGroup = 3FBCE3F3D013D7E47A2894BA;
 			minimizedProjectReferenceProxies = 1;
