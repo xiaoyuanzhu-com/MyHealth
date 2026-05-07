@@ -1,746 +1,3960 @@
 {
-  "sourceLanguage" : "en",
-  "version" : "1.0",
-  "strings" : {
-    "About" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "关于" }
-        }
-      }
-    },
-    "Account" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "账户" }
-        }
-      }
-    },
-    "Activity" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "活动" }
-        }
-      }
-    },
-    "Activity and energy data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的活动与能量数据。" }
-        }
-      }
-    },
-    "Audio and hearing data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的音频与听力数据。" }
-        }
-      }
-    },
-    "Audiogram" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "听力图" }
-        }
-      }
-    },
-    "Authorize" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "授权" }
-        }
-      }
-    },
-    "Background Sync" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "后台同步" }
-        }
-      }
-    },
-    "Body measurement recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的身体测量数据。" }
-        }
-      }
-    },
-    "Body Mass Index" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "体重指数" }
-        }
-      }
-    },
-    "Body Measurements" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "身体数据" }
-        }
-      }
-    },
-    "Cancel" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "取消" }
-        }
-      }
-    },
-    "Cardio fitness — maximum oxygen consumption during exercise." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "有氧体能 — 运动时的最大耗氧量。" }
-        }
-      }
-    },
-    "Characteristics" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "个人特征" }
-        }
-      }
-    },
-    "Clinical health record imported into Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "导入到 Apple 健康的临床健康记录。" }
-        }
-      }
-    },
-    "Clinical Records" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "临床记录" }
-        }
-      }
-    },
-    "Connected" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "已连接" }
-        }
-      }
-    },
-    "Cycle Tracking" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "经期追踪" }
-        }
-      }
-    },
-    "Cycle tracking data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的经期追踪数据。" }
-        }
-      }
-    },
-    "Data" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "数据" }
-        }
-      }
-    },
-    "Data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的数据。" }
-        }
-      }
-    },
-    "Dietary intake recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的饮食摄入数据。" }
-        }
-      }
-    },
-    "Drive" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "Drive" }
-        }
-      }
-    },
-    "ECG" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "心电图" }
-        }
-      }
-    },
-    "Email" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "邮箱" }
-        }
-      }
-    },
-    "End of data" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "数据结束" }
-        }
-      }
-    },
-    "Energy burned by movement, in kilocalories." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "活动消耗的能量，单位千卡。" }
-        }
-      }
-    },
-    "Error" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "错误" }
-        }
-      }
-    },
-    "Forced Expiratory Volume (1s)" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "用力呼气量（1 秒）" }
-        }
-      }
-    },
-    "Google Drive" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "Google Drive" }
-        }
-      }
-    },
-    "Hearing" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "听力" }
-        }
-      }
-    },
-    "Heart" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "心脏" }
-        }
-      }
-    },
-    "Heart Rate Variability" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "心率变异性" }
-        }
-      }
-    },
-    "Heart-related measurements recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的心脏相关测量数据。" }
-        }
-      }
-    },
-    "HealthKit only shows the permission sheet for types you haven't been asked about. To change an existing decision, open the Health app — Profile — Apps and Services — MyHealth." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "HealthKit 仅会为尚未询问过的数据类型显示权限弹窗。如需修改已有的授权设置，请打开「健康」应用 — 个人资料 — 应用与服务 — MyHealth。" }
-        }
-      }
-    },
-    "Height measurements, in meters." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "身高测量值，单位米。" }
-        }
-      }
-    },
-    "Instance" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "实例" }
-        }
-      }
-    },
-    "Instance URL" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "实例 URL" }
-        }
-      }
-    },
-    "Instantaneous heart rate readings in beats per minute." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "每分钟瞬时心率读数。" }
-        }
-      }
-    },
-    "Last batch" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "上次批次" }
-        }
-      }
-    },
-    "Loading manifest" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "加载清单" }
-        }
-      }
-    },
-    "Logged mindfulness or breathing sessions." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "记录的正念或呼吸练习。" }
-        }
-      }
-    },
-    "Manage Access" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "管理权限" }
-        }
-      }
-    },
-    "Manage HealthKit Access" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "管理 HealthKit 权限" }
-        }
-      }
-    },
-    "Mindfulness" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "正念" }
-        }
-      }
-    },
-    "Mindfulness session recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的正念练习。" }
-        }
-      }
-    },
-    "Minutes counted toward your Exercise ring." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "计入「运动」圆环的分钟数。" }
-        }
-      }
-    },
-    "Minutes spent standing, counted toward your Stand ring." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "计入「站立」圆环的站立分钟数。" }
-        }
-      }
-    },
-    "Mobility" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "活动能力" }
-        }
-      }
-    },
-    "MyLifeDB" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "MyLifeDB" }
-        }
-      }
-    },
-    "MyLifeDB Connect docs" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "MyLifeDB Connect 文档" }
-        }
-      }
-    },
-    "Name" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "姓名" }
-        }
-      }
-    },
-    "No data found." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "未找到数据。" }
-        }
-      }
-    },
-    "No preview available for this type." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "此类型暂无预览。" }
-        }
-      }
-    },
-    "No window to present Google sign-in." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "没有可用窗口来展示 Google 登录界面。" }
-        }
-      }
-    },
-    "Not connected" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "未连接" }
-        }
-      }
-    },
-    "Not requested" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "未请求" }
-        }
-      }
-    },
-    "Not signed in" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "未登录" }
-        }
-      }
-    },
-    "Nutrition" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "营养" }
-        }
-      }
-    },
-    "OK" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "好" }
-        }
-      }
-    },
-    "Open Health App" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "打开「健康」应用" }
-        }
-      }
-    },
-    "Other" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "其他" }
-        }
-      }
-    },
-    "Path" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "路径" }
-        }
-      }
-    },
-    "Please enter a valid URL" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "请输入有效的 URL" }
-        }
-      }
-    },
-    "Profile attribute stored in Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "存储在 Apple 健康中的个人资料属性。" }
-        }
-      }
-    },
-    "Reading HealthKit" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "读取 HealthKit" }
-        }
-      }
-    },
-    "Recent samples" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "最近样本" }
-        }
-      }
-    },
-    "Recorded workout sessions including duration, energy, and (when available) GPS route." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "记录的训练，包括时长、能量消耗，以及（如有）GPS 路线。" }
-        }
-      }
-    },
-    "Request via HealthKit" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "通过 HealthKit 请求" }
-        }
-      }
-    },
-    "Requested" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "已请求" }
-        }
-      }
-    },
-    "Respiratory" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "呼吸" }
-        }
-      }
-    },
-    "Respiratory measurement recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的呼吸测量数据。" }
-        }
-      }
-    },
-    "Resting metabolic energy expenditure, in kilocalories." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "静息代谢能量消耗，单位千卡。" }
-        }
-      }
-    },
-    "Retry sync" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "重试同步" }
-        }
-      }
-    },
-    "Run daily in background" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "每日后台运行" }
-        }
-      }
-    },
-    "Scope" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "权限范围" }
-        }
-      }
-    },
-    "SDNN measurement of heart rate variability, in milliseconds." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "心率变异性 SDNN 测量值，单位毫秒。" }
-        }
-      }
-    },
-    "Sign In with Google" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "使用 Google 登录" }
-        }
-      }
-    },
-    "Sign Out" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "退出登录" }
-        }
-      }
-    },
-    "Signed in" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "已登录" }
-        }
-      }
-    },
-    "Single-lead ECG recordings from Apple Watch." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "来自 Apple Watch 的单导联心电图记录。" }
-        }
-      }
-    },
-    "Sleep" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "睡眠" }
-        }
-      }
-    },
-    "Sleep data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的睡眠数据。" }
-        }
-      }
-    },
-    "Sleep stages and durations recorded automatically or entered manually." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "自动记录或手动输入的睡眠阶段与时长。" }
-        }
-      }
-    },
-    "Source code on GitHub" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "GitHub 源代码" }
-        }
-      }
-    },
-    "Steps taken, recorded by Apple Watch or iPhone." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple Watch 或 iPhone 记录的步数。" }
-        }
-      }
-    },
-    "Symptom logged in Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "在 Apple 健康中记录的症状。" }
-        }
-      }
-    },
-    "Symptoms" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "症状" }
-        }
-      }
-    },
-    "Sync" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "同步" }
-        }
-      }
-    },
-    "Sync now" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "立即同步" }
-        }
-      }
-    },
-    "Sync Targets" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "同步目标" }
-        }
-      }
-    },
-    "Synced files are written to a folder named **MyHealth** in your Google Drive." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "已同步的文件会写入到 Google Drive 中名为 **MyHealth** 的文件夹。" }
-        }
-      }
-    },
-    "Syncing…" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "同步中…" }
-        }
-      }
-    },
-    "Uploading to Google Drive" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "上传至 Google Drive" }
-        }
-      }
-    },
-    "Uploading to MyLifeDB" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "上传至 MyLifeDB" }
-        }
-      }
-    },
-    "URL" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "URL" }
-        }
-      }
-    },
-    "UV Exposure" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "紫外线暴露" }
-        }
-      }
-    },
-    "Version" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "版本" }
-        }
-      }
-    },
-    "Vital sign recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的生命体征数据。" }
-        }
-      }
-    },
-    "Vitals" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "生命体征" }
-        }
-      }
-    },
-    "VO₂ Max" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "VO₂ Max" }
-        }
-      }
-    },
-    "Walking and mobility data recorded by Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "由 Apple 健康记录的步行与活动能力数据。" }
-        }
-      }
-    },
-    "Weight measurements, in kilograms." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "体重测量值，单位千克。" }
-        }
-      }
-    },
-    "Workout Routes" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "训练路线" }
-        }
-      }
-    },
-    "Workouts" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "训练" }
-        }
-      }
-    },
-    "Writing batch" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : { "state" : "translated", "value" : "写入批次" }
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "Abdominal Cramps": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abdominal Cramps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腹部痉挛"
+          }
+        }
+      }
+    },
+    "About": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关于"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "账户"
+          }
+        }
+      }
+    },
+    "Acne": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acne"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "痤疮"
+          }
+        }
+      }
+    },
+    "Active Energy Burned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active Energy Burned"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动能量"
+          }
+        }
+      }
+    },
+    "Activity": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动"
+          }
+        }
+      }
+    },
+    "Activity Move Mode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity Move Mode"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动模式"
+          }
+        }
+      }
+    },
+    "Activity and energy data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的活动与能量数据。"
+          }
+        }
+      }
+    },
+    "Allergy Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allergy Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "过敏记录"
+          }
+        }
+      }
+    },
+    "Appetite Changes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appetite Changes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "食欲变化"
+          }
+        }
+      }
+    },
+    "Apple Exercise Time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Exercise Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锻炼时间"
+          }
+        }
+      }
+    },
+    "Apple Move Time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Move Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动时间"
+          }
+        }
+      }
+    },
+    "Apple Stand Hour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Stand Hour"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "站立小时"
+          }
+        }
+      }
+    },
+    "Apple Stand Time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Stand Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "站立时间"
+          }
+        }
+      }
+    },
+    "Apple Walking Steadiness": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Walking Steadiness"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步态稳定性"
+          }
+        }
+      }
+    },
+    "Apple Walking Steadiness Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Walking Steadiness Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步态稳定性事件"
+          }
+        }
+      }
+    },
+    "Audio and hearing data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的音频与听力数据。"
+          }
+        }
+      }
+    },
+    "Audiogram": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "听力图"
+          }
+        }
+      }
+    },
+    "Authorize": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权"
+          }
+        }
+      }
+    },
+    "Background Sync": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "后台同步"
+          }
+        }
+      }
+    },
+    "Basal Body Temperature": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal Body Temperature"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基础体温"
+          }
+        }
+      }
+    },
+    "Basal Energy Burned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal Energy Burned"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "静息能量"
+          }
+        }
+      }
+    },
+    "Biological Sex": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biological Sex"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生理性别"
+          }
+        }
+      }
+    },
+    "Bladder Incontinence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bladder Incontinence"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尿失禁"
+          }
+        }
+      }
+    },
+    "Bloating": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloating"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腹胀"
+          }
+        }
+      }
+    },
+    "Blood Glucose": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood Glucose"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "血糖"
+          }
+        }
+      }
+    },
+    "Blood Pressure Diastolic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood Pressure Diastolic"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "舒张压"
+          }
+        }
+      }
+    },
+    "Blood Pressure Systolic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood Pressure Systolic"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收缩压"
+          }
+        }
+      }
+    },
+    "Blood Type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood Type"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "血型"
+          }
+        }
+      }
+    },
+    "Body Fat Percentage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Body Fat Percentage"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体脂率"
+          }
+        }
+      }
+    },
+    "Body Mass": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Body Mass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体重"
+          }
+        }
+      }
+    },
+    "Body Mass Index": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体重指数"
+          }
+        }
+      }
+    },
+    "Body Measurements": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "身体数据"
+          }
+        }
+      }
+    },
+    "Body Temperature": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Body Temperature"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体温"
+          }
+        }
+      }
+    },
+    "Body measurement recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的身体测量数据。"
+          }
+        }
+      }
+    },
+    "Breast Pain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breast Pain"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "乳房疼痛"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "Cardio fitness — maximum oxygen consumption during exercise.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有氧体能 — 运动时的最大耗氧量。"
+          }
+        }
+      }
+    },
+    "Cervical Mucus Quality": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cervical Mucus Quality"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宫颈黏液质量"
+          }
+        }
+      }
+    },
+    "Characteristics": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人特征"
+          }
+        }
+      }
+    },
+    "Chest Tightness Or Pain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chest Tightness Or Pain"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "胸闷或胸痛"
+          }
+        }
+      }
+    },
+    "Chills": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chills"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "畏寒"
+          }
+        }
+      }
+    },
+    "Clinical Note Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clinical Note Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临床记录"
+          }
+        }
+      }
+    },
+    "Clinical Records": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临床记录"
+          }
+        }
+      }
+    },
+    "Clinical health record imported into Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入到 Apple 健康的临床健康记录。"
+          }
+        }
+      }
+    },
+    "Condition Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condition Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "病情记录"
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已连接"
+          }
+        }
+      }
+    },
+    "Constipation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Constipation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "便秘"
+          }
+        }
+      }
+    },
+    "Contraceptive": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraceptive"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "避孕"
+          }
+        }
+      }
+    },
+    "Coughing": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coughing"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "咳嗽"
+          }
+        }
+      }
+    },
+    "Coverage Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coverage Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保险记录"
+          }
+        }
+      }
+    },
+    "Cycle Tracking": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经期追踪"
+          }
+        }
+      }
+    },
+    "Cycle tracking data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的经期追踪数据。"
+          }
+        }
+      }
+    },
+    "Cycling Cadence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cycling Cadence"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "骑行踏频"
+          }
+        }
+      }
+    },
+    "Cycling Functional Threshold Power": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cycling Functional Threshold Power"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "骑行功能阈值功率"
+          }
+        }
+      }
+    },
+    "Cycling Power": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cycling Power"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "骑行功率"
+          }
+        }
+      }
+    },
+    "Cycling Speed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cycling Speed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "骑行速度"
+          }
+        }
+      }
+    },
+    "Data": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数据"
+          }
+        }
+      }
+    },
+    "Data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的数据。"
+          }
+        }
+      }
+    },
+    "Date Of Birth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date Of Birth"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出生日期"
+          }
+        }
+      }
+    },
+    "Diarrhea": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diarrhea"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腹泻"
+          }
+        }
+      }
+    },
+    "Dietary Biotin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Biotin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食生物素"
+          }
+        }
+      }
+    },
+    "Dietary Caffeine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Caffeine"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食咖啡因"
+          }
+        }
+      }
+    },
+    "Dietary Calcium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Calcium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食钙"
+          }
+        }
+      }
+    },
+    "Dietary Carbohydrates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Carbohydrates"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食碳水化合物"
+          }
+        }
+      }
+    },
+    "Dietary Chloride": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Chloride"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食氯"
+          }
+        }
+      }
+    },
+    "Dietary Cholesterol": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Cholesterol"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食胆固醇"
+          }
+        }
+      }
+    },
+    "Dietary Chromium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Chromium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食铬"
+          }
+        }
+      }
+    },
+    "Dietary Copper": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Copper"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食铜"
+          }
+        }
+      }
+    },
+    "Dietary Energy Consumed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Energy Consumed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食能量摄入"
+          }
+        }
+      }
+    },
+    "Dietary Fat Monounsaturated": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Fat Monounsaturated"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食单不饱和脂肪"
+          }
+        }
+      }
+    },
+    "Dietary Fat Polyunsaturated": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Fat Polyunsaturated"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食多不饱和脂肪"
+          }
+        }
+      }
+    },
+    "Dietary Fat Saturated": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Fat Saturated"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食饱和脂肪"
+          }
+        }
+      }
+    },
+    "Dietary Fat Total": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Fat Total"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食总脂肪"
+          }
+        }
+      }
+    },
+    "Dietary Fiber": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Fiber"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食纤维"
+          }
+        }
+      }
+    },
+    "Dietary Folate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Folate"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食叶酸"
+          }
+        }
+      }
+    },
+    "Dietary Iodine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Iodine"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食碘"
+          }
+        }
+      }
+    },
+    "Dietary Iron": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Iron"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食铁"
+          }
+        }
+      }
+    },
+    "Dietary Magnesium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Magnesium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食镁"
+          }
+        }
+      }
+    },
+    "Dietary Manganese": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Manganese"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食锰"
+          }
+        }
+      }
+    },
+    "Dietary Molybdenum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Molybdenum"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食钼"
+          }
+        }
+      }
+    },
+    "Dietary Niacin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Niacin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食烟酸"
+          }
+        }
+      }
+    },
+    "Dietary Pantothenic Acid": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Pantothenic Acid"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食泛酸"
+          }
+        }
+      }
+    },
+    "Dietary Phosphorus": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Phosphorus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食磷"
+          }
+        }
+      }
+    },
+    "Dietary Potassium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Potassium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食钾"
+          }
+        }
+      }
+    },
+    "Dietary Protein": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Protein"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食蛋白质"
+          }
+        }
+      }
+    },
+    "Dietary Riboflavin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Riboflavin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食核黄素"
+          }
+        }
+      }
+    },
+    "Dietary Selenium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Selenium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食硒"
+          }
+        }
+      }
+    },
+    "Dietary Sodium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Sodium"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食钠"
+          }
+        }
+      }
+    },
+    "Dietary Sugar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Sugar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食糖"
+          }
+        }
+      }
+    },
+    "Dietary Thiamin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Thiamin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食硫胺素"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin A": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin A"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 A"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin B12": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin B12"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 B12"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin B6": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin B6"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 B6"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin C": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin C"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 C"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin D": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin D"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 D"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin E": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin E"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 E"
+          }
+        }
+      }
+    },
+    "Dietary Vitamin K": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Vitamin K"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食维生素 K"
+          }
+        }
+      }
+    },
+    "Dietary Water": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Water"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食水"
+          }
+        }
+      }
+    },
+    "Dietary Zinc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dietary Zinc"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "膳食锌"
+          }
+        }
+      }
+    },
+    "Dietary intake recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的饮食摄入数据。"
+          }
+        }
+      }
+    },
+    "Distance Cycling": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Cycling"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "骑行距离"
+          }
+        }
+      }
+    },
+    "Distance Downhill Snow Sports": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Downhill Snow Sports"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高山雪上运动距离"
+          }
+        }
+      }
+    },
+    "Distance Swimming": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Swimming"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "游泳距离"
+          }
+        }
+      }
+    },
+    "Distance Walking Running": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Walking Running"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步行+跑步距离"
+          }
+        }
+      }
+    },
+    "Distance Wheelchair": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Wheelchair"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轮椅推动距离"
+          }
+        }
+      }
+    },
+    "Dizziness": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dizziness"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头晕"
+          }
+        }
+      }
+    },
+    "Drive": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drive"
+          }
+        }
+      }
+    },
+    "Dry Skin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dry Skin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "皮肤干燥"
+          }
+        }
+      }
+    },
+    "ECG": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心电图"
+          }
+        }
+      }
+    },
+    "Electrodermal Activity": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electrodermal Activity"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "皮肤电活动"
+          }
+        }
+      }
+    },
+    "Email": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邮箱"
+          }
+        }
+      }
+    },
+    "End of data": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数据结束"
+          }
+        }
+      }
+    },
+    "Energy burned by movement, in kilocalories.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动消耗的能量，单位千卡。"
+          }
+        }
+      }
+    },
+    "Environmental Audio Exposure": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Environmental Audio Exposure"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "环境音量暴露"
+          }
+        }
+      }
+    },
+    "Environmental Audio Exposure Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Environmental Audio Exposure Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "环境音量暴露事件"
+          }
+        }
+      }
+    },
+    "Environmental Sound Reduction": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Environmental Sound Reduction"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "环境降噪"
+          }
+        }
+      }
+    },
+    "Error": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "错误"
+          }
+        }
+      }
+    },
+    "Fainting": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fainting"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "晕厥"
+          }
+        }
+      }
+    },
+    "Fatigue": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fatigue"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "疲劳"
+          }
+        }
+      }
+    },
+    "Fever": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fever"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发烧"
+          }
+        }
+      }
+    },
+    "Fitzpatrick Skin Type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fitzpatrick Skin Type"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fitzpatrick 肤型"
+          }
+        }
+      }
+    },
+    "Flights Climbed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flights Climbed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已爬楼层"
+          }
+        }
+      }
+    },
+    "Forced Expiratory Volume (1s)": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用力呼气量（1 秒）"
+          }
+        }
+      }
+    },
+    "Forced Vital Capacity": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Vital Capacity"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用力肺活量"
+          }
+        }
+      }
+    },
+    "Generalized Body Ache": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generalized Body Ache"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全身酸痛"
+          }
+        }
+      }
+    },
+    "Google Drive": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Google Drive"
+          }
+        }
+      }
+    },
+    "Hair Loss": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hair Loss"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "脱发"
+          }
+        }
+      }
+    },
+    "Handwashing Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Handwashing Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "洗手事件"
+          }
+        }
+      }
+    },
+    "Headache": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headache"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "头痛"
+          }
+        }
+      }
+    },
+    "Headphone Audio Exposure": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headphone Audio Exposure"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "耳机音量暴露"
+          }
+        }
+      }
+    },
+    "Headphone Audio Exposure Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headphone Audio Exposure Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "耳机音量暴露事件"
+          }
+        }
+      }
+    },
+    "HealthKit only shows the permission sheet for types you haven't been asked about. To change an existing decision, open the Health app — Profile — Apps and Services — MyHealth.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HealthKit 仅会为尚未询问过的数据类型显示权限弹窗。如需修改已有的授权设置，请打开「健康」应用 — 个人资料 — 应用与服务 — MyHealth。"
+          }
+        }
+      }
+    },
+    "Hearing": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "听力"
+          }
+        }
+      }
+    },
+    "Heart": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心脏"
+          }
+        }
+      }
+    },
+    "Heart Rate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heart Rate"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心率"
+          }
+        }
+      }
+    },
+    "Heart Rate Recovery One Minute": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heart Rate Recovery One Minute"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一分钟心率恢复"
+          }
+        }
+      }
+    },
+    "Heart Rate Variability": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心率变异性"
+          }
+        }
+      }
+    },
+    "Heart-related measurements recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的心脏相关测量数据。"
+          }
+        }
+      }
+    },
+    "Heartburn": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heartburn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "胃灼热"
+          }
+        }
+      }
+    },
+    "Height": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Height"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "身高"
+          }
+        }
+      }
+    },
+    "Height measurements, in meters.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "身高测量值，单位米。"
+          }
+        }
+      }
+    },
+    "High Heart Rate Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High Heart Rate Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高心率事件"
+          }
+        }
+      }
+    },
+    "Hot Flashes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hot Flashes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "潮热"
+          }
+        }
+      }
+    },
+    "Immunization Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immunization Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免疫接种记录"
+          }
+        }
+      }
+    },
+    "Infrequent Menstrual Cycles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Infrequent Menstrual Cycles"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经期间隔过长"
+          }
+        }
+      }
+    },
+    "Inhaler Usage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhaler Usage"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "吸入器使用"
+          }
+        }
+      }
+    },
+    "Instance": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实例"
+          }
+        }
+      }
+    },
+    "Instance URL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实例 URL"
+          }
+        }
+      }
+    },
+    "Instantaneous heart rate readings in beats per minute.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每分钟瞬时心率读数。"
+          }
+        }
+      }
+    },
+    "Insulin Delivery": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin Delivery"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "胰岛素注射"
+          }
+        }
+      }
+    },
+    "Intermenstrual Bleeding": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intermenstrual Bleeding"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经间期出血"
+          }
+        }
+      }
+    },
+    "Irregular Heart Rhythm Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Irregular Heart Rhythm Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心律不齐事件"
+          }
+        }
+      }
+    },
+    "Irregular Menstrual Cycles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Irregular Menstrual Cycles"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经期不规律"
+          }
+        }
+      }
+    },
+    "Lab Result Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lab Result Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "化验结果记录"
+          }
+        }
+      }
+    },
+    "Lactation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lactation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "哺乳期"
+          }
+        }
+      }
+    },
+    "Last batch": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上次批次"
+          }
+        }
+      }
+    },
+    "Lean Body Mass": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean Body Mass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瘦体重"
+          }
+        }
+      }
+    },
+    "Loading manifest": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加载清单"
+          }
+        }
+      }
+    },
+    "Logged mindfulness or breathing sessions.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记录的正念或呼吸练习。"
+          }
+        }
+      }
+    },
+    "Loss Of Smell": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loss Of Smell"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "嗅觉丧失"
+          }
+        }
+      }
+    },
+    "Loss Of Taste": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loss Of Taste"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "味觉丧失"
+          }
+        }
+      }
+    },
+    "Low Cardio Fitness Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low Cardio Fitness Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心肺耐力偏低事件"
+          }
+        }
+      }
+    },
+    "Low Heart Rate Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low Heart Rate Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低心率事件"
+          }
+        }
+      }
+    },
+    "Lower Back Pain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Back Pain"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腰痛"
+          }
+        }
+      }
+    },
+    "Manage Access": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理权限"
+          }
+        }
+      }
+    },
+    "Manage HealthKit Access": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理 HealthKit 权限"
+          }
+        }
+      }
+    },
+    "Medication Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medication Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用药记录"
+          }
+        }
+      }
+    },
+    "Memory Lapse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory Lapse"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记忆力减退"
+          }
+        }
+      }
+    },
+    "Menstrual Flow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menstrual Flow"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经血量"
+          }
+        }
+      }
+    },
+    "Mindful Session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mindful Session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正念冥想"
+          }
+        }
+      }
+    },
+    "Mindfulness": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正念"
+          }
+        }
+      }
+    },
+    "Mindfulness session recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的正念练习。"
+          }
+        }
+      }
+    },
+    "Minutes counted toward your Exercise ring.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "计入「运动」圆环的分钟数。"
+          }
+        }
+      }
+    },
+    "Minutes spent standing, counted toward your Stand ring.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "计入「站立」圆环的站立分钟数。"
+          }
+        }
+      }
+    },
+    "Mobility": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动能力"
+          }
+        }
+      }
+    },
+    "Mood Changes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mood Changes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "情绪变化"
+          }
+        }
+      }
+    },
+    "MyLifeDB": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MyLifeDB"
+          }
+        }
+      }
+    },
+    "MyLifeDB Connect docs": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MyLifeDB Connect 文档"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "姓名"
+          }
+        }
+      }
+    },
+    "Nausea": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nausea"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恶心"
+          }
+        }
+      }
+    },
+    "Night Sweats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Night Sweats"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "夜间盗汗"
+          }
+        }
+      }
+    },
+    "Nike Fuel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nike Fuel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nike Fuel"
+          }
+        }
+      }
+    },
+    "No data found.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未找到数据。"
+          }
+        }
+      }
+    },
+    "No preview available for this type.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此类型暂无预览。"
+          }
+        }
+      }
+    },
+    "No window to present Google sign-in.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有可用窗口来展示 Google 登录界面。"
+          }
+        }
+      }
+    },
+    "Not connected": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未连接"
+          }
+        }
+      }
+    },
+    "Not requested": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未请求"
+          }
+        }
+      }
+    },
+    "Not signed in": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未登录"
+          }
+        }
+      }
+    },
+    "Number Of Times Fallen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Number Of Times Fallen"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跌倒次数"
+          }
+        }
+      }
+    },
+    "Nutrition": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "营养"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        }
+      }
+    },
+    "Open Health App": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开「健康」应用"
+          }
+        }
+      }
+    },
+    "Other": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他"
+          }
+        }
+      }
+    },
+    "Ovulation Test Result": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ovulation Test Result"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排卵测试结果"
+          }
+        }
+      }
+    },
+    "Oxygen Saturation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oxygen Saturation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "血氧饱和度"
+          }
+        }
+      }
+    },
+    "Path": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "路径"
+          }
+        }
+      }
+    },
+    "Peak Expiratory Flow Rate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peak Expiratory Flow Rate"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "呼气流量峰值"
+          }
+        }
+      }
+    },
+    "Pelvic Pain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pelvic Pain"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "盆腔疼痛"
+          }
+        }
+      }
+    },
+    "Peripheral Perfusion Index": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peripheral Perfusion Index"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外周灌注指数"
+          }
+        }
+      }
+    },
+    "Persistent Intermenstrual Bleeding": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persistent Intermenstrual Bleeding"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "持续经间期出血"
+          }
+        }
+      }
+    },
+    "Physical Effort": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Physical Effort"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体力消耗"
+          }
+        }
+      }
+    },
+    "Please enter a valid URL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入有效的 URL"
+          }
+        }
+      }
+    },
+    "Pregnancy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregnancy"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "怀孕"
+          }
+        }
+      }
+    },
+    "Pregnancy Test Result": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregnancy Test Result"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "怀孕测试结果"
+          }
+        }
+      }
+    },
+    "Procedure Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Procedure Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "操作记录"
+          }
+        }
+      }
+    },
+    "Profile attribute stored in Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储在 Apple 健康中的个人资料属性。"
+          }
+        }
+      }
+    },
+    "Progesterone Test Result": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progesterone Test Result"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "黄体酮测试结果"
+          }
+        }
+      }
+    },
+    "Prolonged Menstrual Periods": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prolonged Menstrual Periods"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "经期过长"
+          }
+        }
+      }
+    },
+    "Push Count": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push Count"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轮椅推动次数"
+          }
+        }
+      }
+    },
+    "Rapid Pounding Or Fluttering Heartbeat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapid Pounding Or Fluttering Heartbeat"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心跳急促或颤动"
+          }
+        }
+      }
+    },
+    "Reading HealthKit": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "读取 HealthKit"
+          }
+        }
+      }
+    },
+    "Recent samples": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近样本"
+          }
+        }
+      }
+    },
+    "Recorded workout sessions including duration, energy, and (when available) GPS route.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记录的训练，包括时长、能量消耗，以及（如有）GPS 路线。"
+          }
+        }
+      }
+    },
+    "Request via HealthKit": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过 HealthKit 请求"
+          }
+        }
+      }
+    },
+    "Requested": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已请求"
+          }
+        }
+      }
+    },
+    "Respiratory": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "呼吸"
+          }
+        }
+      }
+    },
+    "Respiratory Rate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respiratory Rate"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "呼吸频率"
+          }
+        }
+      }
+    },
+    "Respiratory measurement recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的呼吸测量数据。"
+          }
+        }
+      }
+    },
+    "Resting Heart Rate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resting Heart Rate"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "静息心率"
+          }
+        }
+      }
+    },
+    "Resting metabolic energy expenditure, in kilocalories.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "静息代谢能量消耗，单位千卡。"
+          }
+        }
+      }
+    },
+    "Retry sync": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试同步"
+          }
+        }
+      }
+    },
+    "Run daily in background": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每日后台运行"
+          }
+        }
+      }
+    },
+    "Running Ground Contact Time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running Ground Contact Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步触地时间"
+          }
+        }
+      }
+    },
+    "Running Power": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running Power"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步功率"
+          }
+        }
+      }
+    },
+    "Running Speed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running Speed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步速度"
+          }
+        }
+      }
+    },
+    "Running Stride Length": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running Stride Length"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步步幅"
+          }
+        }
+      }
+    },
+    "Running Vertical Oscillation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running Vertical Oscillation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步垂直振幅"
+          }
+        }
+      }
+    },
+    "Runny Nose": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runny Nose"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "流鼻涕"
+          }
+        }
+      }
+    },
+    "SDNN measurement of heart rate variability, in milliseconds.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心率变异性 SDNN 测量值，单位毫秒。"
+          }
+        }
+      }
+    },
+    "Scope": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "权限范围"
+          }
+        }
+      }
+    },
+    "Sexual Activity": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sexual Activity"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "性行为"
+          }
+        }
+      }
+    },
+    "Shortness Of Breath": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortness Of Breath"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "呼吸急促"
+          }
+        }
+      }
+    },
+    "Sign In with Google": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Google 登录"
+          }
+        }
+      }
+    },
+    "Sign Out": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出登录"
+          }
+        }
+      }
+    },
+    "Signed in": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已登录"
+          }
+        }
+      }
+    },
+    "Single-lead ECG recordings from Apple Watch.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "来自 Apple Watch 的单导联心电图记录。"
+          }
+        }
+      }
+    },
+    "Sinus Congestion": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinus Congestion"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鼻窦充血"
+          }
+        }
+      }
+    },
+    "Six Minute Walk Test Distance": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Six Minute Walk Test Distance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "六分钟步行测试距离"
+          }
+        }
+      }
+    },
+    "Skipped Heartbeat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skipped Heartbeat"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "心跳停顿"
+          }
+        }
+      }
+    },
+    "Sleep": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠"
+          }
+        }
+      }
+    },
+    "Sleep Analysis": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleep Analysis"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠分析"
+          }
+        }
+      }
+    },
+    "Sleep Changes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleep Changes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠变化"
+          }
+        }
+      }
+    },
+    "Sleep data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的睡眠数据。"
+          }
+        }
+      }
+    },
+    "Sleep stages and durations recorded automatically or entered manually.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动记录或手动输入的睡眠阶段与时长。"
+          }
+        }
+      }
+    },
+    "Sore Throat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sore Throat"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "咽喉痛"
+          }
+        }
+      }
+    },
+    "Source code on GitHub": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub 源代码"
+          }
+        }
+      }
+    },
+    "Stair Ascent Speed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stair Ascent Speed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上楼速度"
+          }
+        }
+      }
+    },
+    "Stair Descent Speed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stair Descent Speed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下楼速度"
+          }
+        }
+      }
+    },
+    "Step Count": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step Count"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步数"
+          }
+        }
+      }
+    },
+    "Steps taken, recorded by Apple Watch or iPhone.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple Watch 或 iPhone 记录的步数。"
+          }
+        }
+      }
+    },
+    "Swimming Stroke Count": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swimming Stroke Count"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "游泳划水次数"
+          }
+        }
+      }
+    },
+    "Symptom logged in Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在 Apple 健康中记录的症状。"
+          }
+        }
+      }
+    },
+    "Symptoms": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "症状"
+          }
+        }
+      }
+    },
+    "Sync": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步"
+          }
+        }
+      }
+    },
+    "Sync Targets": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步目标"
+          }
+        }
+      }
+    },
+    "Sync now": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即同步"
+          }
+        }
+      }
+    },
+    "Synced files are written to a folder named **MyHealth** in your Google Drive.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已同步的文件会写入到 Google Drive 中名为 **MyHealth** 的文件夹。"
+          }
+        }
+      }
+    },
+    "Syncing…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步中…"
+          }
+        }
+      }
+    },
+    "Time In Daylight": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time In Daylight"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日照时间"
+          }
+        }
+      }
+    },
+    "Toothbrushing Event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toothbrushing Event"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刷牙事件"
+          }
+        }
+      }
+    },
+    "URL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        }
+      }
+    },
+    "UV Exposure": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "紫外线暴露"
+          }
+        }
+      }
+    },
+    "Underwater Depth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Underwater Depth"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "水下深度"
+          }
+        }
+      }
+    },
+    "Uploading to Google Drive": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上传至 Google Drive"
+          }
+        }
+      }
+    },
+    "Uploading to MyLifeDB": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上传至 MyLifeDB"
+          }
+        }
+      }
+    },
+    "VO₂ Max": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VO₂ Max"
+          }
+        }
+      }
+    },
+    "Vaginal Dryness": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaginal Dryness"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "阴道干涩"
+          }
+        }
+      }
+    },
+    "Version": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版本"
+          }
+        }
+      }
+    },
+    "Vital Sign Record": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vital Sign Record"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生命体征记录"
+          }
+        }
+      }
+    },
+    "Vital sign recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的生命体征数据。"
+          }
+        }
+      }
+    },
+    "Vitals": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生命体征"
+          }
+        }
+      }
+    },
+    "Vomiting": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vomiting"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "呕吐"
+          }
+        }
+      }
+    },
+    "Waist Circumference": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waist Circumference"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腰围"
+          }
+        }
+      }
+    },
+    "Walking Asymmetry Percentage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Asymmetry Percentage"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步态不对称百分比"
+          }
+        }
+      }
+    },
+    "Walking Double Support Percentage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Double Support Percentage"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "双脚支撑时间百分比"
+          }
+        }
+      }
+    },
+    "Walking Heart Rate Average": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Heart Rate Average"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步行平均心率"
+          }
+        }
+      }
+    },
+    "Walking Speed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Speed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步行速度"
+          }
+        }
+      }
+    },
+    "Walking Step Length": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Step Length"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步幅"
+          }
+        }
+      }
+    },
+    "Walking and mobility data recorded by Apple Health.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "由 Apple 健康记录的步行与活动能力数据。"
+          }
+        }
+      }
+    },
+    "Water Temperature": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Water Temperature"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "水温"
+          }
+        }
+      }
+    },
+    "Weight measurements, in kilograms.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "体重测量值，单位千克。"
+          }
+        }
+      }
+    },
+    "Wheelchair Use": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wheelchair Use"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轮椅使用"
+          }
+        }
+      }
+    },
+    "Wheezing": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wheezing"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "喘鸣"
+          }
+        }
+      }
+    },
+    "Workout Routes": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "训练路线"
+          }
+        }
+      }
+    },
+    "Workouts": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "训练"
+          }
+        }
+      }
+    },
+    "Writing batch": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写入批次"
+          }
         }
       }
     }
