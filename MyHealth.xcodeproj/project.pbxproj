@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050ABCC2F7D66C177CF3E3B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B83990180897E0F78FA4A2 /* HomeView.swift */; };
+		1AC770734FEE0C15051C3156 /* DataTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E61954C91F9C5FB66239F66 /* DataTab.swift */; };
+		492C7B26416FE6653026055A /* DataTypeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */; };
+		78CD6B7E1544089E3DCBCCDE /* SyncTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B632BB8727BAE65C4CEB33B /* SyncTab.swift */; };
+		A35419E2308CD0B31073E14D /* MyLifeDBDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */; };
+		B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34640D30825341890180357 /* DriveDetailView.swift */; };
+		D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */; };
+		DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */; };
 		2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54AC311B9681A008227307 /* AnchorStore.swift */; };
-		2F613F00CB42BC0BF52D6B1A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF9AD261DDA01065DD3618 /* ContentView.swift */; };
 		32134F769D08F1527E190904 /* BatchWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2C80136581E494739D880 /* BatchWriter.swift */; };
 		3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */; };
 		3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */; };
@@ -16,7 +23,6 @@
 		54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98456748D6490844950A6C5 /* SyncCoordinator.swift */; };
 		559B81DD118ADF866C2E548E /* HealthKitAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */; };
 		56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF03E11BDF9492948F52769 /* DataTypes.swift */; };
-		89F98CD39E913E13692633B7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */; };
 		8A394384C14621A0AE3FBBF8 /* SyncManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7324912DA650CC460C2D1B9 /* SyncManifest.swift */; };
 		90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */; };
 		966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */; };
@@ -26,11 +32,8 @@
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
-		D965ACC26957F80745510056 /* SyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */; };
 		DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */; };
 		E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */; };
-		EEB0B60F5041330524E0A2C3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F78E991A61CA16CED1E2142 /* RootView.swift */; };
-		EEF3135E028BE5D0B05EB458 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496681E72CDBB0477FB660D4 /* OnboardingView.swift */; };
 		EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F50952E1DA754F2F6CF611 /* PKCE.swift */; };
 		F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */; };
 		FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C317B907897869E73E2FAA /* TokenStore.swift */; };
@@ -47,17 +50,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10B83990180897E0F78FA4A2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		2E61954C91F9C5FB66239F66 /* DataTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTab.swift; sourceTree = "<group>"; };
+		71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeDetailView.swift; sourceTree = "<group>"; };
+		8B632BB8727BAE65C4CEB33B /* SyncTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTab.swift; sourceTree = "<group>"; };
+		B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBDetailView.swift; sourceTree = "<group>"; };
+		D34640D30825341890180357 /* DriveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveDetailView.swift; sourceTree = "<group>"; };
+		DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthTypeCatalog.swift; sourceTree = "<group>"; };
+		F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSamplePreview.swift; sourceTree = "<group>"; };
 		037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitReader.swift; sourceTree = "<group>"; };
 		071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDriveClient.swift; sourceTree = "<group>"; };
 		07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBClient.swift; sourceTree = "<group>"; };
 		1C54AC311B9681A008227307 /* AnchorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorStore.swift; sourceTree = "<group>"; };
 		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
-		2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		3F78E991A61CA16CED1E2142 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
-		496681E72CDBB0477FB660D4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSync.swift; sourceTree = "<group>"; };
 		60AA1719224422B218DC46DE /* MyHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAuth.swift; sourceTree = "<group>"; };
@@ -66,14 +74,12 @@
 		85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHealthApp.swift; sourceTree = "<group>"; };
 		8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitAuth.swift; sourceTree = "<group>"; };
 		8AF03E11BDF9492948F52769 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
-		8DBF9AD261DDA01065DD3618 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		97A2C80136581E494739D880 /* BatchWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchWriter.swift; sourceTree = "<group>"; };
 		9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSample.swift; sourceTree = "<group>"; };
 		D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MyHealthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7324912DA650CC460C2D1B9 /* SyncManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManifest.swift; sourceTree = "<group>"; };
 		D98456748D6490844950A6C5 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEncoder.swift; sourceTree = "<group>"; };
-		F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,11 +127,12 @@
 		54619BEF487634FB4E872EBA /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8DBF9AD261DDA01065DD3618 /* ContentView.swift */,
-				496681E72CDBB0477FB660D4 /* OnboardingView.swift */,
-				3F78E991A61CA16CED1E2142 /* RootView.swift */,
-				2B6ADE7CA8C030689351F3B7 /* SettingsView.swift */,
-				F7C9083652B5E55BD3486EC8 /* SyncStatusView.swift */,
+				10B83990180897E0F78FA4A2 /* HomeView.swift */,
+				2E61954C91F9C5FB66239F66 /* DataTab.swift */,
+				71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */,
+				8B632BB8727BAE65C4CEB33B /* SyncTab.swift */,
+				B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */,
+				D34640D30825341890180357 /* DriveDetailView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -157,6 +164,8 @@
 		940A6FE78E509B537382339A /* Health */ = {
 			isa = PBXGroup;
 			children = (
+				DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */,
+				F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */,
 				8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */,
 				037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */,
 				EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */,
@@ -277,11 +286,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				050ABCC2F7D66C177CF3E3B3 /* HomeView.swift in Sources */,
+				1AC770734FEE0C15051C3156 /* DataTab.swift in Sources */,
+				492C7B26416FE6653026055A /* DataTypeDetailView.swift in Sources */,
+				78CD6B7E1544089E3DCBCCDE /* SyncTab.swift in Sources */,
+				A35419E2308CD0B31073E14D /* MyLifeDBDetailView.swift in Sources */,
+				B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */,
+				D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */,
+				DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */,
 				2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */,
 				E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */,
 				32134F769D08F1527E190904 /* BatchWriter.swift in Sources */,
 				C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */,
-				2F613F00CB42BC0BF52D6B1A /* ContentView.swift in Sources */,
 				56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */,
 				C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */,
 				42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */,
@@ -290,14 +306,10 @@
 				97EB61DC9153742631E77037 /* HealthSample.swift in Sources */,
 				CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */,
 				DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */,
-				EEF3135E028BE5D0B05EB458 /* OnboardingView.swift in Sources */,
 				EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */,
-				EEB0B60F5041330524E0A2C3 /* RootView.swift in Sources */,
 				F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */,
-				89F98CD39E913E13692633B7 /* SettingsView.swift in Sources */,
 				54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */,
 				8A394384C14621A0AE3FBBF8 /* SyncManifest.swift in Sources */,
-				D965ACC26957F80745510056 /* SyncStatusView.swift in Sources */,
 				FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

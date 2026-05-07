@@ -12,7 +12,7 @@ struct MyHealthApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            HomeView()
                 .environmentObject(coordinator)
                 .environmentObject(sessionStore)
                 .task {
