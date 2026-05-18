@@ -40,11 +40,13 @@ struct HealthKitReader {
             for sample in samples {
                 if let workout = sample as? HKWorkout {
                     let events = workout.workoutEvents
-                    let route = try await loadRoute(for: workout)
+                    // Workout-route auth is separate; ignore when not granted.
+                    let route = (try? await loadRoute(for: workout)) ?? nil
                     let row = SampleEncoder.encode(workout, events: events, route: route)
                     result.workouts.append(row)
                 } else if let ecg = sample as? HKElectrocardiogram {
-                    let voltage = try await loadVoltageSeries(for: ecg)
+                    // ECG voltage series auth is separate; ignore when not granted.
+                    let voltage = (try? await loadVoltageSeries(for: ecg)) ?? nil
                     result.ecgs.append(SampleEncoder.encode(ecg, voltage: voltage))
                 } else if let q = sample as? HKQuantitySample {
                     if let row = SampleEncoder.encode(q) {
@@ -59,9 +61,15 @@ struct HealthKitReader {
         }
 
         // ActivitySummary uses a different query type (no anchored variant).
-        result.activitySummaries = try await readActivitySummaries(
-            since: anchors["HKActivitySummaryTypeIdentifier"].flatMap { _ in nil } // no anchor concept
-        )
+        // Same auth-not-determined tolerance as the loop above: if the type
+        // wasn't granted, skip and proceed with whatever else we read.
+        do {
+            result.activitySummaries = try await readActivitySummaries(
+                since: anchors["HKActivitySummaryTypeIdentifier"].flatMap { _ in nil } // no anchor concept
+            )
+        } catch let e as HKError where e.code == .errorAuthorizationNotDetermined || e.code == .errorAuthorizationDenied {
+            print("MyHealth: skip HKActivitySummary (no auth): \(e.localizedDescription)")
+        }
 
         return result
     }
