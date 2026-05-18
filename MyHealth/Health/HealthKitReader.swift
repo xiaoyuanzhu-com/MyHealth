@@ -39,7 +39,9 @@ struct HealthKitReader {
                     let voltage = try await loadVoltageSeries(for: ecg)
                     result.ecgs.append(SampleEncoder.encode(ecg, voltage: voltage))
                 } else if let q = sample as? HKQuantitySample {
-                    result.records.append(SampleEncoder.encode(q))
+                    if let row = SampleEncoder.encode(q) {
+                        result.records.append(row)
+                    }
                 } else if let c = sample as? HKCategorySample {
                     result.records.append(SampleEncoder.encode(c))
                 } else if let cr = sample as? HKClinicalRecord {

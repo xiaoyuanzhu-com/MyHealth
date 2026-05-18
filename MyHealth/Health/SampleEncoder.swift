@@ -27,8 +27,12 @@ struct SampleEncoder {
 
     // MARK: - Quantity samples (steps, heart rate, distance, …)
 
-    static func encode(_ q: HKQuantitySample) -> HealthSample {
+    static func encode(_ q: HKQuantitySample) -> HealthSample? {
         let unit = canonicalUnit(for: q.quantityType)
+        // Guard against unit/type mismatches — a sample whose native unit is
+        // incompatible with our canonical choice (e.g. a future HealthKit type
+        // we haven't mapped yet) would otherwise raise NSInvalidArgumentException.
+        guard q.quantity.is(compatibleWith: unit) else { return nil }
         let value = q.quantity.doubleValue(for: unit)
         return HealthSample(
             _kind: .record,
@@ -305,8 +309,15 @@ struct SampleEncoder {
              HKQuantityTypeIdentifier.runningStrideLength.rawValue,
              HKQuantityTypeIdentifier.walkingStepLength.rawValue,
              HKQuantityTypeIdentifier.underwaterDepth.rawValue,
+             HKQuantityTypeIdentifier.waistCircumference.rawValue,
              HKQuantityTypeIdentifier.sixMinuteWalkTestDistance.rawValue:
             return .meter()
+
+        case HKQuantityTypeIdentifier.runningVerticalOscillation.rawValue:
+            return .meterUnit(with: .centi)
+
+        case HKQuantityTypeIdentifier.runningGroundContactTime.rawValue:
+            return .secondUnit(with: .milli)
 
         case HKQuantityTypeIdentifier.bodyMass.rawValue,
              HKQuantityTypeIdentifier.leanBodyMass.rawValue:
@@ -340,6 +351,23 @@ struct SampleEncoder {
         case HKQuantityTypeIdentifier.dietaryWater.rawValue:
             return .literUnit(with: .milli)
 
+        case HKQuantityTypeIdentifier.forcedExpiratoryVolume1.rawValue,
+             HKQuantityTypeIdentifier.forcedVitalCapacity.rawValue:
+            return .liter()
+
+        case HKQuantityTypeIdentifier.peakExpiratoryFlowRate.rawValue:
+            return HKUnit.liter().unitDivided(by: .minute())
+
+        case HKQuantityTypeIdentifier.electrodermalActivity.rawValue:
+            return .siemen()
+
+        case HKQuantityTypeIdentifier.insulinDelivery.rawValue:
+            return .internationalUnit()
+
+        case HKQuantityTypeIdentifier.physicalEffort.rawValue:
+            return HKUnit.kilocalorie()
+                .unitDivided(by: HKUnit.hour().unitMultiplied(by: .gramUnit(with: .kilo)))
+
         case HKQuantityTypeIdentifier.bloodGlucose.rawValue:
             return HKUnit.gramUnit(with: .milli).unitDivided(by: .literUnit(with: .deci))
 
@@ -358,6 +386,45 @@ struct SampleEncoder {
              HKQuantityTypeIdentifier.cyclingPower.rawValue,
              HKQuantityTypeIdentifier.cyclingFunctionalThresholdPower.rawValue:
             return .watt()
+
+        case HKQuantityTypeIdentifier.dietaryFatTotal.rawValue,
+             HKQuantityTypeIdentifier.dietaryFatSaturated.rawValue,
+             HKQuantityTypeIdentifier.dietaryFatPolyunsaturated.rawValue,
+             HKQuantityTypeIdentifier.dietaryFatMonounsaturated.rawValue,
+             HKQuantityTypeIdentifier.dietaryCholesterol.rawValue,
+             HKQuantityTypeIdentifier.dietarySodium.rawValue,
+             HKQuantityTypeIdentifier.dietaryCarbohydrates.rawValue,
+             HKQuantityTypeIdentifier.dietaryFiber.rawValue,
+             HKQuantityTypeIdentifier.dietarySugar.rawValue,
+             HKQuantityTypeIdentifier.dietaryProtein.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminA.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminB6.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminB12.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminC.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminD.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminE.rawValue,
+             HKQuantityTypeIdentifier.dietaryVitaminK.rawValue,
+             HKQuantityTypeIdentifier.dietaryCalcium.rawValue,
+             HKQuantityTypeIdentifier.dietaryIron.rawValue,
+             HKQuantityTypeIdentifier.dietaryThiamin.rawValue,
+             HKQuantityTypeIdentifier.dietaryRiboflavin.rawValue,
+             HKQuantityTypeIdentifier.dietaryNiacin.rawValue,
+             HKQuantityTypeIdentifier.dietaryFolate.rawValue,
+             HKQuantityTypeIdentifier.dietaryBiotin.rawValue,
+             HKQuantityTypeIdentifier.dietaryPantothenicAcid.rawValue,
+             HKQuantityTypeIdentifier.dietaryPhosphorus.rawValue,
+             HKQuantityTypeIdentifier.dietaryIodine.rawValue,
+             HKQuantityTypeIdentifier.dietaryMagnesium.rawValue,
+             HKQuantityTypeIdentifier.dietaryZinc.rawValue,
+             HKQuantityTypeIdentifier.dietarySelenium.rawValue,
+             HKQuantityTypeIdentifier.dietaryCopper.rawValue,
+             HKQuantityTypeIdentifier.dietaryManganese.rawValue,
+             HKQuantityTypeIdentifier.dietaryChromium.rawValue,
+             HKQuantityTypeIdentifier.dietaryMolybdenum.rawValue,
+             HKQuantityTypeIdentifier.dietaryChloride.rawValue,
+             HKQuantityTypeIdentifier.dietaryPotassium.rawValue,
+             HKQuantityTypeIdentifier.dietaryCaffeine.rawValue:
+            return .gram()
 
         default:
             return .count()

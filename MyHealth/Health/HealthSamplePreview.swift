@@ -93,8 +93,12 @@ final class HealthSamplePreviewLoader: ObservableObject {
 
         if let q = sample as? HKQuantitySample {
             let unit = SampleEncoder.canonicalUnit(for: q.quantityType)
-            let value = q.quantity.doubleValue(for: unit)
-            primary = "\(formatNumber(value)) \(unitLabel(unit, raw: unit.unitString))"
+            if q.quantity.is(compatibleWith: unit) {
+                let value = q.quantity.doubleValue(for: unit)
+                primary = "\(formatNumber(value)) \(unitLabel(unit, raw: unit.unitString))"
+            } else {
+                primary = q.quantity.description
+            }
             secondary = sample.sourceRevision.source.name
         } else if let c = sample as? HKCategorySample {
             primary = categoryDescription(for: c)
