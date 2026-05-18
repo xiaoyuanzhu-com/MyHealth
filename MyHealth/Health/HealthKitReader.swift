@@ -21,10 +21,18 @@ struct HealthKitReader {
 
         for sampleType in HealthDataTypes.allAnchoredSampleTypes {
             let prev = anchors[sampleType.identifier]
-            let (samples, deleted, newAnchor) = try await runAnchoredQuery(
-                for: sampleType,
-                anchor: prev
-            )
+            let queryResult: (added: [HKSample], deleted: [HKDeletedObject], newAnchor: HKQueryAnchor?)
+            do {
+                queryResult = try await runAnchoredQuery(for: sampleType, anchor: prev)
+            } catch let e as HKError where e.code == .errorAuthorizationNotDetermined || e.code == .errorAuthorizationDenied {
+                // The auth request lists clinical records, audiograms, etc. — but
+                // not every region/device has data sources for them, so iOS leaves
+                // those types in notDetermined and the query throws. Skip and
+                // continue; sync the types we actually have access to.
+                print("MyHealth: skip \(sampleType.identifier) (no auth): \(e.localizedDescription)")
+                continue
+            }
+            let (samples, deleted, newAnchor) = queryResult
 
             result.deleted[sampleType.identifier] = deleted.count
             if let newAnchor { result.anchors[sampleType.identifier] = newAnchor }
