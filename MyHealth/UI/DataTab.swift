@@ -6,6 +6,7 @@ import UIKit
 /// permission type. Tapping a row opens its detail page.
 struct DataTab: View {
     @StateObject private var status = HealthAuthStatus()
+    @State private var manageSheetShown = false
 
     var body: some View {
         NavigationStack {
@@ -27,8 +28,13 @@ struct DataTab: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Manage Access") { openHealthAppSources() }
+                    Button("Manage Access") { manageSheetShown = true }
                 }
+            }
+            .sheet(isPresented: $manageSheetShown) {
+                ManageAccessSheet()
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
             }
             .task {
                 // Idempotent: HealthKit silently no-ops once every type has
@@ -38,20 +44,69 @@ struct DataTab: View {
             }
         }
     }
+}
 
-    /// Jumps to Health → Sharing → Apps so the user can tap MyHealth and toggle
-    /// individual categories. There is no public URL scheme to deep-link
-    /// further (directly onto MyHealth's page); `Sources/` is the closest
-    /// undocumented entry point that has held up across iOS versions. Falls
-    /// back to the Health app root if Apple ever removes it.
-    private func openHealthAppSources() {
-        let candidates = ["x-apple-health://Sources/", "x-apple-health://"]
-        for s in candidates {
-            if let url = URL(string: s), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-                return
+/// Half-height instructional sheet. iOS does not expose a public URL scheme
+/// to deep-link onto MyHealth's HealthKit page, so we walk the user through
+/// the navigation manually and hand off to the Health app's root.
+private struct ManageAccessSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    private let steps: [LocalizedStringKey] = [
+        "Open the Health app",
+        "Tap your profile picture (top-right)",
+        "Choose “Apps and Services”",
+        "Find “MyHealth” in the list",
+        "Toggle the categories you want to share"
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Manage HealthKit Access")
+                .font(.title3.bold())
+                .padding(.top, 24)
+                .padding(.horizontal, 24)
+
+            Text("iOS doesn’t let apps jump straight to their permission page. Follow these steps in the Health app:")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.top, 8)
+                .padding(.horizontal, 24)
+
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(Array(steps.enumerated()), id: \.offset) { idx, step in
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        Text("\(idx + 1).")
+                            .font(.body.monospacedDigit().bold())
+                            .foregroundStyle(.tint)
+                            .frame(width: 20, alignment: .trailing)
+                        Text(step).font(.body)
+                    }
+                }
             }
+            .padding(.top, 20)
+            .padding(.horizontal, 24)
+
+            Spacer(minLength: 0)
+
+            Button {
+                openHealthApp()
+                dismiss()
+            } label: {
+                Text("Open Health App")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+            }
+            .buttonStyle(.borderedProminent)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 24)
         }
+    }
+
+    private func openHealthApp() {
+        guard let url = URL(string: "x-apple-health://") else { return }
+        UIApplication.shared.open(url)
     }
 }
 

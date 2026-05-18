@@ -2067,6 +2067,7 @@
       }
     },
     "HealthKit only shows the permission sheet for types you haven't been asked about. To change an existing decision, open the Health app — Profile — Apps and Services — MyHealth." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
