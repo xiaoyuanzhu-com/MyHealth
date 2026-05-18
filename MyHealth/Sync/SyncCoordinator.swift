@@ -40,7 +40,12 @@ final class SyncCoordinator: ObservableObject {
     /// upload to (auth status is checked per destination).
     func runOnce(enabledDestinations: Set<Destination>) async {
         let started = Date()
+        // Track the current stage so the error path can report where we died.
+        var stage = "start"
+        let destLabel = enabledDestinations.map { "\($0)" }.sorted().joined(separator: ",")
+        print("MyHealth: sync start destinations=[\(destLabel)]")
         do {
+            stage = "load_manifest"
             status = .running(stage: String(localized: "Loading manifest"))
             let mldSession = try TokenStore.load()
             let mldClient = mldSession.map { MyLifeDBClient(session: $0) }
@@ -48,22 +53,29 @@ final class SyncCoordinator: ObservableObject {
             // 1. Load anchors: prefer MyLifeDB manifest, fall back to local cache.
             var anchors: [String: HKQueryAnchor] = [:]
             var manifest: SyncManifest? = nil
+            var anchorSource = "empty"
             if enabledDestinations.contains(.myLifeDB), let mld = mldClient {
                 if let data = try? await mld.getFile(relativePath: manifestPath),
                    let parsed = try? JSONDecoder().decode(SyncManifest.self, from: data) {
                     manifest = parsed
                     anchors = AnchorStore.decodeAll(parsed.anchors)
+                    anchorSource = "mld"
                 }
             }
             if anchors.isEmpty {
                 anchors = AnchorStore.loadCache()
+                if !anchors.isEmpty { anchorSource = "cache" }
             }
+            print("MyHealth: anchors loaded source=\(anchorSource) count=\(anchors.count)")
 
             // 2. Read new samples.
+            stage = "read_healthkit"
             status = .running(stage: String(localized: "Reading HealthKit"))
             let result = try await reader.readBatch(anchors: anchors)
+            print("MyHealth: hk read records=\(result.records.count) workouts=\(result.workouts.count) ecgs=\(result.ecgs.count) clinical=\(result.clinical.count) summaries=\(result.activitySummaries.count) anchors_advanced=\(result.anchors.count)")
 
             // 3. Write JSONL batch files locally.
+            stage = "write_batch"
             status = .running(stage: String(localized: "Writing batch"))
             let writer = try BatchWriter()
             defer { writer.cleanup() }
@@ -108,20 +120,25 @@ final class SyncCoordinator: ObservableObject {
             var didUploadDrive = false
 
             if enabledDestinations.contains(.myLifeDB), let mld = mldClient, !files.isEmpty {
+                stage = "upload_mld_files"
                 status = .running(stage: String(localized: "Uploading to MyLifeDB"))
                 for file in files {
                     let local = writer.dir.appendingPathComponent(file.name)
                     let remote = "syncs/\(writer.batchID)/\(file.name)"
                     try await mld.putFile(relativePath: remote, localFile: local)
                 }
+                print("MyHealth: mld uploaded \(files.count) batch files")
             }
             if enabledDestinations.contains(.myLifeDB), let mld = mldClient {
+                stage = "upload_mld_manifest"
                 let manifestData = try JSONEncoder.deterministic.encode(newManifest)
                 try await mld.putBytes(relativePath: manifestPath, body: manifestData, contentType: "application/json")
                 didUploadMLD = true
+                print("MyHealth: mld uploaded manifest bytes=\(manifestData.count)")
             }
 
             if enabledDestinations.contains(.googleDrive), DriveAuth.currentUser != nil {
+                stage = "upload_drive"
                 status = .running(stage: String(localized: "Uploading to Google Drive"))
                 let drive = GoogleDriveClient()
                 if !files.isEmpty {
@@ -134,6 +151,7 @@ final class SyncCoordinator: ObservableObject {
                 let manifestData = try JSONEncoder.deterministic.encode(newManifest)
                 try await drive.uploadBytes(relativePath: manifestPath, body: manifestData)
                 didUploadDrive = true
+                print("MyHealth: drive uploaded \(files.count) batch files + manifest")
             }
 
             let runResult = SyncRunResult(
@@ -145,8 +163,11 @@ final class SyncCoordinator: ObservableObject {
             )
             self.lastResult = runResult
             self.status = .idle
+            let elapsed = String(format: "%.1f", Date().timeIntervalSince(started))
+            print("MyHealth: sync done batch=\(writer.batchID) mld=\(didUploadMLD) drive=\(didUploadDrive) elapsed=\(elapsed)s")
         } catch {
             self.status = .error(error.localizedDescription)
+            print("MyHealth: sync FAILED stage=\(stage) error=\(error.localizedDescription)")
         }
     }
 

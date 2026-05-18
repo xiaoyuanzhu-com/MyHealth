@@ -76,31 +76,57 @@ actor MyLifeDBClient {
         var req = original
         req.setValue("Bearer \(session.access_token)", forHTTPHeaderField: "Authorization")
 
-        let (data, response) = try await urlSession.data(for: req)
+        let method = req.httpMethod ?? "?"
+        let path = req.url?.path ?? "?"
+        let reqBytes = req.httpBody?.count ?? 0
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await urlSession.data(for: req)
+        } catch {
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → transport error: \(error.localizedDescription)")
+            throw error
+        }
         guard let http = response as? HTTPURLResponse else {
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → no HTTP response")
             throw MyLifeDBError.transport("no HTTP response")
         }
 
         switch http.statusCode {
         case 200, 201, 204:
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → \(http.statusCode)")
             return data
         case 404:
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → 404")
             return nil
         case 401:
             // Refresh and retry once.
+            print("MyHealth: mld \(method) \(path) → 401, refreshing token")
             let refreshed = try await ConnectAuth.refresh(session)
             self.session = refreshed
             var retry = original
             retry.setValue("Bearer \(refreshed.access_token)", forHTTPHeaderField: "Authorization")
             let (retryData, retryResp) = try await urlSession.data(for: retry)
             guard let retryHTTP = retryResp as? HTTPURLResponse else {
+                print("MyHealth: mld \(method) \(path) → no HTTP response after refresh")
                 throw MyLifeDBError.transport("no HTTP response after refresh")
             }
-            if (200..<300).contains(retryHTTP.statusCode) { return retryData }
-            if retryHTTP.statusCode == 404 { return nil }
-            throw MyLifeDBError.http(retryHTTP.statusCode, body: String(data: retryData, encoding: .utf8) ?? "")
+            if (200..<300).contains(retryHTTP.statusCode) {
+                print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → \(retryHTTP.statusCode) (after refresh)")
+                return retryData
+            }
+            if retryHTTP.statusCode == 404 {
+                print("MyHealth: mld \(method) \(path) → 404 (after refresh)")
+                return nil
+            }
+            let body = String(data: retryData, encoding: .utf8) ?? ""
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → \(retryHTTP.statusCode) (after refresh) body=\(body.prefix(200))")
+            throw MyLifeDBError.http(retryHTTP.statusCode, body: body)
         default:
-            throw MyLifeDBError.http(http.statusCode, body: String(data: data, encoding: .utf8) ?? "")
+            let body = String(data: data, encoding: .utf8) ?? ""
+            print("MyHealth: mld \(method) \(path) bytes=\(reqBytes) → \(http.statusCode) body=\(body.prefix(200))")
+            throw MyLifeDBError.http(http.statusCode, body: body)
         }
     }
 
