@@ -6,8 +6,6 @@ import UIKit
 /// permission type. Tapping a row opens its detail page.
 struct DataTab: View {
     @StateObject private var status = HealthAuthStatus()
-    @State private var manageDialog = false
-    @State private var manageError: String?
 
     var body: some View {
         NavigationStack {
@@ -29,46 +27,30 @@ struct DataTab: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Manage Access") { manageDialog = true }
+                    Button("Manage Access") { openHealthAppSources() }
                 }
             }
-            .confirmationDialog(
-                "Manage HealthKit Access",
-                isPresented: $manageDialog,
-                titleVisibility: .visible
-            ) {
-                Button("Request via HealthKit") {
-                    Task { await requestAccess() }
-                }
-                Button("Open Health App") { openHealthApp() }
-                Button("Cancel", role: .cancel) { }
-            } message: {
-                Text("HealthKit only shows the permission sheet for types you haven't been asked about. To change an existing decision, open the Health app — Profile — Apps and Services — MyHealth.")
+            .task {
+                // Idempotent: HealthKit silently no-ops once every type has
+                // been decided; only surfaces the sheet for newly-added types.
+                try? await HealthKitAuth().requestAuthorization()
+                status.refresh()
             }
-            .alert("Error", isPresented: .constant(manageError != nil)) {
-                Button("OK", role: .cancel) { manageError = nil }
-            } message: {
-                Text(manageError ?? "")
-            }
-            .task { status.refresh() }
         }
     }
 
-    private func requestAccess() async {
-        do {
-            try await HealthKitAuth().requestAuthorization()
-            status.refresh()
-        } catch {
-            manageError = error.localizedDescription
-        }
-    }
-
-    private func openHealthApp() {
-        if let url = URL(string: "x-apple-health://"),
-           UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        } else if let settings = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(settings)
+    /// Jumps to Health → Sharing → Apps so the user can tap MyHealth and toggle
+    /// individual categories. There is no public URL scheme to deep-link
+    /// further (directly onto MyHealth's page); `Sources/` is the closest
+    /// undocumented entry point that has held up across iOS versions. Falls
+    /// back to the Health app root if Apple ever removes it.
+    private func openHealthAppSources() {
+        let candidates = ["x-apple-health://Sources/", "x-apple-health://"]
+        for s in candidates {
+            if let url = URL(string: s), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                return
+            }
         }
     }
 }
