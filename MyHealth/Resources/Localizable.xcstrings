@@ -4,6 +4,9 @@
     "%@" : {
 
     },
+    "%@." : {
+
+    },
     "Abdominal Cramps" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2352,6 +2355,9 @@
         }
       }
     },
+    "iOS doesn’t let apps jump straight to their permission page. Follow these steps in the Health app:" : {
+
+    },
     "Irregular Heart Rhythm Event" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2566,7 +2572,6 @@
       }
     },
     "Manage HealthKit Access" : {
-      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2903,7 +2908,6 @@
       }
     },
     "Open Health App" : {
-      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
