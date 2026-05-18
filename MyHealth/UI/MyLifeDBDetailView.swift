@@ -1,5 +1,4 @@
 import SwiftUI
-import AuthenticationServices
 
 /// MyLifeDB sync target configuration: instance URL, authorize, sign-out.
 struct MyLifeDBDetailView: View {
@@ -59,9 +58,11 @@ struct MyLifeDBDetailView: View {
         }
         working = true
         defer { working = false }
-        let anchor = await ASPresentationAnchor.firstWindow ?? ASPresentationAnchor()
         do {
-            _ = try await ConnectAuth().signIn(baseURL: url, anchor: anchor)
+            // The system browser handles consent (so iOS Universal Links can
+            // route to the MyLifeDB app when installed); the callback comes
+            // back via `.onOpenURL` → `ConnectAuth.shared.handleCallback`.
+            _ = try await ConnectAuth.shared.signIn(baseURL: url)
             await sessionStore.refresh()
             error = nil
         } catch {
@@ -83,12 +84,5 @@ extension UIApplication {
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
             .first(where: \.isKeyWindow)
-    }
-}
-
-extension ASPresentationAnchor {
-    @MainActor
-    static var firstWindow: ASPresentationAnchor? {
-        UIApplication.shared.firstKeyWindow
     }
 }

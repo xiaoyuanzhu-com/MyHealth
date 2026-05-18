@@ -22,6 +22,9 @@ struct MyHealthApp: App {
                     BackgroundSync.enableBackgroundDelivery()
                 }
                 .onOpenURL { url in
+                    // Route OAuth callbacks back to the in-flight sign-in
+                    // before falling through to GoogleSignIn's handler.
+                    if ConnectAuth.shared.handleCallback(url) { return }
                     GIDSignIn.sharedInstance.handle(url)
                 }
         }

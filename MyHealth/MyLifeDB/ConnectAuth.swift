@@ -1,5 +1,7 @@
 import Foundation
-import AuthenticationServices
+#if os(iOS)
+import UIKit
+#endif
 
 /// MyLifeDB Connect (OAuth 2.1 + PKCE) client.
 ///
@@ -8,6 +10,12 @@ import AuthenticationServices
 /// - Custom URL scheme redirect for native apps
 /// - Refresh tokens are single-use and rotated; replaying a rotated token
 ///   revokes the entire chain (we persist new tokens BEFORE discarding old).
+///
+/// Transport: the authorize URL is opened with `UIApplication.open(_:)` so
+/// iOS Universal Links can hand off to the MyLifeDB app when installed (an
+/// in-process `ASWebAuthenticationSession` would bypass that). The callback
+/// arrives on our registered custom URL scheme and is routed back here via
+/// `handleCallback(_:)` from the SwiftUI `.onOpenURL` handler at the app root.
 @MainActor
 final class ConnectAuth: NSObject {
     nonisolated static let clientID = "org.foss.myhealth.ios"
@@ -16,7 +24,16 @@ final class ConnectAuth: NSObject {
     nonisolated static let redirectURI = "org.foss.myhealth.ios://oauth/callback"
     nonisolated static let defaultRemotePath = "/apps/myhealth/apple-health"
 
-    private var webSession: ASWebAuthenticationSession?
+    /// How long we wait for the user to complete the external auth flow
+    /// before giving up. The user has likely abandoned by then.
+    private static let externalAuthTimeout: Duration = .seconds(300)
+
+    /// Singleton — the `.onOpenURL` handler at the app root needs a stable
+    /// target to forward callbacks to, since the URL arrives out-of-band
+    /// from whichever view started the flow.
+    static let shared = ConnectAuth()
+
+    private var pendingContinuation: CheckedContinuation<URL, Error>?
 
     enum AuthError: Error, LocalizedError {
         case discoveryFailed
@@ -38,12 +55,27 @@ final class ConnectAuth: NSObject {
         }
     }
 
+    /// Called by the SwiftUI `.onOpenURL` handler at the app root. Returns
+    /// `true` if the URL belonged to an in-flight OAuth flow and was
+    /// consumed; `false` otherwise (so other handlers can try it).
+    @discardableResult
+    func handleCallback(_ url: URL) -> Bool {
+        guard url.scheme?.lowercased() == Self.redirectScheme.lowercased(),
+              url.host?.lowercased() == "oauth",
+              url.path == "/callback" else {
+            return false
+        }
+        guard let cont = pendingContinuation else { return false }
+        pendingContinuation = nil
+        cont.resume(returning: url)
+        return true
+    }
+
     /// Discovery + browser sign-in + token exchange. On success, persists a
     /// session in Keychain via `TokenStore` and returns it.
     func signIn(
         baseURL: URL,
-        remotePath: String = ConnectAuth.defaultRemotePath,
-        anchor: ASPresentationAnchor
+        remotePath: String = ConnectAuth.defaultRemotePath
     ) async throws -> MyLifeDBSession {
         let metadata = try await discover(baseURL: baseURL)
         let verifier = PKCE.generateVerifier()
@@ -64,7 +96,7 @@ final class ConnectAuth: NSObject {
         ]
         guard let authorizeURL = components.url else { throw AuthError.discoveryFailed }
 
-        let callbackURL = try await runWebAuth(authorizeURL: authorizeURL, anchor: anchor)
+        let callbackURL = try await runExternalAuth(authorizeURL: authorizeURL)
         let (code, returnedState, error) = parseCallback(callbackURL)
         if let error { throw AuthError.authServerError(error) }
         guard returnedState == state else { throw AuthError.stateMismatch }
@@ -171,34 +203,42 @@ final class ConnectAuth: NSObject {
         )
     }
 
-    private func runWebAuth(
-        authorizeURL: URL,
-        anchor: ASPresentationAnchor
-    ) async throws -> URL {
-        try await withCheckedThrowingContinuation { cont in
-            let session = ASWebAuthenticationSession(
-                url: authorizeURL,
-                callbackURLScheme: Self.redirectScheme
-            ) { callback, error in
-                if let error {
-                    let nsError = error as NSError
-                    if nsError.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                        cont.resume(throwing: AuthError.userCancelled)
-                    } else {
-                        cont.resume(throwing: error)
-                    }
-                    return
-                }
-                guard let callback else {
-                    cont.resume(throwing: AuthError.userCancelled)
-                    return
-                }
-                cont.resume(returning: callback)
+    /// Hands the authorize URL off to the system browser (which on iOS will
+    /// route to a Universal Link handler — the MyLifeDB app — when installed,
+    /// otherwise opens in Safari). Suspends until `handleCallback(_:)` is
+    /// invoked by `.onOpenURL` or the timeout elapses.
+    private func runExternalAuth(authorizeURL: URL) async throws -> URL {
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) in
+            // Defensive: if a prior flow leaked a continuation, cancel it so
+            // we don't strand two completions on the same pending slot.
+            if let stale = pendingContinuation {
+                pendingContinuation = nil
+                stale.resume(throwing: AuthError.userCancelled)
             }
-            session.prefersEphemeralWebBrowserSession = false
-            session.presentationContextProvider = AnchorProvider(anchor: anchor)
-            self.webSession = session
-            session.start()
+            pendingContinuation = cont
+
+            #if os(iOS)
+            Task { @MainActor in
+                let opened = await UIApplication.shared.open(authorizeURL)
+                if !opened, let stuck = pendingContinuation {
+                    pendingContinuation = nil
+                    stuck.resume(throwing: AuthError.authServerError("could not open authorize URL"))
+                }
+            }
+            #else
+            pendingContinuation = nil
+            cont.resume(throwing: AuthError.authServerError("external browser auth requires iOS"))
+            return
+            #endif
+
+            // Watchdog: if the user never returns, fail the await.
+            Task { @MainActor in
+                try? await Task.sleep(for: Self.externalAuthTimeout)
+                if let stuck = pendingContinuation {
+                    pendingContinuation = nil
+                    stuck.resume(throwing: AuthError.userCancelled)
+                }
+            }
         }
     }
 
@@ -257,13 +297,5 @@ final class ConnectAuth: NSObject {
         var c = URLComponents()
         c.queryItems = kv.map { URLQueryItem(name: $0.key, value: $0.value) }
         return (c.percentEncodedQuery ?? "").data(using: .utf8) ?? Data()
-    }
-}
-
-private final class AnchorProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
-    let anchor: ASPresentationAnchor
-    init(anchor: ASPresentationAnchor) { self.anchor = anchor }
-    func presentationAnchor(for _: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        anchor
     }
 }
