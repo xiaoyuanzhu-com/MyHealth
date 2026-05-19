@@ -52,7 +52,10 @@ enum BackgroundSync {
             return coordinator.status == .idle
         }
         task.expirationHandler = {
-            workItem.cancel()
+            // Pause gracefully rather than cancel — SyncCoordinator will
+            // checkpoint state at the next file boundary so the next run
+            // (BG or foreground) resumes from where we left off.
+            Task { @MainActor in SyncCoordinator.currentlyActive?.pause() }
         }
         Task {
             let success = (try? await workItem.value) ?? false
