@@ -153,7 +153,17 @@ private struct SyncNowButton: View {
                 Text(stage).foregroundStyle(.secondary).font(.caption)
             }
             if let p = coordinator.progress {
-                ProgressView(value: Double(p.completedDays), total: Double(max(1, p.totalDays)))
+                VStack(alignment: .leading, spacing: 4) {
+                    if let date = p.currentDate, let typeName = p.currentTypeName {
+                        Text("\(date) · \(typeName) (\(p.currentTypeIndex + 1)/\(p.totalTypes))")
+                            .font(.caption2).foregroundStyle(.secondary)
+                            .monospacedDigit()
+                    }
+                    ProgressView(value: Double(p.completedDays), total: Double(max(1, p.totalDays)))
+                    Text("Day \(p.completedDays + 1) of \(p.totalDays)")
+                        .font(.caption2).foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
             }
         case .paused(let done, let total):
             Text("Paused at day \(done) of \(total).").foregroundStyle(.secondary).font(.caption)

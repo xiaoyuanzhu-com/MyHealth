@@ -3,15 +3,17 @@ import HealthKit
 import UIKit
 
 /// Orchestrates one day-by-day sync. Top-level flow:
-///   1. Load anchors from AnchorStore.
-///   2. Read new HealthKit samples, bucketed by local day.
-///   3. Persist SyncRunState (so pause/kill is recoverable).
-///   4. Walk days oldest→newest. For each (day, type):
-///        GET existing remote → merge by UUID → PUT back.
-///      Pause/abort flags are polled between files.
-///   5. On full completion: advance anchors in AnchorStore, clear state.
+///   1. Load persistent SyncCursor.
+///   2. Compute daysToSync (newest-first) from cursor + today + window policy.
+///   3. Persist SyncRunState (just the day list + cursors — no samples).
+///   4. Walk daysToSync, for each day iterate every sample type:
+///        HKSampleQuery(type, day-predicate) → merge with remote → PUT.
+///      Then workouts → upload one file per workout.
+///      Pause/abort flags are polled between every (day, type) boundary.
+///   5. On full completion: advance SyncCursor, clear SyncRunState.
 ///
-/// Pause keeps state. Abort deletes it. Resume picks up where pause left off.
+/// Pause keeps state. Abort deletes it. Resume picks up at the saved
+/// (completedDayIndex, inProgressTypeIndex).
 @MainActor
 final class SyncCoordinator: ObservableObject {
     @Published private(set) var status: SyncStatus = .idle
@@ -29,6 +31,9 @@ final class SyncCoordinator: ObservableObject {
         let completedDays: Int
         let totalDays: Int
         let currentDate: String?
+        let currentTypeIndex: Int
+        let totalTypes: Int
+        let currentTypeName: String?
     }
 
     struct SyncRunResult: Equatable {
@@ -47,8 +52,9 @@ final class SyncCoordinator: ObservableObject {
     private var pauseRequested = false
     private var abortRequested = false
 
-    /// Most-recently-active coordinator, exposed so BackgroundSync (Task 10)
-    /// can request a pause when iOS preempts the BG task.
+    private let recentReSyncDays = 7
+    private let backfillChunkDays = 30
+
     static weak var currentlyActive: SyncCoordinator?
 
     init(reader: HealthKitReader = HealthKitReader()) {
@@ -57,28 +63,22 @@ final class SyncCoordinator: ObservableObject {
 
     // MARK: - Public control surface
 
-    /// Starts a new sync, or resumes a paused one if state exists on disk.
     func runOnce(enabledDestinations: Set<Destination>) async {
         Self.currentlyActive = self
         defer { if Self.currentlyActive === self { Self.currentlyActive = nil } }
         pauseRequested = false
         abortRequested = false
         if let existing = SyncRunStore.load() {
-            print("MyHealth: resuming run id=\(existing.runID) at day \(existing.completedDayCount)/\(existing.buckets.count)")
+            print("MyHealth: resuming run id=\(existing.runID) at day \(existing.completedDayIndex)/\(existing.daysToSync.count) typeIndex=\(existing.inProgressTypeIndex)")
             await runLoop(state: existing, enabledDestinations: enabledDestinations)
         } else {
             await freshRun(enabledDestinations: enabledDestinations)
         }
     }
 
-    /// Halts the sync at the next checkpoint and persists progress.
     func pause() { pauseRequested = true }
-
-    /// Halts the sync at the next checkpoint and deletes state. Anchors do
-    /// NOT advance.
     func abort() { abortRequested = true }
 
-    /// True iff a partially-completed run exists on disk.
     var hasPendingRun: Bool { SyncRunStore.load() != nil }
 
     // MARK: - Fresh run
@@ -87,26 +87,30 @@ final class SyncCoordinator: ObservableObject {
         let started = Date()
         let runID = makeRunID(date: started)
         do {
-            status = .running(stage: String(localized: "Loading anchors"))
-            let priorAnchors = AnchorStore.loadCache()
-            print("MyHealth: anchors loaded count=\(priorAnchors.count)")
-
-            status = .running(stage: String(localized: "Reading HealthKit"))
-            let deviceInfo = WorkoutFile.DeviceInfo(
-                name: UIDevice.current.name,
-                model: deviceModel(),
-                systemVersion: UIDevice.current.systemVersion
+            status = .running(stage: String(localized: "Preparing sync"))
+            let cursor = SyncCursor.load()
+            let tz = TimeZone.current.identifier
+            let today = DayBucketer.dayKey(start: started, timezone: TimeZone.current)
+            let earliestPermitted = DayBucketer.dayKey(
+                start: HKHealthStore().earliestPermittedSampleDate(),
+                timezone: TimeZone.current
             )
-            let read = try await reader.readBucketed(anchors: priorAnchors, deviceInfo: deviceInfo)
-            print("MyHealth: bucketed days=\(read.buckets.count) types=\(read.newAnchors.count)")
+            let days = SyncWindow.compute(
+                today: today,
+                cursor: cursor,
+                earliestPermitted: earliestPermitted,
+                recentReSyncDays: recentReSyncDays,
+                backfillChunkDays: backfillChunkDays,
+                timezone: tz
+            )
+            print("MyHealth: window computed days=\(days.count) newest=\(days.first?.date ?? "-") oldest=\(days.last?.date ?? "-")")
 
             let state = SyncRunState(
                 runID: runID,
                 startedAt: SampleEncoder.iso(started),
-                anchorsAtStart: AnchorStore.encodeAll(priorAnchors),
-                newAnchors: AnchorStore.encodeAll(read.newAnchors),
-                buckets: read.buckets,
-                completedDayCount: 0
+                daysToSync: days,
+                completedDayIndex: 0,
+                inProgressTypeIndex: 0
             )
             try SyncRunStore.save(state)
             await runLoop(state: state, enabledDestinations: enabledDestinations)
@@ -127,70 +131,106 @@ final class SyncCoordinator: ObservableObject {
         let driveAvailable = enabledDestinations.contains(.googleDrive) && DriveAuth.currentUser != nil
         let drive: GoogleDriveClient? = driveAvailable ? GoogleDriveClient() : nil
 
+        let deviceInfo = WorkoutFile.DeviceInfo(
+            name: UIDevice.current.name,
+            model: deviceModel(),
+            systemVersion: UIDevice.current.systemVersion
+        )
+
+        // Per-day type sequence: every anchored sample type EXCEPT the
+        // workout type (workouts are handled as one extra slot after types).
+        let typeSequence = HealthDataTypes.allAnchoredSampleTypes
+            .filter { !($0 is HKWorkoutType) }
+        let workoutSlotIndex = typeSequence.count
+        let totalSlots = workoutSlotIndex + 1
+
         var totalSamples = 0
         var totalWorkouts = 0
 
         do {
-            for index in state.completedDayCount..<state.buckets.count {
+            for dayIdx in state.completedDayIndex..<state.daysToSync.count {
                 if abortRequested {
-                    print("MyHealth: aborting at day \(index)/\(state.buckets.count)")
+                    print("MyHealth: aborting at day \(dayIdx)/\(state.daysToSync.count)")
                     SyncRunStore.clear()
                     self.status = .idle
                     self.progress = nil
                     return
                 }
                 if pauseRequested {
-                    print("MyHealth: paused at day \(index)/\(state.buckets.count)")
+                    print("MyHealth: paused at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(state.inProgressTypeIndex)")
+                    state.completedDayIndex = dayIdx
                     try SyncRunStore.save(state)
-                    self.status = .paused(completedDays: index, totalDays: state.buckets.count)
-                    self.progress = Progress(completedDays: index, totalDays: state.buckets.count, currentDate: nil)
+                    self.status = .paused(completedDays: dayIdx, totalDays: state.daysToSync.count)
+                    self.progress = Progress(
+                        completedDays: dayIdx, totalDays: state.daysToSync.count,
+                        currentDate: nil, currentTypeIndex: state.inProgressTypeIndex,
+                        totalTypes: totalSlots, currentTypeName: nil
+                    )
                     return
                 }
 
-                let bucket = state.buckets[index]
-                self.status = .running(stage: String(localized: "Uploading \(bucket.key.date)"))
-                self.progress = Progress(completedDays: index, totalDays: state.buckets.count, currentDate: bucket.key.date)
+                let day = state.daysToSync[dayIdx]
+                // Resume mid-day only on the first outer-loop iteration of this run;
+                // every subsequent day starts at slot 0 because the end-of-day save
+                // (below) resets inProgressTypeIndex.
+                let startTypeIdx = (dayIdx == state.completedDayIndex) ? state.inProgressTypeIndex : 0
 
-                // Quantity files.
-                for (type, wrapped) in bucket.quantitySamples {
-                    if abortRequested || pauseRequested { break }
-                    let filename = TypeNaming.filename(for: type)
-                    let path = "\(bucket.key.pathPrefix)/\(filename)"
-                    let samples = wrapped.map { $0.toSample() }
-                    let unit = samples.first?.unit ?? ""
-                    let merged = try await mergeAndUploadQuantity(
-                        path: path, day: bucket.key, type: type, unit: unit,
-                        incoming: samples, mld: mldClient, drive: drive
-                    )
-                    totalSamples += merged
+                for typeIdx in startTypeIdx..<totalSlots {
+                    if abortRequested {
+                        print("MyHealth: aborting mid-day at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(typeIdx)")
+                        SyncRunStore.clear()
+                        self.status = .idle
+                        self.progress = nil
+                        return
+                    }
+                    if pauseRequested {
+                        state.completedDayIndex = dayIdx
+                        state.inProgressTypeIndex = typeIdx
+                        try SyncRunStore.save(state)
+                        self.status = .paused(completedDays: dayIdx, totalDays: state.daysToSync.count)
+                        self.progress = Progress(
+                            completedDays: dayIdx, totalDays: state.daysToSync.count,
+                            currentDate: day.date, currentTypeIndex: typeIdx,
+                            totalTypes: totalSlots, currentTypeName: nil
+                        )
+                        return
+                    }
+
+                    if typeIdx == workoutSlotIndex {
+                        let displayName = String(localized: "Workouts")
+                        self.status = .running(stage: String(localized: "Syncing \(day.date) · \(displayName)"))
+                        self.progress = Progress(
+                            completedDays: dayIdx, totalDays: state.daysToSync.count,
+                            currentDate: day.date, currentTypeIndex: typeIdx,
+                            totalTypes: totalSlots, currentTypeName: displayName
+                        )
+                        let n = try await syncWorkouts(day: day, deviceInfo: deviceInfo, mld: mldClient, drive: drive)
+                        totalWorkouts += n
+                    } else {
+                        let sampleType = typeSequence[typeIdx]
+                        let displayName = TypeNaming.displayName(for: sampleType.identifier)
+                        self.status = .running(stage: String(localized: "Syncing \(day.date) · \(displayName)"))
+                        self.progress = Progress(
+                            completedDays: dayIdx, totalDays: state.daysToSync.count,
+                            currentDate: day.date, currentTypeIndex: typeIdx,
+                            totalTypes: totalSlots, currentTypeName: displayName
+                        )
+                        if let q = sampleType as? HKQuantityType {
+                            let n = try await syncQuantity(day: day, type: q, mld: mldClient, drive: drive)
+                            totalSamples += n
+                        } else if let c = sampleType as? HKCategoryType {
+                            let n = try await syncCategory(day: day, type: c, mld: mldClient, drive: drive)
+                            totalSamples += n
+                        }
+                    }
+
+                    state.completedDayIndex = dayIdx
+                    state.inProgressTypeIndex = typeIdx + 1
+                    try SyncRunStore.save(state)
                 }
 
-                // Category files.
-                for (type, wrapped) in bucket.categorySamples {
-                    if abortRequested || pauseRequested { break }
-                    let filename = TypeNaming.filename(for: type)
-                    let path = "\(bucket.key.pathPrefix)/\(filename)"
-                    let samples = wrapped.map { $0.toSample() }
-                    let merged = try await mergeAndUploadCategory(
-                        path: path, day: bucket.key, type: type,
-                        incoming: samples, mld: mldClient, drive: drive
-                    )
-                    totalSamples += merged
-                }
-
-                // Workouts — one file per workout, no merge needed.
-                for w in bucket.workouts {
-                    if abortRequested || pauseRequested { break }
-                    let filename = TypeNaming.workoutFilename(uuid: w.uuid)
-                    let path = "\(bucket.key.pathPrefix)/\(filename)"
-                    let body = try JSONEncoder.daySorted.encode(w)
-                    try await put(path: path, body: body, mld: mldClient, drive: drive)
-                    totalWorkouts += 1
-                }
-
-                if abortRequested || pauseRequested { continue }
-
-                state.completedDayCount = index + 1
+                state.completedDayIndex = dayIdx + 1
+                state.inProgressTypeIndex = 0
                 try SyncRunStore.save(state)
             }
 
@@ -205,14 +245,15 @@ final class SyncCoordinator: ObservableObject {
 
     private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int,
                           mldUploaded: Bool, driveUploaded: Bool) async throws {
-        let newAnchors = AnchorStore.decodeAll(state.newAnchors)
-        AnchorStore.saveCache(newAnchors)
+        var cursor = SyncCursor.load()
+        cursor.advance(coveredDays: state.daysToSync)
+        try SyncCursor.save(cursor)
         SyncRunStore.clear()
         let result = SyncRunResult(
             runID: state.runID,
             totalSamples: totalSamples,
             totalWorkouts: totalWorkouts,
-            totalDays: state.buckets.count,
+            totalDays: state.daysToSync.count,
             myLifeDBUploaded: mldUploaded,
             driveUploaded: driveUploaded,
             finishedAt: Date()
@@ -220,37 +261,67 @@ final class SyncCoordinator: ObservableObject {
         self.lastResult = result
         self.status = .idle
         self.progress = nil
-        print("MyHealth: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.buckets.count)")
+        print("MyHealth: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.daysToSync.count)")
     }
 
-    // MARK: - Merge + upload helpers
+    // MARK: - Per-(day, type) slots
 
-    private func mergeAndUploadQuantity(
-        path: String, day: DayBucketer.DayKey, type: String, unit: String,
-        incoming: [QuantitySample], mld: MyLifeDBClient?, drive: GoogleDriveClient?
+    private func syncQuantity(
+        day: DayBucketer.DayKey, type: HKQuantityType,
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?
     ) async throws -> Int {
+        let incoming = try await reader.readQuantity(type: type, day: day)
+        if incoming.isEmpty { return 0 }
+        let filename = TypeNaming.filename(for: type.identifier)
+        let path = "\(day.pathPrefix)/\(filename)"
         let existing = try await getExistingQuantity(path: path, mld: mld, drive: drive)
         let merged = SnapshotMerger.merge(existing: existing, incoming: incoming)
+        let unit = merged.first?.unit ?? incoming.first?.unit ?? ""
         let envelope = DayFile.quantity(
-            date: day.date, type: type, timezone: day.timezone, unit: unit, samples: merged
+            date: day.date, type: type.identifier, timezone: day.timezone,
+            unit: unit, samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
         try await put(path: path, body: body, mld: mld, drive: drive)
         return merged.count
     }
 
-    private func mergeAndUploadCategory(
-        path: String, day: DayBucketer.DayKey, type: String,
-        incoming: [CategorySample], mld: MyLifeDBClient?, drive: GoogleDriveClient?
+    private func syncCategory(
+        day: DayBucketer.DayKey, type: HKCategoryType,
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?
     ) async throws -> Int {
+        let incoming = try await reader.readCategory(type: type, day: day)
+        if incoming.isEmpty { return 0 }
+        let filename = TypeNaming.filename(for: type.identifier)
+        let path = "\(day.pathPrefix)/\(filename)"
         let existing = try await getExistingCategory(path: path, mld: mld, drive: drive)
         let merged = SnapshotMerger.mergeCategory(existing: existing, incoming: incoming)
         let envelope = DayFile.category(
-            date: day.date, type: type, timezone: day.timezone, samples: merged
+            date: day.date, type: type.identifier, timezone: day.timezone,
+            samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
         try await put(path: path, body: body, mld: mld, drive: drive)
         return merged.count
+    }
+
+    private func syncWorkouts(
+        day: DayBucketer.DayKey, deviceInfo: WorkoutFile.DeviceInfo,
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?
+    ) async throws -> Int {
+        let workouts = try await reader.readWorkouts(day: day)
+        var uploaded = 0
+        for w in workouts {
+            if abortRequested || pauseRequested { break }
+            let route = (try? await reader.loadRoute(for: w)) ?? nil
+            let wf = SampleEncoder.encode(w, events: w.workoutEvents, route: route, deviceInfo: deviceInfo)
+            let filename = TypeNaming.workoutFilename(uuid: wf.uuid)
+            let path = "\(day.pathPrefix)/\(filename)"
+            let body = try JSONEncoder.daySorted.encode(wf)
+            try await put(path: path, body: body, mld: mld, drive: drive)
+            uploaded += 1
+        }
+        return uploaded
     }
 
     private func getExistingQuantity(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?) async throws -> [QuantitySample] {
@@ -304,12 +375,9 @@ final class SyncCoordinator: ObservableObject {
 }
 
 extension JSONEncoder {
-    /// Deterministic JSON for day files: sorted keys, pretty-printed (so the
-    /// remote files are diff-friendly), no escaped slashes.
     static var daySorted: JSONEncoder {
         let e = JSONEncoder()
         e.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
         return e
     }
-
 }

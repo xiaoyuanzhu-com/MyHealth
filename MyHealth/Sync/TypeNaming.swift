@@ -15,6 +15,20 @@ enum TypeNaming {
         return "workout-\(uuid).json"
     }
 
+    /// Human-readable display name for a HealthKit type identifier — uses the
+    /// curated catalog if available, otherwise falls back to a title-cased
+    /// version of the kebab filename stem. Used by SyncCoordinator's progress
+    /// line.
+    static func displayName(for typeIdentifier: String) -> String {
+        if let entry = HealthTypeCatalog.entry(for: typeIdentifier) {
+            return entry.displayName
+        }
+        let stem = kebab(stripPrefix(typeIdentifier))
+        return stem.split(separator: "-")
+            .map { $0.prefix(1).uppercased() + $0.dropFirst() }
+            .joined(separator: " ")
+    }
+
     // MARK: - Internals
 
     private static let knownPrefixes = [
