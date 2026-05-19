@@ -1,7 +1,6 @@
 import Foundation
 import HealthKit
 import CoreLocation
-import UIKit
 
 /// Reads new HealthKit samples (since the previous anchors) and buckets them
 /// by local day. Output is suitable for direct insertion into a
