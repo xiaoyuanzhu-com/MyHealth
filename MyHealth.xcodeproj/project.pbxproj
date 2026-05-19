@@ -31,6 +31,8 @@
 		BB253AEEE603E832745D386F /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250EB3920731157AAEE8D1CB /* PKCETests.swift */; };
 		A10000010000000000000001 /* TypeNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* TypeNaming.swift */; };
 		A10000010000000000000002 /* TypeNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* TypeNamingTests.swift */; };
+		A10000010000000000000003 /* DaySample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000003 /* DaySample.swift */; };
+		A10000010000000000000004 /* DaySampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000004 /* DaySampleTests.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
@@ -69,6 +71,8 @@
 		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* TypeNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNaming.swift; sourceTree = "<group>"; };
 		A10000020000000000000002 /* TypeNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNamingTests.swift; sourceTree = "<group>"; };
+		A10000020000000000000003 /* DaySample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySample.swift; sourceTree = "<group>"; };
+		A10000020000000000000004 /* DaySampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySampleTests.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 		5FFCB00E7A3D81789423937B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				A10000020000000000000004 /* DaySampleTests.swift */,
 				432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */,
 				80424CB17C15EC333D4CE614 /* ManifestTests.swift */,
 				250EB3920731157AAEE8D1CB /* PKCETests.swift */,
@@ -196,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				8AF03E11BDF9492948F52769 /* DataTypes.swift */,
+				A10000020000000000000003 /* DaySample.swift */,
 				9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */,
 				D7324912DA650CC460C2D1B9 /* SyncManifest.swift */,
 			);
@@ -337,6 +343,7 @@
 				42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */,
 				559B81DD118ADF866C2E548E /* HealthKitAuth.swift in Sources */,
 				3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */,
+				A10000010000000000000003 /* DaySample.swift in Sources */,
 				97EB61DC9153742631E77037 /* HealthSample.swift in Sources */,
 				CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */,
 				DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */,
@@ -353,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000010000000000000004 /* DaySampleTests.swift in Sources */,
 				90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */,
 				96D0CC2B182F8AE13759411F /* ManifestTests.swift in Sources */,
 				BB253AEEE603E832745D386F /* PKCETests.swift in Sources */,
