@@ -34,7 +34,7 @@ struct QuantitySample: Codable, Equatable, Identifiable {
     let type: String
     let source: String
     let device: String?
-    let metadata: [String: MetaValue]?
+    let metadata: [String: AnyCodableValue]?
     /// HealthKit UUID — used to dedup during snapshot merge. NOT encoded into
     /// the JSON output (the spec doesn't include it on individual samples).
     /// Marked optional so test fixtures can omit it.
@@ -48,7 +48,7 @@ struct QuantitySample: Codable, Equatable, Identifiable {
     var id: String { uuid ?? "\(start)|\(end)|\(source)" }
 
     init(start: String, end: String, value: Double, unit: String, type: String,
-         source: String, device: String?, metadata: [String: MetaValue]?,
+         source: String, device: String?, metadata: [String: AnyCodableValue]?,
          uuid: String? = nil) {
         self.start = start; self.end = end; self.value = value; self.unit = unit
         self.type = type; self.source = source; self.device = device
@@ -64,7 +64,7 @@ struct QuantitySample: Codable, Equatable, Identifiable {
         type     = try c.decode(String.self, forKey: .type)
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
-        metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
+        metadata = try c.decodeIfPresent([String: AnyCodableValue].self, forKey: .metadata)
         uuid     = nil  // not present in the JSON wire format
     }
 
@@ -81,7 +81,7 @@ struct CategorySample: Codable, Equatable, Identifiable {
     let type: String
     let source: String
     let device: String?
-    let metadata: [String: MetaValue]?
+    let metadata: [String: AnyCodableValue]?
     let uuid: String?
 
     /// Stable identifier for snapshot-merge dedup. Prefers the HealthKit UUID;
@@ -92,7 +92,7 @@ struct CategorySample: Codable, Equatable, Identifiable {
     var id: String { uuid ?? "\(start)|\(end)|\(source)" }
 
     init(start: String, end: String, value: String, type: String,
-         source: String, device: String?, metadata: [String: MetaValue]?,
+         source: String, device: String?, metadata: [String: AnyCodableValue]?,
          uuid: String? = nil) {
         self.start = start; self.end = end; self.value = value
         self.type = type; self.source = source; self.device = device
@@ -107,7 +107,7 @@ struct CategorySample: Codable, Equatable, Identifiable {
         type     = try c.decode(String.self, forKey: .type)
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
-        metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
+        metadata = try c.decodeIfPresent([String: AnyCodableValue].self, forKey: .metadata)
         uuid     = nil  // not present in the JSON wire format
     }
 
@@ -128,7 +128,7 @@ struct WorkoutFile: Codable, Equatable {
     let synced_at: String            // when this file was generated (ISO 8601 UTC)
     let device_info: DeviceInfo
     let stats: [String: Stat]        // {"distance": {value, unit}, "energy": {value, unit}}
-    let metadata: [String: MetaValue]?
+    let metadata: [String: AnyCodableValue]?
     let route: [RoutePoint]?         // nil → encoded as explicit JSON null (indoor); array → encoded normally
 
     struct DeviceInfo: Codable, Equatable {
@@ -180,11 +180,8 @@ struct RoutePoint: Codable, Equatable {
     let course_acc: Double
 }
 
-/// Reusable JSON-primitive wrapper for HealthKit metadata values. Uses the
-/// temporary name `MetaValue` to avoid colliding with the legacy
-/// `AnyCodableValue` in `HealthSample.swift`; will be renamed back to
-/// `AnyCodableValue` in Task 12 once the legacy file is deleted.
-enum MetaValue: Codable, Equatable {
+/// Reusable JSON-primitive wrapper for HealthKit metadata values.
+enum AnyCodableValue: Codable, Equatable {
     case string(String)
     case int(Int64)
     case double(Double)

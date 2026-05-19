@@ -312,6 +312,4 @@ extension JSONEncoder {
         return e
     }
 
-    /// Kept for backward compatibility: used in ManifestTests.swift.
-    static var deterministic: JSONEncoder { daySorted }
 }

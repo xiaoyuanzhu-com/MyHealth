@@ -66,7 +66,7 @@ struct SampleEncoder {
         if let evs = events, !evs.isEmpty {
             // Encode events into metadata so we don't expand the workout schema
             // beyond what the spec describes. Spec metadata is opaque per type.
-            let evArr: [MetaValue] = evs.map { ev in
+            let evArr: [AnyCodableValue] = evs.map { ev in
                 .string("\(workoutEventName(ev.type))@\(iso(ev.dateInterval.start))")
             }
             meta["events"] = .string(evArr.map {
@@ -119,9 +119,9 @@ struct SampleEncoder {
 
     // MARK: - Metadata
 
-    static func encodeMetadata(_ md: [String: Any]?) -> [String: MetaValue]? {
+    static func encodeMetadata(_ md: [String: Any]?) -> [String: AnyCodableValue]? {
         guard let md, !md.isEmpty else { return nil }
-        var out: [String: MetaValue] = [:]
+        var out: [String: AnyCodableValue] = [:]
         for (k, v) in md {
             switch v {
             case let s as String: out[k] = .string(s)
