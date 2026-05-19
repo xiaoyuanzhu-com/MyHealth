@@ -636,6 +636,16 @@
         }
       }
     },
+    "Choose “Apps and Services”" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择「应用与服务」"
+          }
+        }
+      }
+    },
     "Clinical health record imported into Apple Health." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1894,6 +1904,16 @@
         }
       }
     },
+    "Find “MyHealth” in the list" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在列表中找到「MyHealth」"
+          }
+        }
+      }
+    },
     "Fitzpatrick Skin Type" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2356,7 +2376,14 @@
       }
     },
     "iOS doesn’t let apps jump straight to their permission page. Follow these steps in the Health app:" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在「健康」应用中按以下步骤操作："
+          }
+        }
+      }
     },
     "Irregular Heart Rhythm Event" : {
       "extractionState" : "stale",
@@ -2561,7 +2588,6 @@
       }
     },
     "Manage Access" : {
-      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2908,6 +2934,16 @@
       }
     },
     "Open Health App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打开「健康」应用"
+          }
+        }
+      }
+    },
+    "Open the Health app" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3845,6 +3881,16 @@
         }
       }
     },
+    "Tap your profile picture (top-right)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击右上角的头像"
+          }
+        }
+      }
+    },
     "Time In Daylight" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3858,6 +3904,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "日照时间"
+          }
+        }
+      }
+    },
+    "Toggle the categories you want to share" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开启你想共享的数据类别"
           }
         }
       }
