@@ -14,6 +14,9 @@
         }
       }
     },
+    "%@ sync isn't available yet." : {
+
+    },
     "%@." : {
 
     },
@@ -706,6 +709,9 @@
           }
         }
       }
+    },
+    "Coming soon" : {
+
     },
     "Condition Record" : {
       "extractionState" : "stale",
