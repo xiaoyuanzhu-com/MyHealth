@@ -50,10 +50,11 @@ final class SyncCoordinator: ObservableObject {
         let totalDays: Int
         let myLifeDBUploaded: Bool
         let driveUploaded: Bool
+        let webdavUploaded: Bool
         let finishedAt: Date
     }
 
-    enum Destination { case myLifeDB, googleDrive }
+    enum Destination { case myLifeDB, googleDrive, webdav }
 
     private let reader: HealthKitReader
     private var stopRequested = false
@@ -221,6 +222,9 @@ final class SyncCoordinator: ObservableObject {
         let mldClient: MyLifeDBClient? = mldSession.map { MyLifeDBClient(session: $0) }
         let driveAvailable = enabledDestinations.contains(.googleDrive) && DriveAuth.currentUser != nil
         let drive: GoogleDriveClient? = driveAvailable ? GoogleDriveClient() : nil
+        let webdavCreds: WebDAVCredentials? = enabledDestinations.contains(.webdav)
+            ? WebDAVStore.load() : nil
+        let webdav: WebDAVClient? = webdavCreds.map { WebDAVClient(credentials: $0) }
 
         let deviceInfo = WorkoutFile.DeviceInfo(
             name: UIDevice.current.name,
@@ -277,7 +281,7 @@ final class SyncCoordinator: ObservableObject {
                         displayName = String(localized: "Workouts")
                         let n = try await syncWorkouts(
                             day: day, deviceInfo: deviceInfo,
-                            mld: mldClient, drive: drive
+                            mld: mldClient, drive: drive, webdav: webdav
                         )
                         totalWorkouts += n
                         didWork = n > 0
@@ -287,14 +291,14 @@ final class SyncCoordinator: ObservableObject {
                         if let q = sampleType as? HKQuantityType {
                             let outcome = try await syncQuantity(
                                 day: day, type: q,
-                                mld: mldClient, drive: drive
+                                mld: mldClient, drive: drive, webdav: webdav
                             )
                             totalSamples += outcome.uploaded
                             didWork = outcome.didUpload
                         } else if let c = sampleType as? HKCategoryType {
                             let outcome = try await syncCategory(
                                 day: day, type: c,
-                                mld: mldClient, drive: drive
+                                mld: mldClient, drive: drive, webdav: webdav
                             )
                             totalSamples += outcome.uploaded
                             didWork = outcome.didUpload
@@ -333,7 +337,8 @@ final class SyncCoordinator: ObservableObject {
             }
 
             try await finalize(state: state, totalSamples: totalSamples, totalWorkouts: totalWorkouts,
-                               mldUploaded: mldClient != nil, driveUploaded: drive != nil)
+                               mldUploaded: mldClient != nil, driveUploaded: drive != nil,
+                               webdavUploaded: webdav != nil)
         } catch {
             try? SyncRunStore.save(state)
             self.status = .error(error.localizedDescription)
@@ -342,7 +347,7 @@ final class SyncCoordinator: ObservableObject {
     }
 
     private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int,
-                          mldUploaded: Bool, driveUploaded: Bool) async throws {
+                          mldUploaded: Bool, driveUploaded: Bool, webdavUploaded: Bool) async throws {
         // Anchor advances to the newest day we covered. The forward plan is
         // oldest → newest, so the last entry is the freshest day. If the plan
         // is empty (clock skew / degenerate) the anchor stays put.
@@ -359,6 +364,7 @@ final class SyncCoordinator: ObservableObject {
             totalDays: state.daysToSync.count,
             myLifeDBUploaded: mldUploaded,
             driveUploaded: driveUploaded,
+            webdavUploaded: webdavUploaded,
             finishedAt: Date()
         )
         self.lastResult = result
@@ -376,13 +382,13 @@ final class SyncCoordinator: ObservableObject {
 
     private func syncQuantity(
         day: DayBucketer.DayKey, type: HKQuantityType,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readQuantity(type: type, day: day)
         if incoming.isEmpty { return SlotOutcome(uploaded: 0, didUpload: false) }
         let filename = TypeNaming.filename(for: type.identifier)
         let path = "\(day.pathPrefix)/\(filename)"
-        let existing = try await getExistingQuantity(path: path, mld: mld, drive: drive)
+        let existing = try await getExistingQuantity(path: path, mld: mld, drive: drive, webdav: webdav)
         let merged = SnapshotMerger.merge(existing: existing, incoming: incoming)
         // If the merged content equals what is already on the remote, skip
         // the network PUT. This is the steady-state fast path: re-syncing a
@@ -396,19 +402,19 @@ final class SyncCoordinator: ObservableObject {
             unit: unit, samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
-        try await put(path: path, body: body, mld: mld, drive: drive)
+        try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
         return SlotOutcome(uploaded: merged.count, didUpload: true)
     }
 
     private func syncCategory(
         day: DayBucketer.DayKey, type: HKCategoryType,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readCategory(type: type, day: day)
         if incoming.isEmpty { return SlotOutcome(uploaded: 0, didUpload: false) }
         let filename = TypeNaming.filename(for: type.identifier)
         let path = "\(day.pathPrefix)/\(filename)"
-        let existing = try await getExistingCategory(path: path, mld: mld, drive: drive)
+        let existing = try await getExistingCategory(path: path, mld: mld, drive: drive, webdav: webdav)
         let merged = SnapshotMerger.mergeCategory(existing: existing, incoming: incoming)
         if merged == existing {
             return SlotOutcome(uploaded: merged.count, didUpload: false)
@@ -418,13 +424,13 @@ final class SyncCoordinator: ObservableObject {
             samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
-        try await put(path: path, body: body, mld: mld, drive: drive)
+        try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
         return SlotOutcome(uploaded: merged.count, didUpload: true)
     }
 
     private func syncWorkouts(
         day: DayBucketer.DayKey, deviceInfo: WorkoutFile.DeviceInfo,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?
+        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
     ) async throws -> Int {
         let workouts = try await reader.readWorkouts(day: day)
         var uploaded = 0
@@ -435,13 +441,13 @@ final class SyncCoordinator: ObservableObject {
             let filename = TypeNaming.workoutFilename(uuid: wf.uuid)
             let path = "\(day.pathPrefix)/\(filename)"
             let body = try JSONEncoder.daySorted.encode(wf)
-            try await put(path: path, body: body, mld: mld, drive: drive)
+            try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
             uploaded += 1
         }
         return uploaded
     }
 
-    private func getExistingQuantity(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?) async throws -> [QuantitySample] {
+    private func getExistingQuantity(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws -> [QuantitySample] {
         if let mld, let data = try await mld.getFile(relativePath: path),
            let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
             return decoded.samples
@@ -450,10 +456,14 @@ final class SyncCoordinator: ObservableObject {
            let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
             return decoded.samples
         }
+        if let webdav, let data = try await webdav.getFile(relativePath: path),
+           let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
+            return decoded.samples
+        }
         return []
     }
 
-    private func getExistingCategory(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?) async throws -> [CategorySample] {
+    private func getExistingCategory(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws -> [CategorySample] {
         if let mld, let data = try await mld.getFile(relativePath: path),
            let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
             return decoded.samples
@@ -462,15 +472,22 @@ final class SyncCoordinator: ObservableObject {
            let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
             return decoded.samples
         }
+        if let webdav, let data = try await webdav.getFile(relativePath: path),
+           let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
+            return decoded.samples
+        }
         return []
     }
 
-    private func put(path: String, body: Data, mld: MyLifeDBClient?, drive: GoogleDriveClient?) async throws {
+    private func put(path: String, body: Data, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws {
         if let mld {
             try await mld.putBytes(relativePath: path, body: body, contentType: "application/json")
         }
         if let drive {
             try await drive.uploadBytes(relativePath: path, body: body)
+        }
+        if let webdav {
+            try await webdav.uploadBytes(relativePath: path, body: body)
         }
     }
 

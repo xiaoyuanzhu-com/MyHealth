@@ -75,6 +75,7 @@ enum BackgroundSync {
         var s: Set<SyncCoordinator.Destination> = []
         if (try? TokenStore.load()) != nil { s.insert(.myLifeDB) }
         if DriveAuth.currentUser != nil { s.insert(.googleDrive) }
+        if WebDAVStore.load() != nil { s.insert(.webdav) }
         return s
     }
 }

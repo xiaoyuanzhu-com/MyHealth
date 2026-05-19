@@ -36,6 +36,16 @@ struct SyncTab: View {
                             connected: sessionStore.googleSignedIn
                         )
                     }
+                    NavigationLink {
+                        WebDAVDetailView()
+                    } label: {
+                        SyncTargetRow(
+                            title: "WebDAV",
+                            subtitle: sessionStore.webdav?.displayHost ?? "Not connected",
+                            icon: "server.rack",
+                            connected: sessionStore.webdav != nil
+                        )
+                    }
                 }
 
                 Section("Background Sync") {
@@ -90,6 +100,7 @@ private struct SyncNowButton: View {
         var s: Set<SyncCoordinator.Destination> = []
         if sessionStore.myLifeDB != nil { s.insert(.myLifeDB) }
         if sessionStore.googleSignedIn { s.insert(.googleDrive) }
+        if sessionStore.webdav != nil { s.insert(.webdav) }
         return s
     }
 
@@ -183,6 +194,10 @@ private struct LastBatchSummary: View {
                     }
                     if r.driveUploaded {
                         Label("Drive", systemImage: "checkmark")
+                            .labelStyle(.titleAndIcon).font(.caption)
+                    }
+                    if r.webdavUploaded {
+                        Label("WebDAV", systemImage: "checkmark")
                             .labelStyle(.titleAndIcon).font(.caption)
                     }
                 }

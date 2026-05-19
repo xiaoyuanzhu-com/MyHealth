@@ -58,9 +58,11 @@ struct MyHealthApp: App {
 final class SessionStore: ObservableObject {
     @Published var myLifeDB: MyLifeDBSession?
     @Published var googleSignedIn: Bool = false
+    @Published var webdav: WebDAVCredentials?
 
     func refresh() async {
         myLifeDB = (try? TokenStore.load()) ?? nil
         googleSignedIn = DriveAuth.currentUser != nil
+        webdav = WebDAVStore.load()
     }
 }

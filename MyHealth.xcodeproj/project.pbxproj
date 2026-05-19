@@ -39,6 +39,9 @@
 		A1000001000000000000000D /* DayHashStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000D /* DayHashStore.swift */; };
 		A1000001000000000000000E /* DayHashStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000E /* DayHashStoreTests.swift */; };
 		A1000001000000000000000F /* SyncCursorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000F /* SyncCursorTests.swift */; };
+		A10000010000000000000010 /* WebDAVClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000010 /* WebDAVClient.swift */; };
+		A10000010000000000000011 /* WebDAVAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000011 /* WebDAVAuth.swift */; };
+		A10000010000000000000012 /* WebDAVDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000012 /* WebDAVDetailView.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
@@ -89,6 +92,9 @@
 		A1000002000000000000000D /* DayHashStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayHashStore.swift; sourceTree = "<group>"; };
 		A1000002000000000000000E /* DayHashStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayHashStoreTests.swift; sourceTree = "<group>"; };
 		A1000002000000000000000F /* SyncCursorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCursorTests.swift; sourceTree = "<group>"; };
+		A10000020000000000000010 /* WebDAVClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVClient.swift; sourceTree = "<group>"; };
+		A10000020000000000000011 /* WebDAVAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVAuth.swift; sourceTree = "<group>"; };
+		A10000020000000000000012 /* WebDAVDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVDetailView.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
@@ -157,6 +163,7 @@
 				8B632BB8727BAE65C4CEB33B /* SyncTab.swift */,
 				B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */,
 				D34640D30825341890180357 /* DriveDetailView.swift */,
+				A10000020000000000000012 /* WebDAVDetailView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -188,6 +195,7 @@
 				B118C00100000000000000A5 /* Resources */,
 				C4CE67FEC011289BE75B818E /* Sync */,
 				54619BEF487634FB4E872EBA /* UI */,
+				A10000030000000000000001 /* WebDAV */,
 			);
 			path = MyHealth;
 			sourceTree = "<group>";
@@ -245,6 +253,15 @@
 				071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */,
 			);
 			path = GoogleDrive;
+			sourceTree = "<group>";
+		};
+		A10000030000000000000001 /* WebDAV */ = {
+			isa = PBXGroup;
+			children = (
+				A10000020000000000000011 /* WebDAVAuth.swift */,
+				A10000020000000000000010 /* WebDAVClient.swift */,
+			);
+			path = WebDAV;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,6 +390,9 @@
 				A1000001000000000000000A /* SyncRunStore.swift in Sources */,
 				A1000001000000000000000C /* SyncCursor.swift in Sources */,
 				A1000001000000000000000D /* DayHashStore.swift in Sources */,
+				A10000010000000000000010 /* WebDAVClient.swift in Sources */,
+				A10000010000000000000011 /* WebDAVAuth.swift in Sources */,
+				A10000010000000000000012 /* WebDAVDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
