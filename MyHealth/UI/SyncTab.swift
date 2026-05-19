@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Sync tab: trigger button + status, sync targets list, background-sync
-/// toggle, and About section.
+/// Sync tab: auto-sync toggle, trigger button + status, sync targets list,
+/// and About section.
 struct SyncTab: View {
     @EnvironmentObject var coordinator: SyncCoordinator
     @EnvironmentObject var sessionStore: SessionStore
@@ -11,6 +11,15 @@ struct SyncTab: View {
         NavigationStack {
             List {
                 Section {
+                    Toggle("Auto-sync daily", isOn: $backgroundSyncEnabled)
+                        .onChange(of: backgroundSyncEnabled) { _, enabled in
+                            if enabled {
+                                BackgroundSync.scheduleNext()
+                                BackgroundSync.enableBackgroundDelivery()
+                            }
+                            // Disabling can't actively cancel a registered task,
+                            // but we stop scheduling further runs.
+                        }
                     SyncNowButton()
                     LastBatchSummary()
                 }
@@ -22,7 +31,7 @@ struct SyncTab: View {
                         SyncTargetRow(
                             title: "MyLifeDB",
                             subtitle: sessionStore.myLifeDB?.base_url ?? String(localized: "Not connected"),
-                            icon: "externaldrive.fill.badge.icloud",
+                            icon: .asset("my-life-db"),
                             connected: sessionStore.myLifeDB != nil
                         )
                     }
@@ -32,7 +41,7 @@ struct SyncTab: View {
                         SyncTargetRow(
                             title: "WebDAV",
                             subtitle: sessionStore.webdav?.displayHost ?? String(localized: "Not connected"),
-                            icon: "server.rack",
+                            icon: .system("server.rack"),
                             connected: sessionStore.webdav != nil
                         )
                     }
@@ -44,7 +53,7 @@ struct SyncTab: View {
                             subtitle: sessionStore.googleSignedIn
                                 ? String(localized: "Signed in")
                                 : String(localized: "Not connected"),
-                            icon: "icloud.and.arrow.up.fill",
+                            icon: .asset("google-drive"),
                             connected: sessionStore.googleSignedIn
                         )
                     }
@@ -54,7 +63,7 @@ struct SyncTab: View {
                         SyncTargetRow(
                             title: "iCloud",
                             subtitle: String(localized: "Coming soon"),
-                            icon: "icloud.fill",
+                            icon: .asset("icloud"),
                             connected: false
                         )
                     }
@@ -64,22 +73,10 @@ struct SyncTab: View {
                         SyncTargetRow(
                             title: "OneDrive",
                             subtitle: String(localized: "Coming soon"),
-                            icon: "cloud.fill",
+                            icon: .asset("onedrive"),
                             connected: false
                         )
                     }
-                }
-
-                Section("Background Sync") {
-                    Toggle("Run daily in background", isOn: $backgroundSyncEnabled)
-                        .onChange(of: backgroundSyncEnabled) { _, enabled in
-                            if enabled {
-                                BackgroundSync.scheduleNext()
-                                BackgroundSync.enableBackgroundDelivery()
-                            }
-                            // Disabling can't actively cancel a registered task,
-                            // but we stop scheduling further runs.
-                        }
                 }
 
                 Section("About") {
@@ -256,16 +253,20 @@ struct ComingSoonDetailView: View {
 }
 
 private struct SyncTargetRow: View {
+    enum Icon {
+        case system(String)
+        case asset(String)
+    }
+
     let title: String
     let subtitle: String
-    let icon: String
+    let icon: Icon
     let connected: Bool
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: icon).font(.title3)
-                .foregroundStyle(.tint)
-                .frame(width: 28)
+            iconView
+                .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                 Text(subtitle).font(.caption).foregroundStyle(.secondary)
@@ -275,6 +276,16 @@ private struct SyncTargetRow: View {
                 .fill(connected ? Color.green : Color.secondary.opacity(0.3))
                 .frame(width: 8, height: 8)
                 .accessibilityLabel(connected ? "Connected" : "Not connected")
+        }
+    }
+
+    @ViewBuilder
+    private var iconView: some View {
+        switch icon {
+        case .system(let name):
+            Image(systemName: name).font(.title3).foregroundStyle(.tint)
+        case .asset(let name):
+            Image(name).resizable().scaledToFit()
         }
     }
 }

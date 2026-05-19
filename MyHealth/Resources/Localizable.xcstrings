@@ -335,6 +335,28 @@
         }
       }
     },
+    "Auto-sync daily" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每天自动同步"
+          }
+        }
+      }
+    },
+    "Automatic Sync" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动同步"
+          }
+        }
+      }
+    },
     "Background Sync" : {
       "extractionState" : "stale",
       "localizations" : {
