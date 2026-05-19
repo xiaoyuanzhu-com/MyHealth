@@ -102,6 +102,7 @@ private struct SyncNowButton: View {
     private var title: String {
         switch coordinator.status {
         case .running: return "Syncing…"
+        case .paused: return "Resume sync"
         case .error: return "Retry sync"
         case .idle: return "Sync now"
         }
@@ -120,16 +121,26 @@ private struct LastBatchSummary: View {
     var body: some View {
         if let result = coordinator.lastResult {
             VStack(alignment: .leading, spacing: 6) {
-                Text("Last batch").font(.caption).foregroundStyle(.secondary)
-                Text(result.batchID).font(.caption.monospaced())
-                ForEach(result.counts.sorted(by: { $0.key < $1.key }), id: \.key) { item in
-                    HStack {
-                        Text(item.key.replacingOccurrences(of: "_", with: " ").capitalized)
-                        Spacer()
-                        Text("\(item.value)").monospacedDigit()
-                    }
-                    .font(.subheadline)
+                Text("Last sync").font(.caption).foregroundStyle(.secondary)
+                Text(result.runID).font(.caption.monospaced())
+                HStack {
+                    Text("Samples")
+                    Spacer()
+                    Text("\(result.totalSamples)").monospacedDigit()
                 }
+                .font(.subheadline)
+                HStack {
+                    Text("Workouts")
+                    Spacer()
+                    Text("\(result.totalWorkouts)").monospacedDigit()
+                }
+                .font(.subheadline)
+                HStack {
+                    Text("Days")
+                    Spacer()
+                    Text("\(result.totalDays)").monospacedDigit()
+                }
+                .font(.subheadline)
                 HStack(spacing: 12) {
                     if result.myLifeDBUploaded {
                         Label("MyLifeDB", systemImage: "checkmark")
