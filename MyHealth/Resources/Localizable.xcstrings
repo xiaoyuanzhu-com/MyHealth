@@ -8,14 +8,25 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "new",
             "value" : "%1$@ · %2$@ (%3$@/%4$@)"
+          }
+        }
+      }
+    },
+    "%@ · %@ (%lld/%lld)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ (%3$lld/%4$lld)"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ · %2$@（%3$@/%4$@）"
+            "value" : "%1$@ · %2$@（%3$lld/%4$lld）"
           }
         }
       }
@@ -994,14 +1005,25 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "new",
             "value" : "Day %1$@ of %2$@"
+          }
+        }
+      }
+    },
+    "Day %lld of %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day %1$lld of %2$lld"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "第 %1$@ 天 / 共 %2$@ 天"
+            "value" : "第 %1$lld 天 / 共 %2$lld 天"
           }
         }
       }
@@ -3994,14 +4016,25 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "new",
             "value" : "Stopped at day %1$@ of %2$@. Tap Sync now to continue."
+          }
+        }
+      }
+    },
+    "Stopped at day %lld of %lld. Tap Sync now to continue." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stopped at day %1$lld of %2$lld. Tap Sync now to continue."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已在第 %1$@ 天暂停（共 %2$@ 天）。点击「立即同步」继续。"
+            "value" : "已在第 %1$lld 天暂停（共 %2$lld 天）。点击「立即同步」继续。"
           }
         }
       }
