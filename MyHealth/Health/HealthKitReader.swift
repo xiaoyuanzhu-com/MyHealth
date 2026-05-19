@@ -14,64 +14,10 @@ struct HealthKitReader {
 
     /// One sync batch: every anchored type is queried once, with the prior
     /// anchor (if any). New samples are encoded and grouped by JSONL file.
-    func readBatch(
-        anchors: [String: HKQueryAnchor]
-    ) async throws -> SyncReadResult {
-        var result = SyncReadResult()
-
-        for sampleType in HealthDataTypes.allAnchoredSampleTypes {
-            let prev = anchors[sampleType.identifier]
-            let queryResult: (added: [HKSample], deleted: [HKDeletedObject], newAnchor: HKQueryAnchor?)
-            do {
-                queryResult = try await runAnchoredQuery(for: sampleType, anchor: prev)
-            } catch let e as HKError where e.code == .errorAuthorizationNotDetermined || e.code == .errorAuthorizationDenied {
-                // The auth request lists clinical records, audiograms, etc. — but
-                // not every region/device has data sources for them, so iOS leaves
-                // those types in notDetermined and the query throws. Skip and
-                // continue; sync the types we actually have access to.
-                print("MyHealth: skip \(sampleType.identifier) (no auth): \(e.localizedDescription)")
-                continue
-            }
-            let (samples, deleted, newAnchor) = queryResult
-
-            result.deleted[sampleType.identifier] = deleted.count
-            if let newAnchor { result.anchors[sampleType.identifier] = newAnchor }
-
-            for sample in samples {
-                if let workout = sample as? HKWorkout {
-                    let events = workout.workoutEvents
-                    // Workout-route auth is separate; ignore when not granted.
-                    let route = (try? await loadRoute(for: workout)) ?? nil
-                    let row = SampleEncoder.encode(workout, events: events, route: route)
-                    result.workouts.append(row)
-                } else if let ecg = sample as? HKElectrocardiogram {
-                    // ECG voltage series auth is separate; ignore when not granted.
-                    let voltage = (try? await loadVoltageSeries(for: ecg)) ?? nil
-                    result.ecgs.append(SampleEncoder.encode(ecg, voltage: voltage))
-                } else if let q = sample as? HKQuantitySample {
-                    if let row = SampleEncoder.encode(q) {
-                        result.records.append(row)
-                    }
-                } else if let c = sample as? HKCategorySample {
-                    result.records.append(SampleEncoder.encode(c))
-                } else if let cr = sample as? HKClinicalRecord {
-                    result.clinical.append(SampleEncoder.encode(cr))
-                }
-            }
-        }
-
-        // ActivitySummary uses a different query type (no anchored variant).
-        // Same auth-not-determined tolerance as the loop above: if the type
-        // wasn't granted, skip and proceed with whatever else we read.
-        do {
-            result.activitySummaries = try await readActivitySummaries(
-                since: anchors["HKActivitySummaryTypeIdentifier"].flatMap { _ in nil } // no anchor concept
-            )
-        } catch let e as HKError where e.code == .errorAuthorizationNotDetermined || e.code == .errorAuthorizationDenied {
-            print("MyHealth: skip HKActivitySummary (no auth): \(e.localizedDescription)")
-        }
-
-        return result
+    func readBatch(anchors: [String: HKQueryAnchor]) async throws -> SyncReadResult {
+        // TODO(Task 7): rewrite this to return per-day bucketed samples.
+        print("MyHealth: HealthKitReader.readBatch is stubbed pending Task 7 rewrite")
+        return SyncReadResult()
     }
 
     // MARK: - HKAnchoredObjectQuery wrapper (async)
@@ -158,24 +104,8 @@ struct HealthKitReader {
     // MARK: - ActivitySummary
 
     private func readActivitySummaries(since _: Any?) async throws -> [HealthSample] {
-        let cal = Calendar(identifier: .gregorian)
-        let now = Date()
-        // Fetch the last 365 days of summaries every sync. Cheap, idempotent,
-        // safer than relying on per-day anchors that HealthKit doesn't expose.
-        let start = cal.date(byAdding: .day, value: -365, to: now) ?? now
-        var startC = cal.dateComponents([.year, .month, .day], from: start)
-        var endC = cal.dateComponents([.year, .month, .day], from: now)
-        startC.calendar = cal
-        endC.calendar = cal
-        let predicate = HKQuery.predicate(forActivitySummariesBetweenStart: startC, end: endC)
-        let summaries: [HKActivitySummary] = try await withCheckedThrowingContinuation { cont in
-            let q = HKActivitySummaryQuery(predicate: predicate) { _, summaries, error in
-                if let error { cont.resume(throwing: error); return }
-                cont.resume(returning: summaries ?? [])
-            }
-            store.execute(q)
-        }
-        return summaries.map(SampleEncoder.encode)
+        // TODO(Task 7): activity summaries removed from scope (see plan scope decision #1).
+        return []
     }
 }
 

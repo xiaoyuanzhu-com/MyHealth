@@ -1,55 +1,46 @@
 import XCTest
+import HealthKit
 @testable import MyHealth
 
-/// Verifies the JSONL row schema stays byte-compatible with
-/// `myhealth.apple_health.v1` (the previous Python CLI's output) so existing
-/// downstream tooling keeps working.
+/// Verifies the new-format encoders for the per-day JSON layout.
+/// (Legacy myhealth.apple_health.v1 row tests removed in this rewrite —
+/// see docs/superpowers/plans/2026-05-19-day-based-incremental-sync.md
+/// for rationale.)
 final class HealthSampleTests: XCTestCase {
 
-    func testV1RecordEncoding() throws {
-        let sample = HealthSample(
-            _kind: .record,
-            type: "HKQuantityTypeIdentifierStepCount",
-            unit: "count",
-            value: "42",
-            start_date: "2026-05-01 09:00:00 +0000",
-            end_date: "2026-05-01 10:00:00 +0000",
-            creation_date: "2026-05-01 10:00:00 +0000",
-            source_name: "iPhone",
-            source_version: "17.4",
-            device: nil,
-            uuid: "00000000-0000-0000-0000-000000000001"
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
-        let data = try encoder.encode(sample)
-        let json = try XCTUnwrap(String(data: data, encoding: .utf8))
-
-        // Required v1 keys (snake_case) must all be present.
-        XCTAssertTrue(json.contains("\"_kind\":\"Record\""))
-        XCTAssertTrue(json.contains("\"type\":\"HKQuantityTypeIdentifierStepCount\""))
-        XCTAssertTrue(json.contains("\"unit\":\"count\""))
-        XCTAssertTrue(json.contains("\"value\":\"42\""))
-        XCTAssertTrue(json.contains("\"start_date\":\"2026-05-01 09:00:00 +0000\""))
-        XCTAssertTrue(json.contains("\"end_date\":\"2026-05-01 10:00:00 +0000\""))
-        XCTAssertTrue(json.contains("\"creation_date\":\"2026-05-01 10:00:00 +0000\""))
-        XCTAssertTrue(json.contains("\"source_name\":\"iPhone\""))
+    func testISOTimestampHasZSuffixAndFractionalSeconds() {
+        // 1768698000 → 2026-01-18T01:00:00 UTC (verified epoch from Task 3)
+        let d = Date(timeIntervalSince1970: 1768698000)
+        let s = SampleEncoder.iso(d)
+        XCTAssertEqual(s, "2026-01-18T01:00:00.000Z")
     }
 
-    func testStringifyMatchesXMLExportConvention() {
-        // Integers should not gain a ".0" suffix — the XML export emits "42",
-        // not "42.0".
-        XCTAssertEqual(SampleEncoder.stringify(42.0), "42")
-        XCTAssertEqual(SampleEncoder.stringify(0.0), "0")
-        // Fractional values keep precision.
-        XCTAssertTrue(SampleEncoder.stringify(72.5).contains("72.5"))
+    func testStepCountCanonicalUnit() {
+        let unit = SampleEncoder.canonicalUnit(
+            for: HKQuantityType.quantityType(forIdentifier: .stepCount)!)
+        XCTAssertEqual(unit.unitString, "count")
     }
 
-    func testDateFormatterMatchesXMLExport() {
-        let date = Date(timeIntervalSince1970: 1746090000) // 2025-05-01 09:00 UTC (sample)
-        let formatted = SampleEncoder.format(date)
-        // Shape "yyyy-MM-dd HH:mm:ss xxxx"
-        XCTAssertEqual(formatted.count, 25)
-        XCTAssertTrue(formatted.hasSuffix(" +0000"))
+    func testHeartRateUnitString() {
+        let unit = SampleEncoder.canonicalUnit(
+            for: HKQuantityType.quantityType(forIdentifier: .heartRate)!)
+        XCTAssertEqual(unit.unitString, "count/min")
+    }
+
+    func testDeviceStringPrefersModel() {
+        let model = SampleEncoder.deviceModelString(name: "Apple Watch",
+                                                    model: "Watch7,1",
+                                                    hardwareVersion: nil)
+        XCTAssertEqual(model, "Watch7,1")
+    }
+
+    func testDeviceStringFallsBackToHardware() {
+        let model = SampleEncoder.deviceModelString(name: nil, model: nil,
+                                                    hardwareVersion: "Watch7,1")
+        XCTAssertEqual(model, "Watch7,1")
+    }
+
+    func testDeviceStringNilWhenAllAbsent() {
+        XCTAssertNil(SampleEncoder.deviceModelString(name: nil, model: nil, hardwareVersion: nil))
     }
 }
