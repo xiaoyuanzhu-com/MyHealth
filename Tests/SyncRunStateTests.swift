@@ -39,6 +39,11 @@ final class SyncRunStateTests: XCTestCase {
         try SyncRunStore.save(state, at: tmpURL)
         let loaded = try XCTUnwrap(SyncRunStore.load(at: tmpURL))
         XCTAssertEqual(loaded, state)
+        XCTAssertEqual(
+            loaded.buckets[0].quantitySamples["HKQuantityTypeIdentifierStepCount"]?.first?.uuid,
+            "U1",
+            "uuid must survive the JSON round-trip via the PersistedQuantitySample wrapper"
+        )
     }
 
     func testLoadMissingReturnsNil() throws {
@@ -54,6 +59,23 @@ final class SyncRunStateTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: tmpURL.path))
         SyncRunStore.clear(at: tmpURL)
         XCTAssertFalse(FileManager.default.fileExists(atPath: tmpURL.path))
+    }
+
+    func testInnerSampleJSONHasNoUUID() throws {
+        let qSample = QuantitySample(
+            start: "S", end: "E", value: 1, unit: "u", type: "T",
+            source: "src", device: nil, metadata: nil, uuid: "U1"
+        )
+        let wrapped = PersistedQuantitySample(qSample)
+        let json = try String(data: JSONEncoder().encode(wrapped), encoding: .utf8) ?? ""
+        XCTAssertTrue(json.contains(#""uuid":"U1""#), "uuid lives at the wrapper level")
+
+        // And the inner "sample" subtree must not contain a uuid key. Crude but
+        // sufficient given the encoder output has sample as a JSON object.
+        let sampleData = try JSONEncoder().encode(wrapped.sample)
+        let sampleJSON = String(data: sampleData, encoding: .utf8) ?? ""
+        XCTAssertFalse(sampleJSON.contains("uuid"),
+                       "the inner sample's wire format must NOT contain uuid")
     }
 
     func testRemainingDaysSkipsCompleted() {

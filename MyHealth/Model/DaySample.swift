@@ -65,7 +65,7 @@ struct QuantitySample: Codable, Equatable, Identifiable {
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
         metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
-        uuid     = nil
+        uuid     = nil  // not present in the JSON wire format
     }
 
     enum CodingKeys: String, CodingKey {
@@ -108,7 +108,7 @@ struct CategorySample: Codable, Equatable, Identifiable {
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
         metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
-        uuid     = nil
+        uuid     = nil  // not present in the JSON wire format
     }
 
     enum CodingKeys: String, CodingKey {

@@ -52,7 +52,7 @@ struct PersistedQuantitySample: Codable, Equatable {
         self.uuid = s.uuid
     }
 
-    init(sample: QuantitySample, uuid: String?) {
+    private init(sample: QuantitySample, uuid: String?) {
         self.sample = sample
         self.uuid = uuid
     }
@@ -85,7 +85,7 @@ struct PersistedCategorySample: Codable, Equatable {
         self.uuid = s.uuid
     }
 
-    init(sample: CategorySample, uuid: String?) {
+    private init(sample: CategorySample, uuid: String?) {
         self.sample = sample
         self.uuid = uuid
     }
