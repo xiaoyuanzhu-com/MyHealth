@@ -40,6 +40,11 @@ struct QuantitySample: Codable, Equatable, Identifiable {
     /// Marked optional so test fixtures can omit it.
     let uuid: String?
 
+    /// Stable identifier for snapshot-merge dedup. Prefers the HealthKit UUID;
+    /// falls back to (start|end|source) only for test fixtures or decoded
+    /// samples (where uuid is intentionally absent from JSON). The fallback is
+    /// NOT collision-resistant — production code paths must construct samples
+    /// with `uuid` populated.
     var id: String { uuid ?? "\(start)|\(end)|\(source)" }
 
     init(start: String, end: String, value: Double, unit: String, type: String,
@@ -79,6 +84,11 @@ struct CategorySample: Codable, Equatable, Identifiable {
     let metadata: [String: MetaValue]?
     let uuid: String?
 
+    /// Stable identifier for snapshot-merge dedup. Prefers the HealthKit UUID;
+    /// falls back to (start|end|source) only for test fixtures or decoded
+    /// samples (where uuid is intentionally absent from JSON). The fallback is
+    /// NOT collision-resistant — production code paths must construct samples
+    /// with `uuid` populated.
     var id: String { uuid ?? "\(start)|\(end)|\(source)" }
 
     init(start: String, end: String, value: String, type: String,
@@ -119,7 +129,7 @@ struct WorkoutFile: Codable, Equatable {
     let device_info: DeviceInfo
     let stats: [String: Stat]        // {"distance": {value, unit}, "energy": {value, unit}}
     let metadata: [String: MetaValue]?
-    let route: [RoutePoint]?         // nil = field omitted; spec wants explicit null for indoor
+    let route: [RoutePoint]?         // nil → encoded as explicit JSON null (indoor); array → encoded normally
 
     struct DeviceInfo: Codable, Equatable {
         let name: String
