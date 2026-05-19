@@ -54,16 +54,14 @@ enum HealthDataTypes {
     }
 
     /// Sample types the sync coordinator iterates with `HKAnchoredObjectQuery`.
-    /// Excludes characteristic types (one-off profile data, fetched separately)
-    /// and workout routes (read alongside their parent workout).
+    /// Excludes characteristic types, ECG, clinical records, audiograms, and
+    /// workout routes — none of these are part of the per-day JSON layout
+    /// (see docs/superpowers/plans/2026-05-19-day-based-incremental-sync.md).
     static var allAnchoredSampleTypes: [HKSampleType] {
         var s: [HKSampleType] = []
         s.append(contentsOf: allQuantityTypes.map { $0 as HKSampleType })
         s.append(contentsOf: allCategoryTypes.map { $0 as HKSampleType })
         s.append(workoutType as HKSampleType)
-        s.append(ecgType as HKSampleType)
-        s.append(audiogramType)
-        s.append(contentsOf: clinicalTypes.map { $0 as HKSampleType })
         return s
     }
 
