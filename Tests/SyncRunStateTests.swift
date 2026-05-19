@@ -23,7 +23,7 @@ final class SyncRunStateTests: XCTestCase {
         )
         let bucket = SyncRunState.DayBucket(
             key: dayKey,
-            quantitySamples: ["HKQuantityTypeIdentifierStepCount": [qSample]],
+            quantitySamples: ["HKQuantityTypeIdentifierStepCount": [PersistedQuantitySample(qSample)]],
             categorySamples: [:],
             workouts: []
         )

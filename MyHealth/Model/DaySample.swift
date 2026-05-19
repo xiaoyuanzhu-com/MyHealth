@@ -55,19 +55,6 @@ struct QuantitySample: Codable, Equatable, Identifiable {
         self.metadata = metadata; self.uuid = uuid
     }
 
-    func encode(to encoder: Encoder) throws {
-        var c = encoder.container(keyedBy: CodingKeys.self)
-        try c.encode(start, forKey: .start)
-        try c.encode(end, forKey: .end)
-        try c.encode(value, forKey: .value)
-        try c.encode(unit, forKey: .unit)
-        try c.encode(type, forKey: .type)
-        try c.encode(source, forKey: .source)
-        try c.encodeIfPresent(device, forKey: .device)
-        try c.encodeIfPresent(metadata, forKey: .metadata)
-        try c.encodeIfPresent(uuid, forKey: .uuid)
-    }
-
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         start    = try c.decode(String.self, forKey: .start)
@@ -78,11 +65,11 @@ struct QuantitySample: Codable, Equatable, Identifiable {
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
         metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
-        uuid     = try c.decodeIfPresent(String.self, forKey: .uuid)
+        uuid     = nil
     }
 
     enum CodingKeys: String, CodingKey {
-        case start, end, value, unit, type, source, device, metadata, uuid
+        case start, end, value, unit, type, source, device, metadata
     }
 }
 
@@ -112,18 +99,6 @@ struct CategorySample: Codable, Equatable, Identifiable {
         self.metadata = metadata; self.uuid = uuid
     }
 
-    func encode(to encoder: Encoder) throws {
-        var c = encoder.container(keyedBy: CodingKeys.self)
-        try c.encode(start, forKey: .start)
-        try c.encode(end, forKey: .end)
-        try c.encode(value, forKey: .value)
-        try c.encode(type, forKey: .type)
-        try c.encode(source, forKey: .source)
-        try c.encodeIfPresent(device, forKey: .device)
-        try c.encodeIfPresent(metadata, forKey: .metadata)
-        try c.encodeIfPresent(uuid, forKey: .uuid)
-    }
-
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         start    = try c.decode(String.self, forKey: .start)
@@ -133,11 +108,11 @@ struct CategorySample: Codable, Equatable, Identifiable {
         source   = try c.decode(String.self, forKey: .source)
         device   = try c.decodeIfPresent(String.self, forKey: .device)
         metadata = try c.decodeIfPresent([String: MetaValue].self, forKey: .metadata)
-        uuid     = try c.decodeIfPresent(String.self, forKey: .uuid)
+        uuid     = nil
     }
 
     enum CodingKeys: String, CodingKey {
-        case start, end, value, type, source, device, metadata, uuid
+        case start, end, value, type, source, device, metadata
     }
 }
 
