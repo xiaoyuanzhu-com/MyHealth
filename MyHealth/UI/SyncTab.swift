@@ -46,6 +46,26 @@ struct SyncTab: View {
                             connected: sessionStore.webdav != nil
                         )
                     }
+                    NavigationLink {
+                        ComingSoonDetailView(title: "iCloud Drive")
+                    } label: {
+                        SyncTargetRow(
+                            title: "iCloud Drive",
+                            subtitle: "Coming soon",
+                            icon: "icloud.fill",
+                            connected: false
+                        )
+                    }
+                    NavigationLink {
+                        ComingSoonDetailView(title: "OneDrive")
+                    } label: {
+                        SyncTargetRow(
+                            title: "OneDrive",
+                            subtitle: "Coming soon",
+                            icon: "cloud.fill",
+                            connected: false
+                        )
+                    }
                 }
 
                 Section("Background Sync") {
@@ -205,6 +225,28 @@ private struct LastBatchSummary: View {
             }
             .padding(.vertical, 2)
         }
+    }
+}
+
+struct ComingSoonDetailView: View {
+    let title: String
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "hammer.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+            Text("Coming soon")
+                .font(.title3.weight(.semibold))
+            Text("\(title) sync isn't available yet.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
