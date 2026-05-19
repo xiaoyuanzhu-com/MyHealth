@@ -1,47 +1,117 @@
 import Foundation
 
-/// Decides which days a sync run should cover, given the persistent cursor
-/// and the current date. Pure: no I/O, no HealthKit. Output is newest-first.
+/// Decides which days a sync run should cover and in what order.
+/// Pure: no I/O, no HealthKit.
 ///
-/// Policy = recent re-sync window ∪ backfill chunk.
-///   - The recent window covers `[today - recentReSyncDays … today]` (inclusive
-///     both ends, i.e. recentReSyncDays + 1 entries) to catch Apple-Watch /
-///     manual backfills.
-///   - On first run (cursor.earliestSyncedDay == nil), the backfill segment
-///     primes history by emitting `backfillChunkDays` days older than today.
-///   - On subsequent runs, the backfill segment extends history older than
-///     `cursor.earliestSyncedDay` by `backfillChunkDays`, until
-///     `earliestPermitted` is reached.
+/// A run has two phases, emitted in this order in the output:
 ///
-/// The two segments are typically NOT contiguous — the middle of already-
-/// backfilled history is skipped to keep runs short. Overlap (e.g. first run
-/// where the segments meet) is handled by deduping.
+/// 1. **Forward** (oldest → newest): `[lastSyncedDay … today]`, inclusive of
+///    the anchor itself (re-syncs the anchor day in case data landed in it
+///    after the previous run finished). On first run (no anchor) the caller
+///    supplies `oldestDataDay` discovered from HealthKit, and forward covers
+///    `[oldestDataDay … today]` with no double-check phase.
+///
+/// 2. **Double-check** (backward, newer-of-old → oldest-of-old):
+///    `doubleCheckDays` entries strictly older than `lastSyncedDay`. Catches
+///    backfills / edits made to recently-synced days. Skipped on first run.
+///
+/// Each entry carries its phase so the coordinator can pick the right
+/// status string and (in future) different optimization strategies.
 enum SyncWindow {
 
+    enum Phase: String, Codable, Equatable {
+        case forward
+        case doubleCheck
+    }
+
+    struct Entry: Codable, Equatable {
+        let key: DayBucketer.DayKey
+        let phase: Phase
+    }
+
+    /// Forward + double-check days, in execution order. Empty only if
+    /// `today < lastSyncedDay` (clock skew — caller should treat as no-op).
+    ///
+    /// Parameters:
+    ///   - today: the current day in `timezone`.
+    ///   - cursor: persistent watermark (`lastSyncedDay`). nil ⇒ first run.
+    ///   - oldestDataDay: only consulted on first run; the earliest day with
+    ///     any HealthKit data. Caller probes HealthKit to compute this.
+    ///   - doubleCheckDays: number of days to re-verify backward (e.g. 7).
+    ///   - earliestPermitted: clamp for the very oldest day we will ever
+    ///     query (typically `HKHealthStore.earliestPermittedSampleDate()`).
     static func compute(
         today: DayBucketer.DayKey,
         cursor: SyncCursor,
+        oldestDataDay: DayBucketer.DayKey?,
+        doubleCheckDays: Int,
         earliestPermitted: DayBucketer.DayKey,
-        recentReSyncDays: Int,
-        backfillChunkDays: Int,
         timezone: String
-    ) -> [DayBucketer.DayKey] {
+    ) -> [Entry] {
         let dayMath = DayMath(timezone: timezone)
-        let recent = recentSegment(today: today, days: recentReSyncDays,
-                                   earliestPermitted: earliestPermitted, dayMath: dayMath)
-        let backfill = backfillSegment(today: today, cursor: cursor, chunk: backfillChunkDays,
-                                       earliestPermitted: earliestPermitted, dayMath: dayMath)
-        var seen = Set<String>()
-        var out: [DayBucketer.DayKey] = []
-        for k in recent + backfill where !seen.contains(k.date) {
-            seen.insert(k.date)
-            out.append(k)
+        var entries: [Entry] = []
+
+        // Phase 1: forward.
+        let forwardStart: DayBucketer.DayKey
+        if let anchor = cursor.lastSyncedDay {
+            forwardStart = anchor
+        } else if let oldest = oldestDataDay {
+            forwardStart = clampToPermitted(oldest, earliestPermitted: earliestPermitted)
+        } else {
+            // No anchor AND no oldest-data probe: caller didn't supply one
+            // (e.g. HealthKit denied authorization). Fall back to today-only.
+            forwardStart = today
         }
-        out.sort { $0.date > $1.date }
-        return out
+        for day in inclusiveRange(from: forwardStart, to: today, dayMath: dayMath) {
+            entries.append(Entry(key: day, phase: .forward))
+        }
+
+        // Phase 2: double-check (skipped on first run).
+        if let anchor = cursor.lastSyncedDay {
+            var cursorDay = dayMath.previousDay(anchor)
+            for _ in 0..<doubleCheckDays {
+                if cursorDay.date < earliestPermitted.date { break }
+                entries.append(Entry(key: cursorDay, phase: .doubleCheck))
+                cursorDay = dayMath.previousDay(cursorDay)
+            }
+        }
+
+        return entries
     }
 
     // MARK: - private
+
+    /// `[from, from+1, …, to]` inclusive both ends, oldest→newest. Returns
+    /// `[]` if `to < from` (clock skew or weird timezone hop).
+    private static func inclusiveRange(
+        from: DayBucketer.DayKey,
+        to: DayBucketer.DayKey,
+        dayMath: DayMath
+    ) -> [DayBucketer.DayKey] {
+        guard from.date <= to.date else { return [] }
+        var out: [DayBucketer.DayKey] = []
+        var cursor = from
+        // Hard cap to defend against pathological inputs (e.g. anchor
+        // somehow >100 years old). Each sync run should never legitimately
+        // exceed this.
+        let cap = 50_000
+        var i = 0
+        while cursor.date <= to.date {
+            out.append(cursor)
+            if cursor.date == to.date { break }
+            cursor = dayMath.nextDay(cursor)
+            i += 1
+            if i >= cap { break }
+        }
+        return out
+    }
+
+    private static func clampToPermitted(
+        _ k: DayBucketer.DayKey,
+        earliestPermitted: DayBucketer.DayKey
+    ) -> DayBucketer.DayKey {
+        k.date < earliestPermitted.date ? earliestPermitted : k
+    }
 
     /// Reusable date arithmetic in a fixed timezone.
     private struct DayMath {
@@ -62,58 +132,18 @@ enum SyncWindow {
         }
 
         func previousDay(_ k: DayBucketer.DayKey) -> DayBucketer.DayKey {
+            shifted(k, by: -1)
+        }
+
+        func nextDay(_ k: DayBucketer.DayKey) -> DayBucketer.DayKey {
+            shifted(k, by: 1)
+        }
+
+        private func shifted(_ k: DayBucketer.DayKey, by days: Int) -> DayBucketer.DayKey {
             guard let date = formatter.date(from: k.date),
-                  let prev = calendar.date(byAdding: .day, value: -1, to: date)
+                  let moved = calendar.date(byAdding: .day, value: days, to: date)
             else { return k }
-            return DayBucketer.DayKey(date: formatter.string(from: prev), timezone: timezone)
+            return DayBucketer.DayKey(date: formatter.string(from: moved), timezone: timezone)
         }
-    }
-
-    /// `[today, today-1, ..., today - days]`, inclusive both ends → `days + 1`
-    /// entries. Clamped to earliestPermitted.
-    private static func recentSegment(
-        today: DayBucketer.DayKey,
-        days: Int,
-        earliestPermitted: DayBucketer.DayKey,
-        dayMath: DayMath
-    ) -> [DayBucketer.DayKey] {
-        var out: [DayBucketer.DayKey] = []
-        var cursor = today
-        for _ in 0..<(days + 1) {
-            out.append(cursor)
-            if cursor.date <= earliestPermitted.date { break }
-            cursor = dayMath.previousDay(cursor)
-        }
-        return out
-    }
-
-    /// First run (cursor.earliestSyncedDay == nil):
-    ///   `[today - 1, today - 2, ..., today - chunk]` — primes history below today.
-    /// Subsequent runs:
-    ///   `[earliestSyncedDay - 1, ..., earliestSyncedDay - chunk]` — extends backfill.
-    /// Fully backfilled (earliestSyncedDay <= earliestPermitted): returns `[]`.
-    /// Always clamped to earliestPermitted.
-    private static func backfillSegment(
-        today: DayBucketer.DayKey,
-        cursor: SyncCursor,
-        chunk: Int,
-        earliestPermitted: DayBucketer.DayKey,
-        dayMath: DayMath
-    ) -> [DayBucketer.DayKey] {
-        let startBoundary: DayBucketer.DayKey
-        if let earliest = cursor.earliestSyncedDay {
-            if earliest.date <= earliestPermitted.date { return [] }
-            startBoundary = dayMath.previousDay(earliest)
-        } else {
-            startBoundary = dayMath.previousDay(today)
-        }
-        var out: [DayBucketer.DayKey] = []
-        var c = startBoundary
-        for _ in 0..<chunk {
-            out.append(c)
-            if c.date <= earliestPermitted.date { break }
-            c = dayMath.previousDay(c)
-        }
-        return out
     }
 }

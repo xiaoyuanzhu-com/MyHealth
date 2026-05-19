@@ -1,11 +1,14 @@
 import Foundation
 
 /// Persistent watermark for day-by-day sync. Stored at
-/// `<Application Support>/sync-cursor.json`. Advances only when a full
-/// sync run completes.
+/// `<Application Support>/sync-cursor.json`. Advances to `today` only when
+/// a full sync run (forward + double-check) completes successfully.
+///
+/// Semantics: `lastSyncedDay` is the most recent day fully synced. The next
+/// sync run re-syncs *from* that day forward (in case data landed in it
+/// after the previous run finished) and double-checks the week before it.
 struct SyncCursor: Codable, Equatable {
-    var earliestSyncedDay: DayBucketer.DayKey?
-    var latestSyncedDay: DayBucketer.DayKey?
+    var lastSyncedDay: DayBucketer.DayKey?
 
     static let defaultURL: URL = {
         let dir = try! FileManager.default.url(
@@ -20,7 +23,7 @@ struct SyncCursor: Codable, Equatable {
     static func load(at url: URL = defaultURL) -> SyncCursor {
         guard let data = try? Data(contentsOf: url),
               let cursor = try? JSONDecoder().decode(SyncCursor.self, from: data)
-        else { return SyncCursor(earliestSyncedDay: nil, latestSyncedDay: nil) }
+        else { return SyncCursor(lastSyncedDay: nil) }
         return cursor
     }
 
@@ -29,24 +32,5 @@ struct SyncCursor: Codable, Equatable {
         encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
         let data = try encoder.encode(cursor)
         try data.write(to: url, options: .atomic)
-    }
-
-    /// Updates the cursor to reflect that every day in `coveredDays` has been
-    /// fully synced in the just-completed run. `coveredDays` may be in any
-    /// order; `earliestSyncedDay` advances to the oldest and `latestSyncedDay`
-    /// to the newest, monotonically (never moves backward).
-    mutating func advance(coveredDays: [DayBucketer.DayKey]) {
-        guard let newest = coveredDays.max(by: { $0.date < $1.date }),
-              let oldest = coveredDays.min(by: { $0.date < $1.date }) else { return }
-        if let existing = latestSyncedDay {
-            if newest.date > existing.date { latestSyncedDay = newest }
-        } else {
-            latestSyncedDay = newest
-        }
-        if let existing = earliestSyncedDay {
-            if oldest.date < existing.date { earliestSyncedDay = oldest }
-        } else {
-            earliestSyncedDay = oldest
-        }
     }
 }

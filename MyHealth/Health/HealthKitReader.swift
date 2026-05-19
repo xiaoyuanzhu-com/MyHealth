@@ -44,6 +44,51 @@ struct HealthKitReader {
         return samples.compactMap { $0 as? HKWorkout }
     }
 
+    /// Earliest day across all anchored sample types that has any sample.
+    /// Used on first sync to bound the back-fill range. Returns nil if HK
+    /// returns no samples for any type (empty store or all-denied auth).
+    ///
+    /// One ascending-sort `HKSampleQuery(limit: 1)` per type — typically
+    /// 142 lightweight queries; HealthKit answers each in O(log n) on its
+    /// internal index. Bounded to ~140 small allocations; never buffers
+    /// content.
+    func oldestDataDay(timezone: TimeZone = .current) async -> DayBucketer.DayKey? {
+        var oldest: Date?
+        for type in HealthDataTypes.allAnchoredSampleTypes {
+            if let earliest = try? await firstSampleDate(type: type) {
+                if let cur = oldest {
+                    if earliest < cur { oldest = earliest }
+                } else {
+                    oldest = earliest
+                }
+            }
+        }
+        guard let oldest else { return nil }
+        return DayBucketer.dayKey(start: oldest, timezone: timezone)
+    }
+
+    private func firstSampleDate(type: HKSampleType) async throws -> Date? {
+        try await withCheckedThrowingContinuation { cont in
+            let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+            let q = HKSampleQuery(
+                sampleType: type, predicate: nil, limit: 1,
+                sortDescriptors: [sort]
+            ) { _, samples, error in
+                if let error {
+                    if let hk = error as? HKError,
+                       hk.code == .errorAuthorizationNotDetermined || hk.code == .errorAuthorizationDenied {
+                        cont.resume(returning: nil)
+                        return
+                    }
+                    cont.resume(throwing: error)
+                    return
+                }
+                cont.resume(returning: samples?.first?.startDate)
+            }
+            store.execute(q)
+        }
+    }
+
     /// Locations for a single workout's route. Returns nil if no route was recorded.
     func loadRoute(for workout: HKWorkout) async throws -> [CLLocation]? {
         let routeType = HealthDataTypes.workoutRouteType

@@ -6,14 +6,13 @@ import Foundation
 ///
 /// The state is intentionally tiny — no samples are buffered. The day cursor
 /// (`completedDayIndex`) and the per-day type cursor (`inProgressTypeIndex`)
-/// together pinpoint exactly where to resume. Both indices count "fully
-/// uploaded" units, so a fresh run starts at (0, 0) and a run that has
-/// uploaded the first day fully and is mid-way through the second day's
-/// 45th type checkpoint sits at (1, 45).
+/// together pinpoint exactly where to resume. Each entry in `daysToSync`
+/// carries its phase so the coordinator can pick the right status string
+/// when resuming mid-run.
 struct SyncRunState: Codable, Equatable {
     let runID: String
     let startedAt: String
-    let daysToSync: [DayBucketer.DayKey]
+    let daysToSync: [SyncWindow.Entry]
     var completedDayIndex: Int
     var inProgressTypeIndex: Int
 }

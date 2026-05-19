@@ -15,9 +15,11 @@ final class SyncRunStateTests: XCTestCase {
     }
 
     func testRoundTrip() throws {
-        let days = [
-            DayBucketer.DayKey(date: "2026-05-19", timezone: "Asia/Shanghai"),
-            DayBucketer.DayKey(date: "2026-05-18", timezone: "Asia/Shanghai"),
+        let days: [SyncWindow.Entry] = [
+            .init(key: DayBucketer.DayKey(date: "2026-05-19", timezone: "Asia/Shanghai"),
+                  phase: .forward),
+            .init(key: DayBucketer.DayKey(date: "2026-05-11", timezone: "Asia/Shanghai"),
+                  phase: .doubleCheck),
         ]
         let state = SyncRunState(
             runID: "20260519T120000Z",
@@ -29,6 +31,8 @@ final class SyncRunStateTests: XCTestCase {
         try SyncRunStore.save(state, at: tmpURL)
         let loaded = try XCTUnwrap(SyncRunStore.load(at: tmpURL))
         XCTAssertEqual(loaded, state)
+        XCTAssertEqual(loaded.daysToSync.first?.phase, .forward)
+        XCTAssertEqual(loaded.daysToSync.last?.phase, .doubleCheck)
     }
 
     func testLoadReturnsNilWhenFileMissing() {
