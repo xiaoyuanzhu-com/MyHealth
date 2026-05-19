@@ -15,7 +15,6 @@
 		B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34640D30825341890180357 /* DriveDetailView.swift */; };
 		D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */; };
 		DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */; };
-		2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54AC311B9681A008227307 /* AnchorStore.swift */; };
 		3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */; };
 		3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */; };
 		42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */; };
@@ -74,7 +73,6 @@
 		037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitReader.swift; sourceTree = "<group>"; };
 		071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDriveClient.swift; sourceTree = "<group>"; };
 		07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBClient.swift; sourceTree = "<group>"; };
-		1C54AC311B9681A008227307 /* AnchorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorStore.swift; sourceTree = "<group>"; };
 		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* TypeNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNaming.swift; sourceTree = "<group>"; };
 		A10000020000000000000002 /* TypeNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNamingTests.swift; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 		C4CE67FEC011289BE75B818E /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				1C54AC311B9681A008227307 /* AnchorStore.swift */,
 				5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */,
 				A10000020000000000000005 /* DayBucketer.swift */,
 				A10000020000000000000007 /* SnapshotMerger.swift */,
@@ -355,7 +352,6 @@
 				B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */,
 				D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */,
 				DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */,
-				2C207CBE40F442A7A3FC9E2E /* AnchorStore.swift in Sources */,
 				E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */,
 				C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */,
 				56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */,
