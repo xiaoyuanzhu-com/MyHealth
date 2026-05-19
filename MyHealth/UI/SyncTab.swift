@@ -21,7 +21,7 @@ struct SyncTab: View {
                     } label: {
                         SyncTargetRow(
                             title: "MyLifeDB",
-                            subtitle: sessionStore.myLifeDB?.base_url ?? "Not connected",
+                            subtitle: sessionStore.myLifeDB?.base_url ?? String(localized: "Not connected"),
                             icon: "externaldrive.fill.badge.icloud",
                             connected: sessionStore.myLifeDB != nil
                         )
@@ -31,7 +31,7 @@ struct SyncTab: View {
                     } label: {
                         SyncTargetRow(
                             title: "WebDAV",
-                            subtitle: sessionStore.webdav?.displayHost ?? "Not connected",
+                            subtitle: sessionStore.webdav?.displayHost ?? String(localized: "Not connected"),
                             icon: "server.rack",
                             connected: sessionStore.webdav != nil
                         )
@@ -41,7 +41,9 @@ struct SyncTab: View {
                     } label: {
                         SyncTargetRow(
                             title: "Google Drive",
-                            subtitle: sessionStore.googleSignedIn ? "Signed in" : "Not connected",
+                            subtitle: sessionStore.googleSignedIn
+                                ? String(localized: "Signed in")
+                                : String(localized: "Not connected"),
                             icon: "icloud.and.arrow.up.fill",
                             connected: sessionStore.googleSignedIn
                         )
@@ -51,7 +53,7 @@ struct SyncTab: View {
                     } label: {
                         SyncTargetRow(
                             title: "iCloud",
-                            subtitle: "Coming soon",
+                            subtitle: String(localized: "Coming soon"),
                             icon: "icloud.fill",
                             connected: false
                         )
@@ -61,7 +63,7 @@ struct SyncTab: View {
                     } label: {
                         SyncTargetRow(
                             title: "OneDrive",
-                            subtitle: "Coming soon",
+                            subtitle: String(localized: "Coming soon"),
                             icon: "cloud.fill",
                             connected: false
                         )

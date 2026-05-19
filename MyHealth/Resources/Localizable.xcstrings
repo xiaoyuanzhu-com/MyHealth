@@ -8,14 +8,27 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ · %2$@ (%3$@/%4$@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@（%3$@/%4$@）"
           }
         }
       }
     },
     "%@ sync isn't available yet." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 同步尚未开放。"
+          }
+        }
+      }
     },
     "%@." : {
 
@@ -626,6 +639,28 @@
         }
       }
     },
+    "Checking for updates" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在检查更新"
+          }
+        }
+      }
+    },
+    "Checking for updates · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在检查更新 · %@"
+          }
+        }
+      }
+    },
     "Chest Tightness Or Pain" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -711,7 +746,14 @@
       }
     },
     "Coming soon" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "敬请期待"
+          }
+        }
+      }
     },
     "Condition Record" : {
       "extractionState" : "stale",
@@ -952,8 +994,14 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Day %1$@ of %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第 %1$@ 天 / 共 %2$@ 天"
           }
         }
       }
@@ -3931,12 +3979,29 @@
         }
       }
     },
+    "Stop" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        }
+      }
+    },
     "Stopped at day %@ of %@. Tap Sync now to continue." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Stopped at day %1$@ of %2$@. Tap Sync now to continue."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已在第 %1$@ 天暂停（共 %2$@ 天）。点击「立即同步」继续。"
           }
         }
       }
@@ -4019,6 +4084,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已同步的文件会写入到 Google Drive 中名为 **MyHealth** 的文件夹。"
+          }
+        }
+      }
+    },
+    "Syncing %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在同步 %@"
+          }
+        }
+      }
+    },
+    "Syncing %@ · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在同步 %1$@ · %2$@"
           }
         }
       }
