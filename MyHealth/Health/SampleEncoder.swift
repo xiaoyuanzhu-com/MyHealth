@@ -2,19 +2,10 @@ import Foundation
 import HealthKit
 import CoreLocation
 
-/// Converts HealthKit samples to `HealthSample` rows that are byte-compatible
-/// with the existing `myhealth.apple_health.v1` JSONL schema produced by the
-/// Python CLI. Date formatting matches the XML export's
-/// `"yyyy-MM-dd HH:mm:ss xxxx"` shape (e.g. `"2026-05-01 09:00:00 +0000"`).
+/// Builds the new per-day-layout DTOs (`QuantitySample`, `CategorySample`,
+/// `WorkoutFile`) from HealthKit's native types. Date formatting is ISO 8601
+/// UTC with fractional seconds (`2026-01-18T01:00:00.000Z`).
 struct SampleEncoder {
-
-    static let dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.timeZone = TimeZone(identifier: "UTC")
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss xxxx"
-        return df
-    }()
 
     static let isoFormatter: ISO8601DateFormatter = {
         let f = ISO8601DateFormatter()
@@ -22,48 +13,37 @@ struct SampleEncoder {
         return f
     }()
 
-    static func format(_ d: Date) -> String { dateFormatter.string(from: d) }
     static func iso(_ d: Date) -> String { isoFormatter.string(from: d) }
 
-    // MARK: - Quantity samples (steps, heart rate, distance, …)
+    // MARK: - Quantity
 
-    static func encode(_ q: HKQuantitySample) -> HealthSample? {
+    static func encode(_ q: HKQuantitySample) -> QuantitySample? {
         let unit = canonicalUnit(for: q.quantityType)
-        // Guard against unit/type mismatches — a sample whose native unit is
-        // incompatible with our canonical choice (e.g. a future HealthKit type
-        // we haven't mapped yet) would otherwise raise NSInvalidArgumentException.
         guard q.quantity.is(compatibleWith: unit) else { return nil }
         let value = q.quantity.doubleValue(for: unit)
-        return HealthSample(
-            _kind: .record,
-            type: q.quantityType.identifier,
+        return QuantitySample(
+            start: iso(q.startDate),
+            end: iso(q.endDate),
+            value: value,
             unit: unit.unitString,
-            value: stringify(value),
-            start_date: format(q.startDate),
-            end_date: format(q.endDate),
-            creation_date: format(sourceCreationDate(q)),
-            source_name: q.sourceRevision.source.name,
-            source_version: q.sourceRevision.version,
-            device: deviceString(q.device),
-            uuid: q.uuid.uuidString,
-            metadata: encodeMetadata(q.metadata)
+            type: q.quantityType.identifier,
+            source: q.sourceRevision.source.bundleIdentifier,
+            device: deviceModelString(q.device),
+            metadata: encodeMetadata(q.metadata),
+            uuid: q.uuid.uuidString
         )
     }
 
-    static func encode(_ c: HKCategorySample) -> HealthSample {
-        return HealthSample(
-            _kind: .record,
+    static func encode(_ c: HKCategorySample) -> CategorySample {
+        return CategorySample(
+            start: iso(c.startDate),
+            end: iso(c.endDate),
+            value: categoryValueName(c),
             type: c.categoryType.identifier,
-            unit: nil,
-            value: String(c.value),
-            start_date: format(c.startDate),
-            end_date: format(c.endDate),
-            creation_date: format(sourceCreationDate(c)),
-            source_name: c.sourceRevision.source.name,
-            source_version: c.sourceRevision.version,
-            device: deviceString(c.device),
-            uuid: c.uuid.uuidString,
-            metadata: encodeMetadata(c.metadata)
+            source: c.sourceRevision.source.bundleIdentifier,
+            device: deviceModelString(c.device),
+            metadata: encodeMetadata(c.metadata),
+            uuid: c.uuid.uuidString
         )
     }
 
@@ -72,171 +52,74 @@ struct SampleEncoder {
     static func encode(
         _ w: HKWorkout,
         events: [HKWorkoutEvent]?,
-        route: [CLLocation]?
-    ) -> HealthSample {
-        let kcal = w.totalEnergyBurned?.doubleValue(for: .kilocalorie())
-        let meters = w.totalDistance?.doubleValue(for: .meter())
-        return HealthSample(
-            _kind: .workout,
-            type: "HKWorkoutTypeIdentifier",
-            unit: nil,
-            value: nil,
-            start_date: format(w.startDate),
-            end_date: format(w.endDate),
-            creation_date: format(sourceCreationDate(w)),
-            source_name: w.sourceRevision.source.name,
-            source_version: w.sourceRevision.version,
-            device: deviceString(w.device),
+        route: [CLLocation]?,
+        deviceInfo: WorkoutFile.DeviceInfo
+    ) -> WorkoutFile {
+        var stats: [String: WorkoutFile.Stat] = [:]
+        if let kcal = w.totalEnergyBurned?.doubleValue(for: .kilocalorie()) {
+            stats["energy"] = .init(value: kcal, unit: "kcal")
+        }
+        if let m = w.totalDistance?.doubleValue(for: .meter()) {
+            stats["distance"] = .init(value: m, unit: "m")
+        }
+        var meta = encodeMetadata(w.metadata) ?? [:]
+        if let evs = events, !evs.isEmpty {
+            // Encode events into metadata so we don't expand the workout schema
+            // beyond what the spec describes. Spec metadata is opaque per type.
+            let evArr: [AnyCodableValue] = evs.map { ev in
+                .string("\(workoutEventName(ev.type))@\(iso(ev.dateInterval.start))")
+            }
+            meta["events"] = .string(evArr.map {
+                if case .string(let s) = $0 { return s } else { return "" }
+            }.joined(separator: ","))
+        }
+        return WorkoutFile(
             uuid: w.uuid.uuidString,
-            metadata: encodeMetadata(w.metadata),
-            workout_activity_type: workoutActivityName(w.workoutActivityType),
-            duration: w.duration,
-            total_energy_burned: kcal,
-            total_distance: meters,
-            events: events?.map { ev in
-                WorkoutEvent(
-                    type: workoutEventName(ev.type),
-                    date: format(ev.dateInterval.start),
-                    duration: ev.dateInterval.duration,
-                    metadata: encodeMetadata(ev.metadata)
-                )
-            },
-            route_locations: route?.map { l in
-                RouteLocation(
+            activity_type: workoutActivityName(w.workoutActivityType),
+            start: iso(w.startDate),
+            end: iso(w.endDate),
+            duration_s: w.duration,
+            source: w.sourceRevision.source.bundleIdentifier,
+            device: deviceModelString(w.device),
+            synced_at: iso(Date()),
+            device_info: deviceInfo,
+            stats: stats,
+            metadata: meta.isEmpty ? nil : meta,
+            route: route?.map { l in
+                RoutePoint(
+                    t: iso(l.timestamp),
                     lat: l.coordinate.latitude,
                     lon: l.coordinate.longitude,
                     alt: l.altitude,
-                    ts: iso(l.timestamp),
-                    h_accuracy: l.horizontalAccuracy,
-                    v_accuracy: l.verticalAccuracy,
+                    h_acc: l.horizontalAccuracy,
+                    v_acc: l.verticalAccuracy,
                     speed: l.speed,
-                    course: l.course
+                    speed_acc: l.speedAccuracy,
+                    course: l.course,
+                    course_acc: l.courseAccuracy
                 )
             }
         )
     }
 
-    // MARK: - ECG
+    // MARK: - Device
 
-    static func encode(_ e: HKElectrocardiogram, voltage: [ECGVoltageSample]?) -> HealthSample {
-        let avgHR = e.averageHeartRate?.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
-        return HealthSample(
-            _kind: .ecg,
-            type: HKObjectType.electrocardiogramType().identifier,
-            unit: "V",
-            value: nil,
-            start_date: format(e.startDate),
-            end_date: format(e.endDate),
-            creation_date: format(sourceCreationDate(e)),
-            source_name: e.sourceRevision.source.name,
-            source_version: e.sourceRevision.version,
-            device: deviceString(e.device),
-            uuid: e.uuid.uuidString,
-            metadata: encodeMetadata(e.metadata),
-            ecg_samples: voltage,
-            ecg_classification: ecgClassificationName(e.classification),
-            ecg_average_heart_rate: avgHR,
-            ecg_sampling_frequency: e.samplingFrequency?.doubleValue(for: .hertz())
-        )
-    }
-
-    // MARK: - Clinical Records
-
-    static func encode(_ c: HKClinicalRecord) -> HealthSample {
-        // FHIR JSON body lives inside `metadata` under a private key — but
-        // the public surface is the resource itself. We expose its FHIR
-        // resource type and identifier; the full JSON can be reconstituted
-        // from `c.fhirResource?.data`.
-        var meta: [String: AnyCodableValue] = [:]
-        if let fhir = c.fhirResource {
-            meta["resource_type"] = .string(fhir.resourceType.rawValue)
-            meta["identifier"] = .string(fhir.identifier ?? "")
-            if let body = String(data: fhir.data, encoding: .utf8) {
-                meta["fhir_json"] = .string(body)
-            }
-            meta["fhir_version"] = .string(fhir.fhirVersion.stringRepresentation)
-        }
-        meta["display_name"] = .string(c.displayName)
-        return HealthSample(
-            _kind: .clinical,
-            type: c.clinicalType.identifier,
-            unit: nil,
-            value: nil,
-            start_date: format(c.startDate),
-            end_date: format(c.endDate),
-            creation_date: format(sourceCreationDate(c)),
-            source_name: c.sourceRevision.source.name,
-            source_version: c.sourceRevision.version,
-            device: deviceString(c.device),
-            uuid: c.uuid.uuidString,
-            metadata: meta
-        )
-    }
-
-    // MARK: - ActivitySummary
-
-    static func encode(_ a: HKActivitySummary) -> HealthSample {
-        var components = a.dateComponents(for: Calendar(identifier: .gregorian))
-        components.timeZone = TimeZone(identifier: "UTC")
-        let dayString: String
-        if let y = components.year, let m = components.month, let d = components.day {
-            dayString = String(format: "%04d-%02d-%02d", y, m, d)
-        } else {
-            dayString = ""
-        }
-        let active = a.activeEnergyBurned.doubleValue(for: .kilocalorie())
-        let move = a.appleMoveTime.doubleValue(for: .minute())
-        let exerciseGoal = a.appleExerciseTimeGoal.doubleValue(for: .minute())
-        let standGoal = a.appleStandHoursGoal.doubleValue(for: .count())
-        var meta: [String: AnyCodableValue] = [
-            "active_energy_burned_goal": .double(a.activeEnergyBurnedGoal.doubleValue(for: .kilocalorie())),
-            "apple_exercise_time": .double(a.appleExerciseTime.doubleValue(for: .minute())),
-            "apple_exercise_time_goal": .double(exerciseGoal),
-            "apple_stand_hours": .double(a.appleStandHours.doubleValue(for: .count())),
-            "apple_stand_hours_goal": .double(standGoal),
-            "apple_move_time": .double(move),
-            "apple_move_time_goal": .double(a.appleMoveTimeGoal.doubleValue(for: .minute())),
-        ]
-        if dayString.isEmpty { meta.removeValue(forKey: "apple_move_time") }
-        return HealthSample(
-            _kind: .activitySummary,
-            type: "HKActivitySummaryTypeIdentifier",
-            unit: nil,
-            value: stringify(active),
-            start_date: dayString,
-            end_date: dayString,
-            creation_date: nil,
-            source_name: nil,
-            source_version: nil,
-            device: nil,
-            uuid: nil,
-            metadata: meta,
-            date_components: dayString
-        )
-    }
-
-    // MARK: - Helpers
-
-    private static func sourceCreationDate(_ s: HKObject) -> Date {
-        // HealthKit doesn't expose creation date as a property on every type.
-        // The stored metadata key `HKMetadataKeyExternalUUID` is sometimes used
-        // but the closest universal proxy is `startDate`. We fall back to
-        // `startDate` when no other signal exists.
-        return (s as? HKSample)?.startDate ?? Date()
-    }
-
-    private static func deviceString(_ d: HKDevice?) -> String? {
+    /// Spec wants just the hardware model ("Watch7,1") in `device`, falling
+    /// back to `hardwareVersion` if model isn't available.
+    static func deviceModelString(_ d: HKDevice?) -> String? {
         guard let d else { return nil }
-        var parts: [String] = []
-        if let n = d.name { parts.append("name=\(n)") }
-        if let m = d.model { parts.append("model=\(m)") }
-        if let mfg = d.manufacturer { parts.append("manufacturer=\(mfg)") }
-        if let hw = d.hardwareVersion { parts.append("hardware=\(hw)") }
-        if let sw = d.softwareVersion { parts.append("software=\(sw)") }
-        return parts.isEmpty ? nil : parts.joined(separator: ", ")
+        return deviceModelString(name: d.name, model: d.model, hardwareVersion: d.hardwareVersion)
     }
 
-    private static func encodeMetadata(_ md: [String: Any]?) -> [String: AnyCodableValue]? {
+    static func deviceModelString(name: String?, model: String?, hardwareVersion: String?) -> String? {
+        if let model, !model.isEmpty { return model }
+        if let hardwareVersion, !hardwareVersion.isEmpty { return hardwareVersion }
+        return nil
+    }
+
+    // MARK: - Metadata
+
+    static func encodeMetadata(_ md: [String: Any]?) -> [String: AnyCodableValue]? {
         guard let md, !md.isEmpty else { return nil }
         var out: [String: AnyCodableValue] = [:]
         for (k, v) in md {
@@ -247,22 +130,26 @@ struct SampleEncoder {
             case let n as Int64: out[k] = .int(n)
             case let n as Double: out[k] = .double(n)
             case let n as NSNumber: out[k] = .double(n.doubleValue)
-            case let d as Date: out[k] = .string(format(d))
+            case let d as Date: out[k] = .string(iso(d))
             case let q as HKQuantity: out[k] = .string(q.description)
+            case let tz as TimeZone: out[k] = .string(tz.identifier)
             default: out[k] = .string(String(describing: v))
             }
         }
         return out
     }
 
-    /// Format a `Double` the way Apple's XML export does: integers without
-    /// trailing `.0`, fractions with no spurious precision.
-    static func stringify(_ v: Double) -> String {
-        if v.rounded() == v, abs(v) < 1e16 {
-            return String(Int64(v))
+    /// Pulls a sample's recorded timezone from its metadata if present.
+    static func timezone(from md: [String: Any]?) -> TimeZone? {
+        guard let md else { return nil }
+        if let tz = md[HKMetadataKeyTimeZone] as? String {
+            return TimeZone(identifier: tz)
         }
-        return String(v)
+        if let tz = md[HKMetadataKeyTimeZone] as? TimeZone { return tz }
+        return nil
     }
+
+    // MARK: - Canonical units (verbatim from prior implementation)
 
     /// Best-effort canonical unit per quantity type, matching Apple Health
     /// export conventions ("count", "kcal", "bpm", "m", ...).
@@ -432,55 +319,58 @@ struct SampleEncoder {
     }
 
     private static func workoutActivityName(_ t: HKWorkoutActivityType) -> String {
-        // Apple Health export uses the raw `HKWorkoutActivityType*` enum name.
-        // We can't introspect the Swift enum at runtime, so we keep a small
-        // map for common values and fall back to the raw int otherwise.
         switch t {
-        case .walking: return "HKWorkoutActivityTypeWalking"
-        case .running: return "HKWorkoutActivityTypeRunning"
-        case .cycling: return "HKWorkoutActivityTypeCycling"
-        case .swimming: return "HKWorkoutActivityTypeSwimming"
-        case .hiking: return "HKWorkoutActivityTypeHiking"
-        case .yoga: return "HKWorkoutActivityTypeYoga"
-        case .functionalStrengthTraining: return "HKWorkoutActivityTypeFunctionalStrengthTraining"
-        case .traditionalStrengthTraining: return "HKWorkoutActivityTypeTraditionalStrengthTraining"
-        case .crossTraining: return "HKWorkoutActivityTypeCrossTraining"
-        case .elliptical: return "HKWorkoutActivityTypeElliptical"
-        case .rowing: return "HKWorkoutActivityTypeRowing"
-        case .stairClimbing: return "HKWorkoutActivityTypeStairClimbing"
-        case .highIntensityIntervalTraining: return "HKWorkoutActivityTypeHighIntensityIntervalTraining"
-        case .dance: return "HKWorkoutActivityTypeDance"
-        case .pilates: return "HKWorkoutActivityTypePilates"
-        case .other: return "HKWorkoutActivityTypeOther"
-        default: return "HKWorkoutActivityType\(t.rawValue)"
+        case .walking: return "walking"
+        case .running: return "running"
+        case .cycling: return "cycling"
+        case .swimming: return "swimming"
+        case .hiking: return "hiking"
+        case .yoga: return "yoga"
+        case .functionalStrengthTraining: return "strength-training"
+        case .traditionalStrengthTraining: return "strength-training"
+        case .crossTraining: return "cross-training"
+        case .elliptical: return "elliptical"
+        case .rowing: return "rowing"
+        case .stairClimbing: return "stair-climbing"
+        case .highIntensityIntervalTraining: return "hiit"
+        case .dance: return "dance"
+        case .pilates: return "pilates"
+        case .badminton: return "badminton"
+        case .other: return "other"
+        default: return "type-\(t.rawValue)"
         }
     }
 
     private static func workoutEventName(_ t: HKWorkoutEventType) -> String {
         switch t {
-        case .pause: return "HKWorkoutEventTypePause"
-        case .resume: return "HKWorkoutEventTypeResume"
-        case .lap: return "HKWorkoutEventTypeLap"
-        case .marker: return "HKWorkoutEventTypeMarker"
-        case .motionPaused: return "HKWorkoutEventTypeMotionPaused"
-        case .motionResumed: return "HKWorkoutEventTypeMotionResumed"
-        case .segment: return "HKWorkoutEventTypeSegment"
-        case .pauseOrResumeRequest: return "HKWorkoutEventTypePauseOrResumeRequest"
-        @unknown default: return "HKWorkoutEventType\(t.rawValue)"
+        case .pause: return "pause"
+        case .resume: return "resume"
+        case .lap: return "lap"
+        case .marker: return "marker"
+        case .motionPaused: return "motion-paused"
+        case .motionResumed: return "motion-resumed"
+        case .segment: return "segment"
+        case .pauseOrResumeRequest: return "pause-or-resume-request"
+        @unknown default: return "unknown"
         }
     }
 
-    private static func ecgClassificationName(_ c: HKElectrocardiogram.Classification) -> String {
-        switch c {
-        case .notSet: return "notSet"
-        case .sinusRhythm: return "sinusRhythm"
-        case .atrialFibrillation: return "atrialFibrillation"
-        case .inconclusiveLowHeartRate: return "inconclusiveLowHeartRate"
-        case .inconclusiveHighHeartRate: return "inconclusiveHighHeartRate"
-        case .inconclusivePoorReading: return "inconclusivePoorReading"
-        case .inconclusiveOther: return "inconclusiveOther"
-        case .unrecognized: return "unrecognized"
-        @unknown default: return "unknown"
+    private static func categoryValueName(_ c: HKCategorySample) -> String {
+        // Sleep analysis is the only category type we explicitly name today;
+        // for everything else, we fall back to the raw integer-as-string.
+        if c.categoryType.identifier == HKCategoryTypeIdentifier.sleepAnalysis.rawValue,
+           let v = HKCategoryValueSleepAnalysis(rawValue: c.value) {
+            switch v {
+            case .inBed:             return "inBed"
+            case .asleep:            return "asleepUnspecified"
+            case .awake:             return "awake"
+            case .asleepCore:        return "asleepCore"
+            case .asleepDeep:        return "asleepDeep"
+            case .asleepREM:         return "asleepREM"
+            case .asleepUnspecified: return "asleepUnspecified"
+            @unknown default:        return "unknown-\(c.value)"
+            }
         }
+        return String(c.value)
     }
 }

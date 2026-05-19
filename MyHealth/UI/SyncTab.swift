@@ -69,26 +69,30 @@ private struct SyncNowButton: View {
     @EnvironmentObject var sessionStore: SessionStore
 
     var body: some View {
-        Button {
-            Task { await coordinator.runOnce(enabledDestinations: enabledDestinations) }
-        } label: {
-            HStack {
-                if case .running = coordinator.status {
-                    ProgressView()
-                } else {
-                    Image(systemName: "arrow.triangle.2.circlepath")
+        VStack(alignment: .leading, spacing: 6) {
+            Button {
+                Task { await action() }
+            } label: {
+                HStack {
+                    Image(systemName: icon)
+                    Text(title).bold()
                 }
-                Text(title).bold()
+                .frame(maxWidth: .infinity).padding(.vertical, 6)
             }
-            .frame(maxWidth: .infinity).padding(.vertical, 6)
-        }
-        .buttonStyle(.borderedProminent)
-        .disabled(disabled)
+            .buttonStyle(.borderedProminent)
+            .disabled(disabled)
 
-        if case .error(let msg) = coordinator.status {
-            Text(msg).foregroundStyle(.red).font(.caption)
-        } else if case .running(let stage) = coordinator.status {
-            Text(stage).foregroundStyle(.secondary).font(.caption)
+            if showsAbort {
+                Button(role: .destructive) {
+                    coordinator.abort()
+                } label: {
+                    Text("Abort and discard progress")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+            }
+
+            statusLine
         }
     }
 
@@ -99,18 +103,65 @@ private struct SyncNowButton: View {
         return s
     }
 
+    private var icon: String {
+        switch coordinator.status {
+        case .running: return "pause.fill"
+        case .paused: return "play.fill"
+        case .error: return "arrow.triangle.2.circlepath"
+        case .idle: return "arrow.triangle.2.circlepath"
+        }
+    }
+
     private var title: String {
         switch coordinator.status {
-        case .running: return "Syncing…"
+        case .running: return "Pause"
+        case .paused(let done, let total): return "Resume (\(done)/\(total))"
         case .error: return "Retry sync"
-        case .idle: return "Sync now"
+        case .idle: return coordinator.hasPendingRun ? "Resume sync" : "Sync now"
         }
     }
 
     private var disabled: Bool {
-        if enabledDestinations.isEmpty { return true }
-        if case .running = coordinator.status { return true }
+        if enabledDestinations.isEmpty && !coordinator.hasPendingRun { return true }
         return false
+    }
+
+    private var showsAbort: Bool {
+        switch coordinator.status {
+        case .paused: return true
+        case .running: return true
+        case .idle: return coordinator.hasPendingRun
+        case .error: return coordinator.hasPendingRun
+        }
+    }
+
+    private func action() async {
+        switch coordinator.status {
+        case .running:
+            coordinator.pause()
+        case .paused, .idle, .error:
+            await coordinator.runOnce(enabledDestinations: enabledDestinations)
+        }
+    }
+
+    @ViewBuilder
+    private var statusLine: some View {
+        switch coordinator.status {
+        case .running(let stage):
+            HStack(spacing: 8) {
+                ProgressView()
+                Text(stage).foregroundStyle(.secondary).font(.caption)
+            }
+            if let p = coordinator.progress {
+                ProgressView(value: Double(p.completedDays), total: Double(max(1, p.totalDays)))
+            }
+        case .paused(let done, let total):
+            Text("Paused at day \(done) of \(total).").foregroundStyle(.secondary).font(.caption)
+        case .error(let msg):
+            Text(msg).foregroundStyle(.red).font(.caption)
+        case .idle:
+            EmptyView()
+        }
     }
 }
 
@@ -118,24 +169,29 @@ private struct LastBatchSummary: View {
     @EnvironmentObject var coordinator: SyncCoordinator
 
     var body: some View {
-        if let result = coordinator.lastResult {
+        if let r = coordinator.lastResult {
             VStack(alignment: .leading, spacing: 6) {
-                Text("Last batch").font(.caption).foregroundStyle(.secondary)
-                Text(result.batchID).font(.caption.monospaced())
-                ForEach(result.counts.sorted(by: { $0.key < $1.key }), id: \.key) { item in
-                    HStack {
-                        Text(item.key.replacingOccurrences(of: "_", with: " ").capitalized)
-                        Spacer()
-                        Text("\(item.value)").monospacedDigit()
-                    }
-                    .font(.subheadline)
+                Text("Last sync").font(.caption).foregroundStyle(.secondary)
+                Text(r.runID).font(.caption.monospaced())
+                HStack {
+                    Text("Days"); Spacer()
+                    Text("\(r.totalDays)").monospacedDigit()
                 }
+                HStack {
+                    Text("Samples"); Spacer()
+                    Text("\(r.totalSamples)").monospacedDigit()
+                }
+                HStack {
+                    Text("Workouts"); Spacer()
+                    Text("\(r.totalWorkouts)").monospacedDigit()
+                }
+                .font(.subheadline)
                 HStack(spacing: 12) {
-                    if result.myLifeDBUploaded {
+                    if r.myLifeDBUploaded {
                         Label("MyLifeDB", systemImage: "checkmark")
                             .labelStyle(.titleAndIcon).font(.caption)
                     }
-                    if result.driveUploaded {
+                    if r.driveUploaded {
                         Label("Drive", systemImage: "checkmark")
                             .labelStyle(.titleAndIcon).font(.caption)
                     }

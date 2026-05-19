@@ -49,10 +49,20 @@ enum BackgroundSync {
         let workItem = Task { @MainActor in
             let coordinator = SyncCoordinator()
             await coordinator.runOnce(enabledDestinations: defaultDestinations())
-            return coordinator.status == .idle
+            // A clean finish lands at .idle. iOS preempting via
+            // expirationHandler lands at .paused — that's still a graceful
+            // outcome (state checkpointed; resumable next run) so we report
+            // success so iOS doesn't deprioritize future BG slots.
+            switch coordinator.status {
+            case .idle, .paused: return true
+            case .running, .error: return false
+            }
         }
         task.expirationHandler = {
-            workItem.cancel()
+            // Pause gracefully rather than cancel — SyncCoordinator will
+            // checkpoint state at the next file boundary so the next run
+            // (BG or foreground) resumes from where we left off.
+            Task { @MainActor in SyncCoordinator.currentlyActive?.pause() }
         }
         Task {
             let success = (try? await workItem.value) ?? false

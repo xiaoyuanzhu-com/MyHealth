@@ -5,8 +5,8 @@ import Foundation
 /// touch the rest of the user's Drive.
 ///
 /// Folder layout mirrors MyLifeDB:
-///     MyHealth/apple-health/syncs/<batch-id>/<file>.jsonl
-///     MyHealth/apple-health/manifest.json
+///     MyHealth/apple-health/YYYY/MM/DD/<kebab-type>.json
+///     MyHealth/apple-health/YYYY/MM/DD/workout-<UUID>.json
 struct GoogleDriveClient {
     let rootFolderName: String           // "MyHealth"
     let subPath: [String]                // ["apple-health"]
@@ -40,6 +40,50 @@ struct GoogleDriveClient {
         )
         let fileName = (relativePath as NSString).lastPathComponent
         try await uploadOrReplace(name: fileName, parent: parents, data: body, token: token)
+    }
+
+    /// Fetches the bytes at `<remote_path>/<relativePath>`, or returns nil if
+    /// the file does not exist in Drive (404 or no match in our folder tree).
+    func getFile(relativePath: String) async throws -> Data? {
+        let token = try await DriveAuth.freshAccessToken()
+        // Walk subPath + the leading components of relativePath; if any
+        // segment is missing the file can't exist in our subtree.
+        let relativeParents = relativePath.split(separator: "/").map(String.init).dropLast()
+        let pathComponents: [String] = subPath + Array(relativeParents)
+        guard let parent = try await findFolderPath(components: pathComponents, token: token) else {
+            return nil
+        }
+        let fileName = (relativePath as NSString).lastPathComponent
+        guard let fileID = try await findFile(name: fileName, parent: parent, mimeType: nil, token: token) else {
+            return nil
+        }
+        var components = URLComponents(string: "https://www.googleapis.com/drive/v3/files/\(fileID)")!
+        components.queryItems = [.init(name: "alt", value: "media")]
+        var req = URLRequest(url: components.url!)
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let (data, resp) = try await urlSession.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            return nil
+        }
+        return data
+    }
+
+    /// Read-only sibling of `ensureFolderPath`: returns nil at the first
+    /// missing segment instead of creating folders.
+    private func findFolderPath(components: [String], token: String) async throws -> String? {
+        guard let rootID = try await findFile(
+            name: rootFolderName, parent: "root",
+            mimeType: "application/vnd.google-apps.folder", token: token
+        ) else { return nil }
+        var parent = rootID
+        for c in components where !c.isEmpty {
+            guard let next = try await findFile(
+                name: c, parent: parent,
+                mimeType: "application/vnd.google-apps.folder", token: token
+            ) else { return nil }
+            parent = next
+        }
+        return parent
     }
 
     // MARK: - Folder ensure

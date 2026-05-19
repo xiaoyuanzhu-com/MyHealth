@@ -5,7 +5,7 @@ A FOSS iOS app that reads your Apple Health data straight from HealthKit and syn
 - **MyLifeDB**, via the [Connect OAuth 2.1 + PKCE flow](https://my.xiaoyuanzhu.com/docs/internal/api/connect/), uploaded under `/apps/myhealth/apple-health/`.
 - **Google Drive**, via the official Google Sign-In SDK + Drive REST API, into a `MyHealth/apple-health/` folder. The app uses the `drive.file` scope, so it can only see and modify files it created itself.
 
-No middleman, no backend, no analytics. The app reads HealthKit on-device, writes JSONL files to your own destinations, and that's it.
+No middleman, no backend, no analytics. The app reads HealthKit on-device, writes per-day JSON files to your own destinations, and that's it.
 
 ## Build & install
 
@@ -246,11 +246,13 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 15'
 ```
 
-Three test files cover the auth-critical surfaces:
-
 - `PKCETests.swift` — verifies the S256 challenge for the RFC 7636 reference verifier.
-- `HealthSampleTests.swift` — locks down the `myhealth.apple_health.v1` JSONL key set and the date-format/value-stringify conventions.
-- `ManifestTests.swift` — round-trips the manifest schema and tests anchor merging.
+- `HealthSampleTests.swift` — pins the new-format encoder behaviour (ISO 8601 timestamps, device-model fallback, canonical units).
+- `DaySampleTests.swift` — round-trips the `DayFile` / `QuantitySample` / `CategorySample` / `WorkoutFile` shapes against the JSON spec.
+- `TypeNamingTests.swift` — pins `HKQuantityTypeIdentifier*` → kebab-case filename mapping.
+- `DayBucketerTests.swift` — pins the local-day boundary logic against `HKTimeZone` metadata.
+- `SnapshotMergerTests.swift` — pins UUID-dedup + sort behaviour for snapshot merges.
+- `SyncRunStateTests.swift` — round-trips the on-disk pause/resume state and verifies uuid stays out of the published wire format.
 
 End-to-end testing (HealthKit reads, real OAuth, Drive uploads) requires running on a physical iPhone — most HealthKit types return no samples in the simulator.
 

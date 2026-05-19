@@ -1,10 +1,11 @@
 import Foundation
 import HealthKit
 
-/// Persists `HKQueryAnchor`s as base64-encoded `NSKeyedArchiver` blobs so the
-/// manifest stays plain JSON. Anchors are also kept as a local cache (in
-/// `Application Support/anchors.json`) so a fresh install works even before
-/// the first manifest round-trip.
+/// Persists `HKQueryAnchor`s as base64-encoded `NSKeyedArchiver` blobs in
+/// `Application Support/anchors.json`. Anchors are the source of truth for
+/// incremental sync — they advance only when a full sync run completes
+/// (see SyncCoordinator). There is no remote manifest in the new layout;
+/// anchors live exclusively on-device.
 struct AnchorStore {
     static let cacheURL: URL = {
         let dir = try! FileManager.default.url(
