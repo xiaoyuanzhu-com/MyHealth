@@ -4,6 +4,16 @@
     "%@" : {
 
     },
+    "%@ · %@ (%@/%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@ (%3$@/%4$@)"
+          }
+        }
+      }
+    },
     "%@." : {
 
     },
@@ -917,6 +927,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "出生日期"
+          }
+        }
+      }
+    },
+    "Day %@ of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$@ of %2$@"
           }
         }
       }
@@ -2514,6 +2534,7 @@
       }
     },
     "Loading anchors" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3286,6 +3307,7 @@
       }
     },
     "Reading HealthKit" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4014,6 +4036,7 @@
       }
     },
     "Uploading %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
