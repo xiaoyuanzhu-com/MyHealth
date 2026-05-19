@@ -27,16 +27,6 @@ struct SyncTab: View {
                         )
                     }
                     NavigationLink {
-                        DriveDetailView()
-                    } label: {
-                        SyncTargetRow(
-                            title: "Google Drive",
-                            subtitle: sessionStore.googleSignedIn ? "Signed in" : "Not connected",
-                            icon: "icloud.and.arrow.up.fill",
-                            connected: sessionStore.googleSignedIn
-                        )
-                    }
-                    NavigationLink {
                         WebDAVDetailView()
                     } label: {
                         SyncTargetRow(
@@ -47,10 +37,20 @@ struct SyncTab: View {
                         )
                     }
                     NavigationLink {
-                        ComingSoonDetailView(title: "iCloud Drive")
+                        DriveDetailView()
                     } label: {
                         SyncTargetRow(
-                            title: "iCloud Drive",
+                            title: "Google Drive",
+                            subtitle: sessionStore.googleSignedIn ? "Signed in" : "Not connected",
+                            icon: "icloud.and.arrow.up.fill",
+                            connected: sessionStore.googleSignedIn
+                        )
+                    }
+                    NavigationLink {
+                        ComingSoonDetailView(title: "iCloud")
+                    } label: {
+                        SyncTargetRow(
+                            title: "iCloud",
                             subtitle: "Coming soon",
                             icon: "icloud.fill",
                             connected: false
