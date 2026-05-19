@@ -53,10 +53,13 @@ enum HealthDataTypes {
         return s
     }
 
-    /// Sample types the sync coordinator iterates with `HKAnchoredObjectQuery`.
+    /// Sample types the sync coordinator iterates per-day with `HKSampleQuery`,
+    /// and that `BackgroundSync` registers for HealthKit background delivery.
     /// Excludes characteristic types, ECG, clinical records, audiograms, and
-    /// workout routes — none of these are part of the per-day JSON layout
-    /// (see docs/superpowers/plans/2026-05-19-day-based-incremental-sync.md).
+    /// workout routes — none of these are part of the per-day JSON layout.
+    /// (Name is historical: the original implementation used
+    /// `HKAnchoredObjectQuery`; this set is still used to subscribe to
+    /// HealthKit background-delivery notifications.)
     static var allAnchoredSampleTypes: [HKSampleType] {
         var s: [HKSampleType] = []
         s.append(contentsOf: allQuantityTypes.map { $0 as HKSampleType })
