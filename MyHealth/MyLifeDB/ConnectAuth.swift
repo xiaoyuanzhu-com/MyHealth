@@ -81,7 +81,10 @@ final class ConnectAuth: NSObject {
         let verifier = PKCE.generateVerifier()
         let challenge = PKCE.challenge(for: verifier)
         let state = PKCE.generateState()
-        let scope = "files.write:\(remotePath)"
+        // Methods (post-2026-05 OAuth-methods refactor): flat allowlist,
+        // no path argument. MyHealth needs both because it writes uploads
+        // AND reads its own anchor manifest at /raw/apps/myhealth/.../manifest.json.
+        let scope = "read_file write_file"
 
         var components = URLComponents(url: metadata.authorizationEndpoint, resolvingAgainstBaseURL: false)!
         components.queryItems = [
