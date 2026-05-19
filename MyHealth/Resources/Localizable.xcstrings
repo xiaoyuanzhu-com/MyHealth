@@ -35,6 +35,7 @@
       }
     },
     "Abort and discard progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -719,6 +720,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "病情记录"
+          }
+        }
+      }
+    },
+    "Connect" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连接"
           }
         }
       }
@@ -1990,6 +2001,17 @@
         }
       }
     },
+    "Folder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件夹"
+          }
+        }
+      }
+    },
     "Forced Expiratory Volume (1s)" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3053,6 +3075,17 @@
         }
       }
     },
+    "Password or app password" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码或应用专用密码"
+          }
+        }
+      }
+    },
     "Path" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3065,6 +3098,7 @@
       }
     },
     "Paused at day %@ of %@." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3584,6 +3618,28 @@
         }
       }
     },
+    "Server" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务器"
+          }
+        }
+      }
+    },
+    "Server URL" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务器 URL"
+          }
+        }
+      }
+    },
     "Sexual Activity" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3869,6 +3925,16 @@
         }
       }
     },
+    "Stopped at day %@ of %@. Tap Sync now to continue." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stopped at day %1$@ of %2$@. Tap Sync now to continue."
+          }
+        }
+      }
+    },
     "Swimming Stroke Count" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3973,6 +4039,16 @@
         }
       }
     },
+    "The password is stored in the iOS Keychain on this device." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码保存在本设备的 iOS 钥匙串中。"
+          }
+        }
+      }
+    },
     "Time In Daylight" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4053,6 +4129,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL"
+          }
+        }
+      }
+    },
+    "User" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用户"
+          }
+        }
+      }
+    },
+    "Username" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用户名"
           }
         }
       }
@@ -4293,6 +4391,17 @@
         }
       }
     },
+    "WebDAV" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebDAV"
+          }
+        }
+      }
+    },
     "Weight measurements, in kilograms." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4366,96 +4475,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "写入批次"
-          }
-        }
-      }
-    },
-    "Connect" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "连接"
-          }
-        }
-      }
-    },
-    "Folder" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "文件夹"
-          }
-        }
-      }
-    },
-    "Password or app password" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "密码或应用专用密码"
-          }
-        }
-      }
-    },
-    "Server" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "服务器"
-          }
-        }
-      }
-    },
-    "Server URL" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "服务器 URL"
-          }
-        }
-      }
-    },
-    "The password is stored in the iOS Keychain on this device." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "密码保存在本设备的 iOS 钥匙串中。"
-          }
-        }
-      }
-    },
-    "User" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用户"
-          }
-        }
-      }
-    },
-    "Username" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用户名"
-          }
-        }
-      }
-    },
-    "WebDAV" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WebDAV"
           }
         }
       }
