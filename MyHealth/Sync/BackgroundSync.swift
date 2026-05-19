@@ -49,20 +49,20 @@ enum BackgroundSync {
         let workItem = Task { @MainActor in
             let coordinator = SyncCoordinator()
             await coordinator.runOnce(enabledDestinations: defaultDestinations())
-            // A clean finish lands at .idle. iOS preempting via
-            // expirationHandler lands at .paused — that's still a graceful
-            // outcome (state checkpointed; resumable next run) so we report
-            // success so iOS doesn't deprioritize future BG slots.
+            // A clean finish AND a stop-on-expiration both land at .idle
+            // (stop persists the (day, type) checkpoint; the next run
+            // resumes from it). Both count as graceful so iOS doesn't
+            // deprioritize future BG slots.
             switch coordinator.status {
-            case .idle, .paused: return true
+            case .idle: return true
             case .running, .error: return false
             }
         }
         task.expirationHandler = {
-            // Pause gracefully rather than cancel — SyncCoordinator will
-            // checkpoint state at the next file boundary so the next run
-            // (BG or foreground) resumes from where we left off.
-            Task { @MainActor in SyncCoordinator.currentlyActive?.pause() }
+            // Stop gracefully rather than cancel — SyncCoordinator will
+            // checkpoint state at the next (day, type) boundary so the
+            // next run (BG or foreground) resumes from where we left off.
+            Task { @MainActor in SyncCoordinator.currentlyActive?.stop() }
         }
         Task {
             let success = (try? await workItem.value) ?? false

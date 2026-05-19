@@ -31,7 +31,6 @@ final class SyncCoordinator: ObservableObject {
     enum SyncStatus: Equatable {
         case idle
         case running(stage: String)
-        case paused(completedDays: Int, totalDays: Int)
         case error(String)
     }
 
@@ -57,8 +56,7 @@ final class SyncCoordinator: ObservableObject {
     enum Destination { case myLifeDB, googleDrive }
 
     private let reader: HealthKitReader
-    private var pauseRequested = false
-    private var abortRequested = false
+    private var stopRequested = false
 
     static weak var currentlyActive: SyncCoordinator?
 
@@ -71,8 +69,7 @@ final class SyncCoordinator: ObservableObject {
     func runOnce(enabledDestinations: Set<Destination>) async {
         Self.currentlyActive = self
         defer { if Self.currentlyActive === self { Self.currentlyActive = nil } }
-        pauseRequested = false
-        abortRequested = false
+        stopRequested = false
         if let existing = SyncRunStore.load() {
             print("MyHealth: resuming run id=\(existing.runID) at day \(existing.completedDayIndex)/\(existing.daysToSync.count) typeIndex=\(existing.inProgressTypeIndex)")
             await runLoop(state: existing, enabledDestinations: enabledDestinations)
@@ -81,10 +78,24 @@ final class SyncCoordinator: ObservableObject {
         }
     }
 
-    func pause() { pauseRequested = true }
-    func abort() { abortRequested = true }
+    /// Halts the sync at the next (day, type) boundary and persists progress.
+    /// The next `runOnce` resumes from the saved checkpoint. Days fully
+    /// uploaded so far stay uploaded; their fingerprints are kept in
+    /// day-hashes.json so future runs can skip them quickly via the walk-back.
+    func stop() { stopRequested = true }
 
     var hasPendingRun: Bool { SyncRunStore.load() != nil }
+
+    /// Brief summary of the pending (stopped) run, if any. Used by the UI's
+    /// idle-state status line.
+    struct PendingRunSummary: Equatable {
+        let completedDays: Int
+        let totalDays: Int
+    }
+    var pendingRunSummary: PendingRunSummary? {
+        guard let s = SyncRunStore.load() else { return nil }
+        return PendingRunSummary(completedDays: s.completedDayIndex, totalDays: s.daysToSync.count)
+    }
 
     // MARK: - Fresh run: walk back, then plan forward sync
 
@@ -109,6 +120,12 @@ final class SyncCoordinator: ObservableObject {
                 earliestPermitted: earliestPermitted,
                 hashes: hashes
             )
+            // If the user tapped Stop during the walk, bail before allocating
+            // a run state.
+            if stopRequested {
+                self.status = .idle
+                return
+            }
 
             // 2) Plan forward sync.
             let days = daysInRange(from: start, through: today)
@@ -142,10 +159,10 @@ final class SyncCoordinator: ObservableObject {
         let dayMath = DayMath(timezone: today.timezone)
         var cursor = anchor ?? today
         while cursor.date >= earliestPermitted.date {
-            if abortRequested || pauseRequested {
+            if stopRequested {
                 // Walk-back is not resumable — on next start we re-walk.
-                // Return today as a safe default; the caller's pause/abort
-                // check will fire before any sync happens.
+                // Return today as a safe default; the caller's stop check
+                // will fire before any sync happens.
                 return today
             }
             self.status = .running(stage: String(localized: "Checking for updates · \(cursor.date)"))
@@ -221,18 +238,11 @@ final class SyncCoordinator: ObservableObject {
 
         do {
             for dayIdx in state.completedDayIndex..<state.daysToSync.count {
-                if abortRequested {
-                    print("MyHealth: aborting at day \(dayIdx)/\(state.daysToSync.count)")
-                    SyncRunStore.clear()
-                    self.status = .idle
-                    self.progress = nil
-                    return
-                }
-                if pauseRequested {
-                    print("MyHealth: paused at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(state.inProgressTypeIndex)")
+                if stopRequested {
+                    print("MyHealth: stopped at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(state.inProgressTypeIndex)")
                     state.completedDayIndex = dayIdx
                     try SyncRunStore.save(state)
-                    self.status = .paused(completedDays: dayIdx, totalDays: state.daysToSync.count)
+                    self.status = .idle
                     self.progress = nil
                     return
                 }
@@ -251,18 +261,13 @@ final class SyncCoordinator: ObservableObject {
                 )
 
                 for typeIdx in startTypeIdx..<totalSlots {
-                    if abortRequested {
-                        print("MyHealth: aborting mid-day at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(typeIdx)")
-                        SyncRunStore.clear()
-                        self.status = .idle
-                        self.progress = nil
-                        return
-                    }
-                    if pauseRequested {
+                    if stopRequested {
+                        print("MyHealth: stopped mid-day at day \(dayIdx)/\(state.daysToSync.count) typeIdx=\(typeIdx)")
                         state.completedDayIndex = dayIdx
                         state.inProgressTypeIndex = typeIdx
                         try SyncRunStore.save(state)
-                        self.status = .paused(completedDays: dayIdx, totalDays: state.daysToSync.count)
+                        self.status = .idle
+                        self.progress = nil
                         return
                     }
 
@@ -424,7 +429,7 @@ final class SyncCoordinator: ObservableObject {
         let workouts = try await reader.readWorkouts(day: day)
         var uploaded = 0
         for w in workouts {
-            if abortRequested || pauseRequested { break }
+            if stopRequested { break }
             let route = (try? await reader.loadRoute(for: w)) ?? nil
             let wf = SampleEncoder.encode(w, events: w.workoutEvents, route: route, deviceInfo: deviceInfo)
             let filename = TypeNaming.workoutFilename(uuid: wf.uuid)

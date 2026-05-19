@@ -82,16 +82,6 @@ private struct SyncNowButton: View {
             .buttonStyle(.borderedProminent)
             .disabled(disabled)
 
-            if showsAbort {
-                Button(role: .destructive) {
-                    coordinator.abort()
-                } label: {
-                    Text("Abort and discard progress")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-            }
-
             statusLine
         }
     }
@@ -105,19 +95,15 @@ private struct SyncNowButton: View {
 
     private var icon: String {
         switch coordinator.status {
-        case .running: return "pause.fill"
-        case .paused: return "play.fill"
-        case .error: return "arrow.triangle.2.circlepath"
-        case .idle: return "arrow.triangle.2.circlepath"
+        case .running: return "stop.fill"
+        default: return "arrow.triangle.2.circlepath"
         }
     }
 
     private var title: String {
         switch coordinator.status {
-        case .running: return "Pause"
-        case .paused(let done, let total): return "Resume (\(done)/\(total))"
-        case .error: return "Retry sync"
-        case .idle: return coordinator.hasPendingRun ? "Resume sync" : "Sync now"
+        case .running: return String(localized: "Stop")
+        default: return String(localized: "Sync now")
         }
     }
 
@@ -126,20 +112,11 @@ private struct SyncNowButton: View {
         return false
     }
 
-    private var showsAbort: Bool {
-        switch coordinator.status {
-        case .paused: return true
-        case .running: return true
-        case .idle: return coordinator.hasPendingRun
-        case .error: return coordinator.hasPendingRun
-        }
-    }
-
     private func action() async {
         switch coordinator.status {
         case .running:
-            coordinator.pause()
-        case .paused, .idle, .error:
+            coordinator.stop()
+        case .idle, .error:
             await coordinator.runOnce(enabledDestinations: enabledDestinations)
         }
     }
@@ -165,12 +142,15 @@ private struct SyncNowButton: View {
                         .monospacedDigit()
                 }
             }
-        case .paused(let done, let total):
-            Text("Paused at day \(done) of \(total).").foregroundStyle(.secondary).font(.caption)
         case .error(let msg):
             Text(msg).foregroundStyle(.red).font(.caption)
         case .idle:
-            EmptyView()
+            if let pending = coordinator.pendingRunSummary {
+                Text("Stopped at day \(pending.completedDays) of \(pending.totalDays). Tap Sync now to continue.")
+                    .foregroundStyle(.secondary).font(.caption)
+            } else {
+                EmptyView()
+            }
         }
     }
 }
