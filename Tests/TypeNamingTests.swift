@@ -28,10 +28,15 @@ final class TypeNamingTests: XCTestCase {
                        "dietary-vitamin-b12.json")
     }
 
-    func testUnknownPrefixIsKebabbed() {
-        // Defensive: any unknown prefix still gets kebab-cased without error.
+    func testKnownCorrelationPrefixIsStripped() {
         XCTAssertEqual(TypeNaming.filename(for: "HKCorrelationTypeIdentifierBloodPressure"),
                        "blood-pressure.json")
+    }
+
+    func testTrulyUnknownPrefixIsKebabbedWhole() {
+        // When no known prefix matches, the full string is kebab-cased verbatim.
+        XCTAssertEqual(TypeNaming.filename(for: "UnknownTypeIdentifierFoo"),
+                       "unknown-type-identifier-foo.json")
     }
 
     func testWorkoutFilename() {

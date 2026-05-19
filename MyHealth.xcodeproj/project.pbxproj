@@ -29,8 +29,8 @@
 		96D0CC2B182F8AE13759411F /* ManifestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80424CB17C15EC333D4CE614 /* ManifestTests.swift */; };
 		97EB61DC9153742631E77037 /* HealthSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E57D6F93FE0F40EF7D833 /* HealthSample.swift */; };
 		BB253AEEE603E832745D386F /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250EB3920731157AAEE8D1CB /* PKCETests.swift */; };
-		A1000001000000000000000001 /* TypeNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000001 /* TypeNaming.swift */; };
-		A1000001000000000000000002 /* TypeNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000002 /* TypeNamingTests.swift */; };
+		A10000010000000000000001 /* TypeNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* TypeNaming.swift */; };
+		A10000010000000000000002 /* TypeNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* TypeNamingTests.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
@@ -67,8 +67,8 @@
 		07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBClient.swift; sourceTree = "<group>"; };
 		1C54AC311B9681A008227307 /* AnchorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorStore.swift; sourceTree = "<group>"; };
 		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
-		A1000002000000000000000001 /* TypeNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNaming.swift; sourceTree = "<group>"; };
-		A1000002000000000000000002 /* TypeNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNamingTests.swift; sourceTree = "<group>"; };
+		A10000020000000000000001 /* TypeNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNaming.swift; sourceTree = "<group>"; };
+		A10000020000000000000002 /* TypeNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNamingTests.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 				432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */,
 				80424CB17C15EC333D4CE614 /* ManifestTests.swift */,
 				250EB3920731157AAEE8D1CB /* PKCETests.swift */,
-				A1000002000000000000000002 /* TypeNamingTests.swift */,
+				A10000020000000000000002 /* TypeNamingTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -209,7 +209,7 @@
 				5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */,
 				97A2C80136581E494739D880 /* BatchWriter.swift */,
 				D98456748D6490844950A6C5 /* SyncCoordinator.swift */,
-				A1000002000000000000000001 /* TypeNaming.swift */,
+				A10000020000000000000001 /* TypeNaming.swift */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -345,7 +345,7 @@
 				54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */,
 				8A394384C14621A0AE3FBBF8 /* SyncManifest.swift in Sources */,
 				FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */,
-				A1000001000000000000000001 /* TypeNaming.swift in Sources */,
+				A10000010000000000000001 /* TypeNaming.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +356,7 @@
 				90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */,
 				96D0CC2B182F8AE13759411F /* ManifestTests.swift in Sources */,
 				BB253AEEE603E832745D386F /* PKCETests.swift in Sources */,
-				A1000001000000000000000002 /* TypeNamingTests.swift in Sources */,
+				A10000010000000000000002 /* TypeNamingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

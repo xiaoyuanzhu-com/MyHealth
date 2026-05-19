@@ -1,5 +1,3 @@
-import Foundation
-
 /// Maps a HealthKit type identifier (e.g. `HKQuantityTypeIdentifierStepCount`)
 /// to the kebab-case filename used in the new per-day layout (e.g.
 /// `step-count.json`). Recognised prefixes are stripped; everything after the
@@ -36,7 +34,7 @@ enum TypeNaming {
 
     /// CamelCase → kebab-case. Treats runs of uppercase as one token
     /// ("SDNN" → "sdnn", "VO2Max" → "vo2-max").
-    static func kebab(_ s: String) -> String {
+    private static func kebab(_ s: String) -> String {
         guard !s.isEmpty else { return "" }
         var out = ""
         let chars = Array(s)
