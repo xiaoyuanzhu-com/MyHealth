@@ -91,7 +91,6 @@ struct SyncTab: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Sync")
         }
     }
 }

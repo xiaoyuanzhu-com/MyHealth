@@ -22,7 +22,6 @@ struct DataTab: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Data")
             .navigationDestination(for: HealthTypeEntry.self) { entry in
                 DataTypeDetailView(entry: entry)
             }
