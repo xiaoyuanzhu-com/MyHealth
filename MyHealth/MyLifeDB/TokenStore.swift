@@ -14,7 +14,7 @@ struct MyLifeDBSession: Codable {
     var base_url: String           // e.g. "https://my.xiaoyuanzhu.com"
     var client_id: String          // "org.foss.myhealth.ios"
     var redirect_uri: String       // "org.foss.myhealth.ios://oauth/callback"
-    var remote_path: String        // "/apps/myhealth/apple-health"
+    var remote_path: String        // "/apps/apple-health"
     var scope: String              // granted scope echoed by /token
 
     var access_token: String

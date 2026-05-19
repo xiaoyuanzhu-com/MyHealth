@@ -22,7 +22,7 @@ final class ConnectAuth: NSObject {
     nonisolated static let appName = "MyHealth"
     nonisolated static let redirectScheme = "org.foss.myhealth.ios"
     nonisolated static let redirectURI = "org.foss.myhealth.ios://oauth/callback"
-    nonisolated static let defaultRemotePath = "/apps/myhealth/apple-health"
+    nonisolated static let defaultRemotePath = "/apps/apple-health"
 
     /// How long we wait for the user to complete the external auth flow
     /// before giving up. The user has likely abandoned by then.
@@ -82,8 +82,9 @@ final class ConnectAuth: NSObject {
         let challenge = PKCE.challenge(for: verifier)
         let state = PKCE.generateState()
         // Methods (post-2026-05 OAuth-methods refactor): flat allowlist,
-        // no path argument. MyHealth needs both because it writes uploads
-        // AND reads its own anchor manifest at /raw/apps/myhealth/.../manifest.json.
+        // no path argument. MyHealth needs both — the day-based sync uses a
+        // GET-merge-PUT pipeline that reads existing day-files before
+        // writing them back as a superset.
         let scope = "read_file write_file"
 
         var components = URLComponents(url: metadata.authorizationEndpoint, resolvingAgainstBaseURL: false)!

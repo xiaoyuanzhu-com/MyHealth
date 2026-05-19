@@ -2,8 +2,8 @@
 
 A FOSS iOS app that reads your Apple Health data straight from HealthKit and syncs it to:
 
-- **MyLifeDB**, via the [Connect OAuth 2.1 + PKCE flow](https://my.xiaoyuanzhu.com/docs/internal/api/connect/), uploaded under `/apps/myhealth/apple-health/`.
-- **Google Drive**, via the official Google Sign-In SDK + Drive REST API, into a `MyHealth/apple-health/` folder. The app uses the `drive.file` scope, so it can only see and modify files it created itself.
+- **MyLifeDB**, via the [Connect OAuth 2.1 + PKCE flow](https://my.xiaoyuanzhu.com/docs/internal/api/connect/), uploaded under `/apps/apple-health/`.
+- **Google Drive**, via the official Google Sign-In SDK + Drive REST API, into an `apple-health/` folder. The app uses the `drive.file` scope, so it can only see and modify files it created itself.
 
 No middleman, no backend, no analytics. The app reads HealthKit on-device, writes per-day JSON files to your own destinations, and that's it.
 
@@ -47,7 +47,7 @@ The free Apple ID profile reauthorises every 7 days; a paid account ($99/yr) las
 
 Synced from iOS HealthKit via the MyLifeDB app.
 
-For MyLifeDB the remote root is `/apps/myhealth/apple-health/`, requested with scope `files.write:/apps/myhealth/apple-health`. For Drive it's `MyHealth/apple-health/` under the user's Drive root.
+For MyLifeDB the remote root is `/apps/apple-health/`, requested via the `read_file write_file` scopes against the Connect server's flat allowlist. For Drive it's `apple-health/` under the user's Drive root.
 
 ### Directory Layout
 

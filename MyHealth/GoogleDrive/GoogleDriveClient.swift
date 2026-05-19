@@ -5,16 +5,16 @@ import Foundation
 /// touch the rest of the user's Drive.
 ///
 /// Folder layout mirrors MyLifeDB:
-///     MyHealth/apple-health/YYYY/MM/DD/<kebab-type>.json
-///     MyHealth/apple-health/YYYY/MM/DD/workout-<UUID>.json
+///     apple-health/YYYY/MM/DD/<kebab-type>.json
+///     apple-health/YYYY/MM/DD/workout-<UUID>.json
 struct GoogleDriveClient {
-    let rootFolderName: String           // "MyHealth"
-    let subPath: [String]                // ["apple-health"]
+    let rootFolderName: String           // "apple-health"
+    let subPath: [String]                // []
 
     private let urlSession: URLSession
 
-    init(rootFolderName: String = "MyHealth",
-         subPath: [String] = ["apple-health"],
+    init(rootFolderName: String = "apple-health",
+         subPath: [String] = [],
          urlSession: URLSession = .shared) {
         self.rootFolderName = rootFolderName
         self.subPath = subPath
