@@ -11,6 +11,10 @@ struct MyHealthApp: App {
     init() {
         Self.migrateLegacyOnDiskState()
         BackgroundSync.register()
+        // Observer queries don't survive process termination, so re-register
+        // on every launch — including BGTask launches that never reach the
+        // scene's .task below.
+        BackgroundSync.enableBackgroundDelivery()
     }
 
     private var selectedLocale: Locale {
@@ -68,7 +72,6 @@ struct MyHealthApp: App {
                     _ = await DriveAuth.restorePreviousSignIn()
                     await sessionStore.refresh()
                     BackgroundSync.scheduleNext()
-                    BackgroundSync.enableBackgroundDelivery()
                 }
                 .onChange(of: appLanguage) { _, _ in
                     applyAppleLanguages()
