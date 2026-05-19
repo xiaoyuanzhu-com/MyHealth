@@ -35,6 +35,8 @@
 		A10000010000000000000004 /* DaySampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000004 /* DaySampleTests.swift */; };
 		A10000010000000000000005 /* DayBucketer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000005 /* DayBucketer.swift */; };
 		A10000010000000000000006 /* DayBucketerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000006 /* DayBucketerTests.swift */; };
+		A10000010000000000000007 /* SnapshotMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000007 /* SnapshotMerger.swift */; };
+		A10000010000000000000008 /* SnapshotMergerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000008 /* SnapshotMergerTests.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
@@ -77,6 +79,8 @@
 		A10000020000000000000004 /* DaySampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySampleTests.swift; sourceTree = "<group>"; };
 		A10000020000000000000005 /* DayBucketer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBucketer.swift; sourceTree = "<group>"; };
 		A10000020000000000000006 /* DayBucketerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBucketerTests.swift; sourceTree = "<group>"; };
+		A10000020000000000000007 /* SnapshotMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotMerger.swift; sourceTree = "<group>"; };
+		A10000020000000000000008 /* SnapshotMergerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotMergerTests.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */,
 				80424CB17C15EC333D4CE614 /* ManifestTests.swift */,
 				250EB3920731157AAEE8D1CB /* PKCETests.swift */,
+				A10000020000000000000008 /* SnapshotMergerTests.swift */,
 				A10000020000000000000002 /* TypeNamingTests.swift */,
 			);
 			path = Tests;
@@ -220,6 +225,7 @@
 				5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */,
 				97A2C80136581E494739D880 /* BatchWriter.swift */,
 				A10000020000000000000005 /* DayBucketer.swift */,
+				A10000020000000000000007 /* SnapshotMerger.swift */,
 				D98456748D6490844950A6C5 /* SyncCoordinator.swift */,
 				A10000020000000000000001 /* TypeNaming.swift */,
 			);
@@ -360,6 +366,7 @@
 				FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */,
 				A10000010000000000000001 /* TypeNaming.swift in Sources */,
 				A10000010000000000000005 /* DayBucketer.swift in Sources */,
+				A10000010000000000000007 /* SnapshotMerger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +380,7 @@
 				BB253AEEE603E832745D386F /* PKCETests.swift in Sources */,
 				A10000010000000000000002 /* TypeNamingTests.swift in Sources */,
 				A10000010000000000000006 /* DayBucketerTests.swift in Sources */,
+				A10000010000000000000008 /* SnapshotMergerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
