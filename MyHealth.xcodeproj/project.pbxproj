@@ -36,8 +36,8 @@
 		A1000001000000000000000A /* SyncRunStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000A /* SyncRunStore.swift */; };
 		A1000001000000000000000B /* SyncRunStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000B /* SyncRunStateTests.swift */; };
 		A1000001000000000000000C /* SyncCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000C /* SyncCursor.swift */; };
-		A1000001000000000000000D /* SyncWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000D /* SyncWindow.swift */; };
-		A1000001000000000000000E /* SyncWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000E /* SyncWindowTests.swift */; };
+		A1000001000000000000000D /* DayHashStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000D /* DayHashStore.swift */; };
+		A1000001000000000000000E /* DayHashStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000E /* DayHashStoreTests.swift */; };
 		A1000001000000000000000F /* SyncCursorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000000F /* SyncCursorTests.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
@@ -86,8 +86,8 @@
 		A1000002000000000000000A /* SyncRunStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRunStore.swift; sourceTree = "<group>"; };
 		A1000002000000000000000B /* SyncRunStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRunStateTests.swift; sourceTree = "<group>"; };
 		A1000002000000000000000C /* SyncCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCursor.swift; sourceTree = "<group>"; };
-		A1000002000000000000000D /* SyncWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWindow.swift; sourceTree = "<group>"; };
-		A1000002000000000000000E /* SyncWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWindowTests.swift; sourceTree = "<group>"; };
+		A1000002000000000000000D /* DayHashStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayHashStore.swift; sourceTree = "<group>"; };
+		A1000002000000000000000E /* DayHashStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayHashStoreTests.swift; sourceTree = "<group>"; };
 		A1000002000000000000000F /* SyncCursorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCursorTests.swift; sourceTree = "<group>"; };
 		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 				250EB3920731157AAEE8D1CB /* PKCETests.swift */,
 				A10000020000000000000008 /* SnapshotMergerTests.swift */,
 				A1000002000000000000000B /* SyncRunStateTests.swift */,
-				A1000002000000000000000E /* SyncWindowTests.swift */,
+				A1000002000000000000000E /* DayHashStoreTests.swift */,
 				A1000002000000000000000F /* SyncCursorTests.swift */,
 				A10000020000000000000002 /* TypeNamingTests.swift */,
 			);
@@ -232,7 +232,7 @@
 				D98456748D6490844950A6C5 /* SyncCoordinator.swift */,
 				A1000002000000000000000A /* SyncRunStore.swift */,
 				A1000002000000000000000C /* SyncCursor.swift */,
-				A1000002000000000000000D /* SyncWindow.swift */,
+				A1000002000000000000000D /* DayHashStore.swift */,
 				A10000020000000000000001 /* TypeNaming.swift */,
 			);
 			path = Sync;
@@ -372,7 +372,7 @@
 				A10000010000000000000009 /* SyncRunState.swift in Sources */,
 				A1000001000000000000000A /* SyncRunStore.swift in Sources */,
 				A1000001000000000000000C /* SyncCursor.swift in Sources */,
-				A1000001000000000000000D /* SyncWindow.swift in Sources */,
+				A1000001000000000000000D /* DayHashStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +387,7 @@
 				A10000010000000000000006 /* DayBucketerTests.swift in Sources */,
 				A10000010000000000000008 /* SnapshotMergerTests.swift in Sources */,
 				A1000001000000000000000B /* SyncRunStateTests.swift in Sources */,
-				A1000001000000000000000E /* SyncWindowTests.swift in Sources */,
+				A1000001000000000000000E /* DayHashStoreTests.swift in Sources */,
 				A1000001000000000000000F /* SyncCursorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

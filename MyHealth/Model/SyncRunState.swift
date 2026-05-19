@@ -4,15 +4,13 @@ import Foundation
 /// `Application Support/sync-run-state.json` while a run is active or paused;
 /// deleted when the run completes or the user aborts.
 ///
-/// The state is intentionally tiny — no samples are buffered. The day cursor
-/// (`completedDayIndex`) and the per-day type cursor (`inProgressTypeIndex`)
-/// together pinpoint exactly where to resume. Each entry in `daysToSync`
-/// carries its phase so the coordinator can pick the right status string
-/// when resuming mid-run.
+/// `daysToSync` is the forward-sync plan computed at the start of a run
+/// (oldest → newest, anchor day inclusive). `completedDayIndex` and
+/// `inProgressTypeIndex` together pinpoint where to resume mid-run.
 struct SyncRunState: Codable, Equatable {
     let runID: String
     let startedAt: String
-    let daysToSync: [SyncWindow.Entry]
+    let daysToSync: [DayBucketer.DayKey]
     var completedDayIndex: Int
     var inProgressTypeIndex: Int
 }

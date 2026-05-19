@@ -2,25 +2,26 @@ import Foundation
 import HealthKit
 import UIKit
 
-/// Orchestrates one day-by-day sync. A run has two phases:
+/// Orchestrates one sync run with a single unified flow:
 ///
-///   1. Forward (oldest → newest): `[lastSyncedDay … today]`. Re-syncs the
-///      anchor day to catch late-arriving data, then walks forward to today.
-///      On first run (no anchor), starts from `oldestDataDay` probed from
-///      HealthKit.
+///   1. Backward walk to find the start day. Begin at the anchor (or
+///      today if no anchor). For each day, check whether the locally-
+///      stored fingerprint still matches HealthKit's content. Match ⇒
+///      wall found, the next day is the start. Mismatch ⇒ walk back one
+///      day and check again. On first sync the fingerprint store is
+///      empty, so the check degrades to "does this day have any sample
+///      at all?" and the walk terminates at the first empty day.
 ///
-///   2. Double-check (backward, newest-of-old → oldest-of-old): 7 days
-///      strictly older than the anchor. Catches edits/backfills to days the
-///      previous run already covered. Skipped on first run.
+///   2. Forward sync from `start` to today, oldest → newest. For each
+///      (day, type) read HealthKit, merge with the remote snapshot,
+///      upload one file. Memory is bounded to one (day, type) slice.
+///      After each day completes, the day's freshly-computed hash is
+///      stored.
 ///
-/// For each day, iterate every sample type then workouts (one extra slot).
-/// Per (day, type): query HealthKit with a day-bounded predicate, merge with
-/// remote, upload. Memory is bounded to one (day, type) slice. Pause/abort
-/// flags are honored at every (day, type) boundary.
-///
-/// On full completion: `cursor.lastSyncedDay = today`, run-state cleared.
-/// Pause keeps state; abort deletes it; resume picks up at the saved
-/// (completedDayIndex, inProgressTypeIndex).
+///   3. On full completion: `cursor.lastSyncedDay = today`, run-state
+///      cleared. The walk-back state is not persisted; if the run is
+///      paused or aborted before forward sync begins, the next start
+///      simply re-runs the walk (cheap in the steady state).
 @MainActor
 final class SyncCoordinator: ObservableObject {
     @Published private(set) var status: SyncStatus = .idle
@@ -41,7 +42,6 @@ final class SyncCoordinator: ObservableObject {
         let currentTypeIndex: Int
         let totalTypes: Int
         let currentTypeName: String?
-        let phase: SyncWindow.Phase?
     }
 
     struct SyncRunResult: Equatable {
@@ -59,8 +59,6 @@ final class SyncCoordinator: ObservableObject {
     private let reader: HealthKitReader
     private var pauseRequested = false
     private var abortRequested = false
-
-    private let doubleCheckDays = 7
 
     static weak var currentlyActive: SyncCoordinator?
 
@@ -88,40 +86,33 @@ final class SyncCoordinator: ObservableObject {
 
     var hasPendingRun: Bool { SyncRunStore.load() != nil }
 
-    // MARK: - Fresh run
+    // MARK: - Fresh run: walk back, then plan forward sync
 
     private func freshRun(enabledDestinations: Set<Destination>) async {
         let started = Date()
         let runID = makeRunID(date: started)
         do {
             let cursor = SyncCursor.load()
-            let tz = TimeZone.current.identifier
+            let hashes = DayHashStore.load()
             let today = DayBucketer.dayKey(start: started, timezone: TimeZone.current)
             let earliestPermitted = DayBucketer.dayKey(
                 start: HKHealthStore().earliestPermittedSampleDate(),
                 timezone: TimeZone.current
             )
 
-            // First run only: probe HK for oldest sample to bound the back-fill.
-            var oldestDataDay: DayBucketer.DayKey?
-            if cursor.lastSyncedDay == nil {
-                status = .running(stage: String(localized: "Finding earliest data"))
-                oldestDataDay = await reader.oldestDataDay(timezone: TimeZone.current)
-                print("MyHealth: first-run oldestDataDay=\(oldestDataDay?.date ?? "-")")
-            }
-
-            let days = SyncWindow.compute(
+            // 1) Backward walk to discover the start day.
+            status = .running(stage: String(localized: "Checking for updates"))
+            self.progress = nil
+            let start = await discoverStartDay(
+                anchor: cursor.lastSyncedDay,
                 today: today,
-                cursor: cursor,
-                oldestDataDay: oldestDataDay,
-                doubleCheckDays: doubleCheckDays,
                 earliestPermitted: earliestPermitted,
-                timezone: tz
+                hashes: hashes
             )
-            let forwardCount = days.filter { $0.phase == .forward }.count
-            let doubleCheckCount = days.count - forwardCount
-            print("MyHealth: window forward=\(forwardCount) doubleCheck=\(doubleCheckCount) " +
-                  "start=\(days.first?.key.date ?? "-") end=\(days.last?.key.date ?? "-")")
+
+            // 2) Plan forward sync.
+            let days = daysInRange(from: start, through: today)
+            print("MyHealth: walk done start=\(start.date) today=\(today.date) days=\(days.count)")
 
             let state = SyncRunState(
                 runID: runID,
@@ -136,6 +127,71 @@ final class SyncCoordinator: ObservableObject {
             status = .error(error.localizedDescription)
             print("MyHealth: sync FAILED stage=fresh-run error=\(error.localizedDescription)")
         }
+    }
+
+    /// Walk backward from `anchor` (or today if no anchor) until either
+    /// the day's content matches the stored fingerprint (wall found) or
+    /// the day has no samples and no stored fingerprint (empty-history
+    /// wall). Returns the first day that the forward sync should start at.
+    private func discoverStartDay(
+        anchor: DayBucketer.DayKey?,
+        today: DayBucketer.DayKey,
+        earliestPermitted: DayBucketer.DayKey,
+        hashes: [String: String]
+    ) async -> DayBucketer.DayKey {
+        let dayMath = DayMath(timezone: today.timezone)
+        var cursor = anchor ?? today
+        while cursor.date >= earliestPermitted.date {
+            if abortRequested || pauseRequested {
+                // Walk-back is not resumable — on next start we re-walk.
+                // Return today as a safe default; the caller's pause/abort
+                // check will fire before any sync happens.
+                return today
+            }
+            self.status = .running(stage: String(localized: "Checking for updates · \(cursor.date)"))
+            let hasUpdates = await hasUpdates(day: cursor, storedHash: hashes[cursor.date])
+            if hasUpdates {
+                cursor = dayMath.previousDay(cursor)
+            } else {
+                return dayMath.nextDay(cursor)
+            }
+        }
+        return earliestPermitted
+    }
+
+    private func hasUpdates(day: DayBucketer.DayKey, storedHash: String?) async -> Bool {
+        if let storedHash {
+            // We have a record of this day. Recompute and compare.
+            guard let live = try? await reader.dayHash(day: day) else {
+                // HK threw on a non-auth error; safest to assume updates exist
+                // so the day gets re-uploaded.
+                return true
+            }
+            return live != storedHash
+        } else {
+            // First-time encounter with this day. Fast probe: any sample?
+            return await reader.dayHasAnySample(day: day)
+        }
+    }
+
+    private func daysInRange(
+        from start: DayBucketer.DayKey,
+        through end: DayBucketer.DayKey
+    ) -> [DayBucketer.DayKey] {
+        guard start.date <= end.date else { return [] }
+        let dayMath = DayMath(timezone: end.timezone)
+        var out: [DayBucketer.DayKey] = []
+        var c = start
+        let cap = 50_000  // safety against pathological inputs
+        var i = 0
+        while c.date <= end.date {
+            out.append(c)
+            if c.date == end.date { break }
+            c = dayMath.nextDay(c)
+            i += 1
+            if i >= cap { break }
+        }
+        return out
     }
 
     // MARK: - Day loop
@@ -181,25 +237,17 @@ final class SyncCoordinator: ObservableObject {
                     return
                 }
 
-                let entry = state.daysToSync[dayIdx]
-                let day = entry.key
-                let phase = entry.phase
+                let day = state.daysToSync[dayIdx]
                 // Resume mid-day only on the first outer-loop iteration of this run;
                 // every subsequent day starts at slot 0 because the end-of-day save
                 // (below) resets inProgressTypeIndex.
                 let startTypeIdx = (dayIdx == state.completedDayIndex) ? state.inProgressTypeIndex : 0
 
-                // Per-day status: a single "starting day X" update. We do NOT
-                // re-update status for every type below — empty (day, type)
-                // cells are microseconds of HK work, and re-publishing the
-                // status N times forces N SwiftUI re-renders which is the
-                // actual perceptual slowness. We only re-update when there
-                // is real work to show (inside syncQuantity/syncCategory).
-                self.status = .running(stage: stageString(phase: phase, day: day.date))
+                self.status = .running(stage: String(localized: "Syncing \(day.date)"))
                 self.progress = Progress(
                     completedDays: dayIdx, totalDays: state.daysToSync.count,
                     currentDate: day.date, currentTypeIndex: startTypeIdx,
-                    totalTypes: totalSlots, currentTypeName: nil, phase: phase
+                    totalTypes: totalSlots, currentTypeName: nil
                 )
 
                 for typeIdx in startTypeIdx..<totalSlots {
@@ -233,14 +281,14 @@ final class SyncCoordinator: ObservableObject {
                         displayName = TypeNaming.displayName(for: sampleType.identifier)
                         if let q = sampleType as? HKQuantityType {
                             let outcome = try await syncQuantity(
-                                day: day, type: q, phase: phase,
+                                day: day, type: q,
                                 mld: mldClient, drive: drive
                             )
                             totalSamples += outcome.uploaded
                             didWork = outcome.didUpload
                         } else if let c = sampleType as? HKCategoryType {
                             let outcome = try await syncCategory(
-                                day: day, type: c, phase: phase,
+                                day: day, type: c,
                                 mld: mldClient, drive: drive
                             )
                             totalSamples += outcome.uploaded
@@ -250,24 +298,28 @@ final class SyncCoordinator: ObservableObject {
                         }
                     }
 
-                    // Only refresh UI when this slot actually did something.
-                    // Empty types don't tick the type label — they're invisible
-                    // to the user and complete in microseconds.
                     if didWork {
-                        self.status = .running(stage: stageString(
-                            phase: phase, day: day.date, typeName: displayName
-                        ))
+                        self.status = .running(stage: String(localized: "Syncing \(day.date) · \(displayName)"))
                         self.progress = Progress(
                             completedDays: dayIdx, totalDays: state.daysToSync.count,
                             currentDate: day.date, currentTypeIndex: typeIdx,
-                            totalTypes: totalSlots, currentTypeName: displayName,
-                            phase: phase
+                            totalTypes: totalSlots, currentTypeName: displayName
                         )
                     }
 
                     state.completedDayIndex = dayIdx
                     state.inProgressTypeIndex = typeIdx + 1
                     try SyncRunStore.save(state)
+                }
+
+                // Day completed: compute and store its fingerprint so future
+                // walk-backs can compare. We hash AFTER upload because the
+                // hash represents the local HK state at the time of sync;
+                // any later HK change will not match.
+                if let hash = try? await reader.dayHash(day: day) {
+                    var hashes = DayHashStore.load()
+                    hashes[day.date] = hash
+                    try? DayHashStore.save(hashes)
                 }
 
                 state.completedDayIndex = dayIdx + 1
@@ -284,31 +336,14 @@ final class SyncCoordinator: ObservableObject {
         }
     }
 
-    private func stageString(phase: SyncWindow.Phase, day: String, typeName: String? = nil) -> String {
-        switch (phase, typeName) {
-        case (.forward, .some(let t)):
-            return String(localized: "Syncing \(day) · \(t)")
-        case (.forward, nil):
-            return String(localized: "Syncing \(day)")
-        case (.doubleCheck, .some(let t)):
-            return String(localized: "Double-checking updates for \(day) · \(t)")
-        case (.doubleCheck, nil):
-            return String(localized: "Double-checking updates for \(day)")
-        }
-    }
-
     private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int,
                           mldUploaded: Bool, driveUploaded: Bool) async throws {
-        // Anchor advances to the newest forward day seen, which by construction
-        // is the latest `.forward` entry in `daysToSync`. If for some reason
-        // no forward entry exists (degenerate), don't move the anchor.
-        let newestForward = state.daysToSync
-            .reversed()
-            .first(where: { $0.phase == .forward })?
-            .key
-        if let newestForward {
+        // Anchor advances to the newest day we covered. The forward plan is
+        // oldest → newest, so the last entry is the freshest day. If the plan
+        // is empty (clock skew / degenerate) the anchor stays put.
+        if let newest = state.daysToSync.last {
             var cursor = SyncCursor.load()
-            cursor.lastSyncedDay = newestForward
+            cursor.lastSyncedDay = newest
             try SyncCursor.save(cursor)
         }
         SyncRunStore.clear()
@@ -324,7 +359,7 @@ final class SyncCoordinator: ObservableObject {
         self.lastResult = result
         self.status = .idle
         self.progress = nil
-        print("MyHealth: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.daysToSync.count) anchor=\(newestForward?.date ?? "-")")
+        print("MyHealth: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.daysToSync.count) anchor=\(state.daysToSync.last?.date ?? "-")")
     }
 
     // MARK: - Per-(day, type) slots
@@ -335,7 +370,7 @@ final class SyncCoordinator: ObservableObject {
     }
 
     private func syncQuantity(
-        day: DayBucketer.DayKey, type: HKQuantityType, phase: SyncWindow.Phase,
+        day: DayBucketer.DayKey, type: HKQuantityType,
         mld: MyLifeDBClient?, drive: GoogleDriveClient?
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readQuantity(type: type, day: day)
@@ -344,9 +379,10 @@ final class SyncCoordinator: ObservableObject {
         let path = "\(day.pathPrefix)/\(filename)"
         let existing = try await getExistingQuantity(path: path, mld: mld, drive: drive)
         let merged = SnapshotMerger.merge(existing: existing, incoming: incoming)
-        // Double-check optimization: if the merged content equals what is
-        // already on the remote, skip the network PUT entirely.
-        if phase == .doubleCheck, merged == existing {
+        // If the merged content equals what is already on the remote, skip
+        // the network PUT. This is the steady-state fast path: re-syncing a
+        // day with no changes does no network work.
+        if merged == existing {
             return SlotOutcome(uploaded: merged.count, didUpload: false)
         }
         let unit = merged.first?.unit ?? incoming.first?.unit ?? ""
@@ -360,7 +396,7 @@ final class SyncCoordinator: ObservableObject {
     }
 
     private func syncCategory(
-        day: DayBucketer.DayKey, type: HKCategoryType, phase: SyncWindow.Phase,
+        day: DayBucketer.DayKey, type: HKCategoryType,
         mld: MyLifeDBClient?, drive: GoogleDriveClient?
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readCategory(type: type, day: day)
@@ -369,7 +405,7 @@ final class SyncCoordinator: ObservableObject {
         let path = "\(day.pathPrefix)/\(filename)"
         let existing = try await getExistingCategory(path: path, mld: mld, drive: drive)
         let merged = SnapshotMerger.mergeCategory(existing: existing, incoming: incoming)
-        if phase == .doubleCheck, merged == existing {
+        if merged == existing {
             return SlotOutcome(uploaded: merged.count, didUpload: false)
         }
         let envelope = DayFile.category(
@@ -447,6 +483,36 @@ final class SyncCoordinator: ObservableObject {
         return withUnsafePointer(to: &sysinfo.machine) {
             $0.withMemoryRebound(to: CChar.self, capacity: 1) { String(cString: $0) }
         }
+    }
+}
+
+/// Local date arithmetic for a fixed timezone — reusable inside
+/// `SyncCoordinator` for the walk-back and forward-range steps.
+private struct DayMath {
+    let calendar: Calendar
+    let formatter: DateFormatter
+    let timezone: String
+
+    init(timezone: String) {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: timezone) ?? .current
+        self.calendar = cal
+        let f = DateFormatter()
+        f.calendar = cal
+        f.timeZone = cal.timeZone
+        f.dateFormat = "yyyy-MM-dd"
+        self.formatter = f
+        self.timezone = timezone
+    }
+
+    func previousDay(_ k: DayBucketer.DayKey) -> DayBucketer.DayKey { shifted(k, by: -1) }
+    func nextDay(_ k: DayBucketer.DayKey) -> DayBucketer.DayKey { shifted(k, by: 1) }
+
+    private func shifted(_ k: DayBucketer.DayKey, by days: Int) -> DayBucketer.DayKey {
+        guard let date = formatter.date(from: k.date),
+              let moved = calendar.date(byAdding: .day, value: days, to: date)
+        else { return k }
+        return DayBucketer.DayKey(date: formatter.string(from: moved), timezone: timezone)
     }
 }
 
