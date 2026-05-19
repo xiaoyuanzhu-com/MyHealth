@@ -2453,17 +2453,6 @@
         }
       }
     },
-    "Loading manifest" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "加载清单"
-          }
-        }
-      }
-    },
     "Logged mindfulness or breathing sessions." : {
       "extractionState" : "stale",
       "localizations" : {

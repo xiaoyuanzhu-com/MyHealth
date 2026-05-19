@@ -5,8 +5,8 @@ import Foundation
 /// touch the rest of the user's Drive.
 ///
 /// Folder layout mirrors MyLifeDB:
-///     MyHealth/apple-health/syncs/<batch-id>/<file>.jsonl
-///     MyHealth/apple-health/manifest.json
+///     MyHealth/apple-health/YYYY/MM/DD/<kebab-type>.json
+///     MyHealth/apple-health/YYYY/MM/DD/workout-<UUID>.json
 struct GoogleDriveClient {
     let rootFolderName: String           // "MyHealth"
     let subPath: [String]                // ["apple-health"]
