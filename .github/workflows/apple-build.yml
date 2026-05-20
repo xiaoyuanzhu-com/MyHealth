@@ -27,8 +27,6 @@ jobs:
         env:
           CERTIFICATES_P12: ${{ secrets.CERTIFICATES_P12 }}
           CERTIFICATES_P12_PASSWORD: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
-          DEV_CERTIFICATES_P12: ${{ secrets.DEV_CERTIFICATES_P12 }}
-          DEV_CERTIFICATES_P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
         run: |
@@ -44,13 +42,6 @@ jobs:
           security import "$RUNNER_TEMP/dist-cert.p12" \
             -k "$KEYCHAIN_PATH" \
             -P "$CERTIFICATES_P12_PASSWORD" \
-            -T /usr/bin/codesign
-
-          # Import development certificate
-          echo "$DEV_CERTIFICATES_P12" | base64 --decode > "$RUNNER_TEMP/dev-cert.p12"
-          security import "$RUNNER_TEMP/dev-cert.p12" \
-            -k "$KEYCHAIN_PATH" \
-            -P "$DEV_CERTIFICATES_P12_PASSWORD" \
             -T /usr/bin/codesign
 
           # Import Apple WWDR intermediate certificates (needed for cert chain)
@@ -164,7 +155,7 @@ jobs:
         run: |
           security list-keychains -d user -s login.keychain-db
           security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
-          rm -f "$RUNNER_TEMP/dist-cert.p12" "$RUNNER_TEMP/dev-cert.p12" "$RUNNER_TEMP"/AppleWWDRCA*.cer
+          rm -f "$RUNNER_TEMP/dist-cert.p12" "$RUNNER_TEMP"/AppleWWDRCA*.cer
           rm -f ~/private_keys/AuthKey_*.p8
           rm -rf "$RUNNER_TEMP/MyHealth-iOS.xcarchive"
           rm -rf "$RUNNER_TEMP/ios-output"
