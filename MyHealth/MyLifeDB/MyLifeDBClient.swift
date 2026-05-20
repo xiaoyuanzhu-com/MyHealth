@@ -7,6 +7,15 @@ actor MyLifeDBClient {
     private var session: MyLifeDBSession
     private let urlSession: URLSession
 
+    /// Coalesces concurrent refreshes onto a single network call. Swift actors
+    /// release isolation across `await`, so two parallel `execute(...)` calls
+    /// that both hit 401 would otherwise both POST the same refresh_token —
+    /// the second arrives after the gateway has already rotated it, gets
+    /// treated as a replay, and the gateway revokes the entire chain (RFC
+    /// 6749 §10.4). Holding the in-flight Task here lets the second caller
+    /// `await` the first's result instead of issuing its own request.
+    private var refreshTask: Task<MyLifeDBSession, Error>?
+
     init(session: MyLifeDBSession, urlSession: URLSession = .shared) {
         self.session = session
         self.urlSession = urlSession
@@ -103,8 +112,7 @@ actor MyLifeDBClient {
         case 401:
             // Refresh and retry once.
             print("MyHealth: mld \(method) \(path) → 401, refreshing token")
-            let refreshed = try await ConnectAuth.refresh(session)
-            self.session = refreshed
+            let refreshed = try await refreshOnce()
             var retry = original
             retry.setValue("Bearer \(refreshed.access_token)", forHTTPHeaderField: "Authorization")
             let (retryData, retryResp) = try await urlSession.data(for: retry)
@@ -133,6 +141,22 @@ actor MyLifeDBClient {
     private func sha256Hex(_ data: Data) -> String {
         let digest = SHA256.hash(data: data)
         return digest.map { String(format: "%02x", $0) }.joined()
+    }
+
+    /// Returns the current session, refreshing it at most once across all
+    /// concurrent callers. The first caller spawns the Task; subsequent
+    /// callers `await` the same Task and share its result.
+    private func refreshOnce() async throws -> MyLifeDBSession {
+        if let inflight = refreshTask {
+            return try await inflight.value
+        }
+        let snapshot = session
+        let task = Task { try await ConnectAuth.refresh(snapshot) }
+        refreshTask = task
+        defer { refreshTask = nil }
+        let refreshed = try await task.value
+        self.session = refreshed
+        return refreshed
     }
 }
 
