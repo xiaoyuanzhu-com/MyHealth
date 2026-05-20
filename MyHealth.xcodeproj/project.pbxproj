@@ -9,21 +9,16 @@
 /* Begin PBXBuildFile section */
 		050ABCC2F7D66C177CF3E3B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B83990180897E0F78FA4A2 /* HomeView.swift */; };
 		1AC770734FEE0C15051C3156 /* DataTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E61954C91F9C5FB66239F66 /* DataTab.swift */; };
-		492C7B26416FE6653026055A /* DataTypeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */; };
-		78CD6B7E1544089E3DCBCCDE /* SyncTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B632BB8727BAE65C4CEB33B /* SyncTab.swift */; };
-		A35419E2308CD0B31073E14D /* MyLifeDBDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */; };
-		B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34640D30825341890180357 /* DriveDetailView.swift */; };
-		D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */; };
-		DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */; };
 		3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */; };
 		3E8E4379001B60227277CB77 /* HealthKitReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */; };
 		42F0F35F4A3C1688074432C5 /* GoogleDriveClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */; };
+		492C7B26416FE6653026055A /* DataTypeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */; };
 		54F8E2E1FD1154FB0F9196AC /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98456748D6490844950A6C5 /* SyncCoordinator.swift */; };
 		559B81DD118ADF866C2E548E /* HealthKitAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */; };
 		56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF03E11BDF9492948F52769 /* DataTypes.swift */; };
+		78CD6B7E1544089E3DCBCCDE /* SyncTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B632BB8727BAE65C4CEB33B /* SyncTab.swift */; };
 		90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */; };
 		966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */; };
-		BB253AEEE603E832745D386F /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250EB3920731157AAEE8D1CB /* PKCETests.swift */; };
 		A10000010000000000000001 /* TypeNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* TypeNaming.swift */; };
 		A10000010000000000000002 /* TypeNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* TypeNamingTests.swift */; };
 		A10000010000000000000003 /* DaySample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000003 /* DaySample.swift */; };
@@ -42,17 +37,22 @@
 		A10000010000000000000010 /* WebDAVClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000010 /* WebDAVClient.swift */; };
 		A10000010000000000000011 /* WebDAVAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000011 /* WebDAVAuth.swift */; };
 		A10000010000000000000012 /* WebDAVDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000012 /* WebDAVDetailView.swift */; };
+		A35419E2308CD0B31073E14D /* MyLifeDBDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */; };
+		B118C00100000000000000A1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A3 /* Localizable.xcstrings */; };
+		B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A4 /* InfoPlist.xcstrings */; };
+		B118C00100000000000000B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000B1 /* Assets.xcassets */; };
+		B49A3509222C8E5E07581CC7 /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34640D30825341890180357 /* DriveDetailView.swift */; };
+		BB253AEEE603E832745D386F /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250EB3920731157AAEE8D1CB /* PKCETests.swift */; };
 		C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */; };
 		C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */; };
 		CC1FC8B6B29A8EE51C42AEFE /* MyHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */; };
+		D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */; };
+		DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */; };
 		DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */; };
 		E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */; };
 		EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F50952E1DA754F2F6CF611 /* PKCE.swift */; };
 		F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */; };
 		FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C317B907897869E73E2FAA /* TokenStore.swift */; };
-		B118C00100000000000000A1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A3 /* Localizable.xcstrings */; };
-		B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000A4 /* InfoPlist.xcstrings */; };
-		B118C00100000000000000B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B118C00100000000000000B1 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,18 +66,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		10B83990180897E0F78FA4A2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		2E61954C91F9C5FB66239F66 /* DataTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTab.swift; sourceTree = "<group>"; };
-		71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeDetailView.swift; sourceTree = "<group>"; };
-		8B632BB8727BAE65C4CEB33B /* SyncTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTab.swift; sourceTree = "<group>"; };
-		B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBDetailView.swift; sourceTree = "<group>"; };
-		D34640D30825341890180357 /* DriveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveDetailView.swift; sourceTree = "<group>"; };
-		DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthTypeCatalog.swift; sourceTree = "<group>"; };
-		F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSamplePreview.swift; sourceTree = "<group>"; };
 		037ACF1D09A3C2862B3A29BA /* HealthKitReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitReader.swift; sourceTree = "<group>"; };
 		071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDriveClient.swift; sourceTree = "<group>"; };
 		07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBClient.swift; sourceTree = "<group>"; };
+		10B83990180897E0F78FA4A2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		250EB3920731157AAEE8D1CB /* PKCETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
+		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
+		2E61954C91F9C5FB66239F66 /* DataTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTab.swift; sourceTree = "<group>"; };
+		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
+		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
+		5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSync.swift; sourceTree = "<group>"; };
+		60AA1719224422B218DC46DE /* MyHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAuth.swift; sourceTree = "<group>"; };
+		71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeDetailView.swift; sourceTree = "<group>"; };
+		74C317B907897869E73E2FAA /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
+		85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHealthApp.swift; sourceTree = "<group>"; };
+		8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitAuth.swift; sourceTree = "<group>"; };
+		8AF03E11BDF9492948F52769 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
+		8B632BB8727BAE65C4CEB33B /* SyncTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTab.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* TypeNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNaming.swift; sourceTree = "<group>"; };
 		A10000020000000000000002 /* TypeNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeNamingTests.swift; sourceTree = "<group>"; };
 		A10000020000000000000003 /* DaySample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySample.swift; sourceTree = "<group>"; };
@@ -96,22 +102,16 @@
 		A10000020000000000000010 /* WebDAVClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVClient.swift; sourceTree = "<group>"; };
 		A10000020000000000000011 /* WebDAVAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVAuth.swift; sourceTree = "<group>"; };
 		A10000020000000000000012 /* WebDAVDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVDetailView.swift; sourceTree = "<group>"; };
-		28F50952E1DA754F2F6CF611 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
-		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
-		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
-		5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSync.swift; sourceTree = "<group>"; };
-		60AA1719224422B218DC46DE /* MyHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAuth.swift; sourceTree = "<group>"; };
-		74C317B907897869E73E2FAA /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
-		85EDBFA83501F2EFC29414E2 /* MyHealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHealthApp.swift; sourceTree = "<group>"; };
-		8AAE3EF5DA37DDFA9651AF66 /* HealthKitAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitAuth.swift; sourceTree = "<group>"; };
-		8AF03E11BDF9492948F52769 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
-		D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MyHealthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D98456748D6490844950A6C5 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
-		EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEncoder.swift; sourceTree = "<group>"; };
 		B118C00100000000000000A3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B118C00100000000000000A4 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		B118C00100000000000000B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLifeDBDetailView.swift; sourceTree = "<group>"; };
+		D34640D30825341890180357 /* DriveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveDetailView.swift; sourceTree = "<group>"; };
+		D37A92E5D0DBEDE6BC8ACCD1 /* MyHealthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyHealthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D98456748D6490844950A6C5 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
+		DAF35B796B453D3D4519624E /* HealthTypeCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthTypeCatalog.swift; sourceTree = "<group>"; };
+		EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEncoder.swift; sourceTree = "<group>"; };
+		F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSamplePreview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,16 +202,6 @@
 			path = MyHealth;
 			sourceTree = "<group>";
 		};
-		B118C00100000000000000A5 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B118C00100000000000000A3 /* Localizable.xcstrings */,
-				B118C00100000000000000A4 /* InfoPlist.xcstrings */,
-				B118C00100000000000000B1 /* Assets.xcassets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		940A6FE78E509B537382339A /* Health */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,6 +214,15 @@
 			path = Health;
 			sourceTree = "<group>";
 		};
+		A10000030000000000000001 /* WebDAV */ = {
+			isa = PBXGroup;
+			children = (
+				A10000020000000000000011 /* WebDAVAuth.swift */,
+				A10000020000000000000010 /* WebDAVClient.swift */,
+			);
+			path = WebDAV;
+			sourceTree = "<group>";
+		};
 		A93349502B4DAD547C336929 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,6 +231,16 @@
 				A10000020000000000000009 /* SyncRunState.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B118C00100000000000000A5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B118C00100000000000000A3 /* Localizable.xcstrings */,
+				B118C00100000000000000A4 /* InfoPlist.xcstrings */,
+				B118C00100000000000000B1 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C4CE67FEC011289BE75B818E /* Sync */ = {
@@ -256,15 +265,6 @@
 				071B3F8240E9BBA066CD8F2B /* GoogleDriveClient.swift */,
 			);
 			path = GoogleDrive;
-			sourceTree = "<group>";
-		};
-		A10000030000000000000001 /* WebDAV */ = {
-			isa = PBXGroup;
-			children = (
-				A10000020000000000000011 /* WebDAVAuth.swift */,
-				A10000020000000000000010 /* WebDAVClient.swift */,
-			);
-			path = WebDAV;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,25 +311,12 @@
 		};
 /* End PBXNativeTarget section */
 
-/* Begin PBXResourcesBuildPhase section */
-		B118C00100000000000000A6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B118C00100000000000000A1 /* Localizable.xcstrings in Resources */,
-				B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */,
-				B118C00100000000000000B0 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXProject section */
 		32797708C7859F703E9262C5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					5D864417F46FC750884E620E = {
 						DevelopmentTeam = "";
@@ -359,6 +346,19 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B118C00100000000000000A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B118C00100000000000000A1 /* Localizable.xcstrings in Resources */,
+				B118C00100000000000000A2 /* InfoPlist.xcstrings in Resources */,
+				B118C00100000000000000B0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7104F391DA17FEA7D8A6B28C /* Sources */ = {
@@ -451,6 +451,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -486,6 +488,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -500,6 +503,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
@@ -564,6 +568,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -599,6 +605,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -620,6 +627,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
