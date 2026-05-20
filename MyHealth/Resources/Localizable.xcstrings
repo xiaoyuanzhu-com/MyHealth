@@ -1941,6 +1941,9 @@
         }
       }
     },
+    "English" : {
+
+    },
     "Environmental Audio Exposure" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4176,6 +4179,9 @@
         }
       }
     },
+    "System" : {
+
+    },
     "Tap your profile picture (top-right)" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4626,6 +4632,9 @@
           }
         }
       }
+    },
+    "中文" : {
+
     }
   },
   "version" : "1.0"
