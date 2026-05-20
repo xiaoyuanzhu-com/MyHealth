@@ -1,0 +1,170 @@
+name: Apple Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: apple-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-ios:
+    name: Build iOS → TestFlight
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set iOS build number
+        run: |
+          CI_BUILD_NUMBER=$GITHUB_RUN_NUMBER
+          echo "Using iOS build number: $CI_BUILD_NUMBER"
+          echo "CI_BUILD_NUMBER=$CI_BUILD_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Setup signing
+        env:
+          CERTIFICATES_P12: ${{ secrets.CERTIFICATES_P12 }}
+          CERTIFICATES_P12_PASSWORD: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+          DEV_CERTIFICATES_P12: ${{ secrets.DEV_CERTIFICATES_P12 }}
+          DEV_CERTIFICATES_P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        run: |
+          # Create temporary keychain
+          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -t 3600 -u "$KEYCHAIN_PATH"
+
+          # Import distribution certificate
+          echo "$CERTIFICATES_P12" | base64 --decode > "$RUNNER_TEMP/dist-cert.p12"
+          security import "$RUNNER_TEMP/dist-cert.p12" \
+            -k "$KEYCHAIN_PATH" \
+            -P "$CERTIFICATES_P12_PASSWORD" \
+            -T /usr/bin/codesign
+
+          # Import development certificate
+          echo "$DEV_CERTIFICATES_P12" | base64 --decode > "$RUNNER_TEMP/dev-cert.p12"
+          security import "$RUNNER_TEMP/dev-cert.p12" \
+            -k "$KEYCHAIN_PATH" \
+            -P "$DEV_CERTIFICATES_P12_PASSWORD" \
+            -T /usr/bin/codesign
+
+          # Import Apple WWDR intermediate certificates (needed for cert chain)
+          curl -sL https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer \
+            -o "$RUNNER_TEMP/AppleWWDRCAG3.cer"
+          curl -sL https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer \
+            -o "$RUNNER_TEMP/AppleWWDRCAG6.cer"
+          security import "$RUNNER_TEMP/AppleWWDRCAG3.cer" -k "$KEYCHAIN_PATH" -T /usr/bin/codesign
+          security import "$RUNNER_TEMP/AppleWWDRCAG6.cer" -k "$KEYCHAIN_PATH" -T /usr/bin/codesign
+
+          security set-key-partition-list -S apple-tool:,apple: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          # Set keychain search list: temp keychain + system (for Apple root CAs)
+          security list-keychains -d user -s "$KEYCHAIN_PATH" /Library/Keychains/System.keychain
+
+          # Write API key for altool and xcodebuild
+          mkdir -p ~/private_keys
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY" \
+            > ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+
+          # Export for later steps
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+
+      - name: Build iOS archive
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          xcodebuild \
+            -project MyHealth.xcodeproj \
+            -scheme MyHealth \
+            -archivePath "$RUNNER_TEMP/MyHealth-iOS.xcarchive" \
+            -destination "generic/platform=iOS" \
+            -authenticationKeyPath ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8 \
+            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
+            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
+            -allowProvisioningUpdates \
+            CURRENT_PROJECT_VERSION="$CI_BUILD_NUMBER" \
+            archive
+
+      - name: Verify iOS archive metadata
+        run: |
+          APP_INFO_PLIST="$RUNNER_TEMP/MyHealth-iOS.xcarchive/Products/Applications/MyHealth.app/Info.plist"
+          ARCHIVE_BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_INFO_PLIST")
+          ARCHIVE_SHORT_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_INFO_PLIST")
+
+          echo "Archived iOS version: $ARCHIVE_SHORT_VERSION ($ARCHIVE_BUILD_NUMBER)"
+
+          if [ "$ARCHIVE_BUILD_NUMBER" != "$CI_BUILD_NUMBER" ]; then
+            echo "Expected build number $CI_BUILD_NUMBER but archive contains $ARCHIVE_BUILD_NUMBER"
+            exit 1
+          fi
+
+      - name: Export IPA
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/MyHealth-iOS.xcarchive" \
+            -exportPath "$RUNNER_TEMP/ios-output" \
+            -exportOptionsPlist ExportOptions-iOS.plist \
+            -authenticationKeyPath ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8 \
+            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
+            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
+            -allowProvisioningUpdates
+
+      - name: Validate IPA
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          LOG_FILE="$RUNNER_TEMP/altool-validate.log"
+          set +e
+          xcrun altool --validate-app \
+            -f "$RUNNER_TEMP/ios-output/MyHealth.ipa" \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
+            --output-format json 2>&1 | tee "$LOG_FILE"
+          STATUS=${PIPESTATUS[0]}
+          set -e
+
+          if [ "$STATUS" -ne 0 ] || grep -q "ERROR:" "$LOG_FILE"; then
+            echo "altool validation failed"
+            exit 1
+          fi
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          LOG_FILE="$RUNNER_TEMP/altool-upload.log"
+          set +e
+          xcrun altool --upload-app \
+            -f "$RUNNER_TEMP/ios-output/MyHealth.ipa" \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
+            --output-format json 2>&1 | tee "$LOG_FILE"
+          STATUS=${PIPESTATUS[0]}
+          set -e
+
+          if [ "$STATUS" -ne 0 ] || grep -q "ERROR:" "$LOG_FILE"; then
+            echo "altool upload failed"
+            exit 1
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: |
+          security list-keychains -d user -s login.keychain-db
+          security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/dist-cert.p12" "$RUNNER_TEMP/dev-cert.p12" "$RUNNER_TEMP"/AppleWWDRCA*.cer
+          rm -f ~/private_keys/AuthKey_*.p8
+          rm -rf "$RUNNER_TEMP/MyHealth-iOS.xcarchive"
+          rm -rf "$RUNNER_TEMP/ios-output"
