@@ -63,6 +63,11 @@ final class SyncCoordinator: ObservableObject {
 
     private let reader: HealthKitReader
     private var stopRequested = false
+    /// Set when the stop was triggered by the app moving to background, not
+    /// by the user tapping Stop. Used by the day-loop's catch to suppress
+    /// the error banner for the inevitable URLSession-cancelled /
+    /// "Protected health data is inaccessible" throws that follow.
+    private var pausedByBackgrounding = false
 
     /// Upper bound on (day, type) slots in flight at once within a single day.
     /// Each in-flight slot holds one `(day, type)` slice plus its remote
@@ -81,6 +86,7 @@ final class SyncCoordinator: ObservableObject {
         Self.currentlyActive = self
         defer { if Self.currentlyActive === self { Self.currentlyActive = nil } }
         stopRequested = false
+        pausedByBackgrounding = false
         if let existing = SyncRunStore.load() {
             print("MyHealth: resuming run id=\(existing.runID) at day \(existing.completedDayIndex)/\(existing.daysToSync.count) typeIndex=\(existing.inProgressTypeIndex)")
             await runLoop(state: existing, enabledDestinations: enabledDestinations)
@@ -94,6 +100,18 @@ final class SyncCoordinator: ObservableObject {
     /// uploaded so far stay uploaded; their fingerprints are kept in
     /// day-hashes.json so future runs can skip them quickly via the walk-back.
     func stop() { stopRequested = true }
+
+    /// Like `stop()`, but flags the teardown as a background-triggered pause
+    /// so the catch block knows to treat the resulting URLSession /
+    /// HealthKit errors as expected rather than surfacing them as an error
+    /// banner. Called from `MyHealthApp` when scenePhase becomes
+    /// `.background` while a run is active.
+    func pauseForBackgrounding() {
+        guard case .running = status else { return }
+        pausedByBackgrounding = true
+        stopRequested = true
+        print("MyHealth: pausing sync — app moved to background")
+    }
 
     var hasPendingRun: Bool { SyncRunStore.load() != nil }
 
@@ -152,8 +170,14 @@ final class SyncCoordinator: ObservableObject {
             try SyncRunStore.save(state)
             await runLoop(state: state, enabledDestinations: enabledDestinations)
         } catch {
-            status = .error(error.localizedDescription)
-            print("MyHealth: sync FAILED stage=fresh-run error=\(error.localizedDescription)")
+            if pausedByBackgrounding {
+                self.status = .idle
+                self.progress = nil
+                print("MyHealth: sync paused by backgrounding during fresh-run setup")
+            } else {
+                status = .error(error.localizedDescription)
+                print("MyHealth: sync FAILED stage=fresh-run error=\(error.localizedDescription)")
+            }
         }
     }
 
@@ -329,8 +353,17 @@ final class SyncCoordinator: ObservableObject {
                                webdavUploaded: webdav != nil)
         } catch {
             try? SyncRunStore.save(state)
-            self.status = .error(error.localizedDescription)
-            print("MyHealth: sync FAILED stage=day-loop error=\(error.localizedDescription)")
+            if pausedByBackgrounding {
+                // Expected fallout from the app being suspended mid-run
+                // (URLSession cancelled, HealthKit locked, etc). State is
+                // checkpointed; resume on next foreground run.
+                self.status = .idle
+                self.progress = nil
+                print("MyHealth: sync paused by backgrounding mid-day — will resume on next run")
+            } else {
+                self.status = .error(error.localizedDescription)
+                print("MyHealth: sync FAILED stage=day-loop error=\(error.localizedDescription)")
+            }
         }
     }
 

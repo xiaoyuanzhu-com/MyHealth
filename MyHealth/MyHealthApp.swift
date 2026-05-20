@@ -5,6 +5,7 @@ import GoogleSignIn
 struct MyHealthApp: App {
     @StateObject private var coordinator = SyncCoordinator()
     @StateObject private var sessionStore = SessionStore()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         Self.migrateLegacyOnDiskState()
@@ -48,6 +49,15 @@ struct MyHealthApp: App {
                     // before falling through to GoogleSignIn's handler.
                     if ConnectAuth.shared.handleCallback(url) { return }
                     GIDSignIn.sharedInstance.handle(url)
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    // iOS suspends a backgrounded app within ~5s; let the
+                    // coordinator checkpoint and exit cleanly before the
+                    // in-flight URLSessions get cancelled and HealthKit
+                    // becomes inaccessible on device lock.
+                    if newPhase == .background {
+                        coordinator.pauseForBackgrounding()
+                    }
                 }
         }
     }
