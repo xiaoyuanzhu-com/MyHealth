@@ -28,7 +28,7 @@ open MyHealth.xcodeproj
 If you want Google Drive sync:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an iOS OAuth client.
-2. Bundle ID: `org.foss.myhealth.ios` (or change it in Xcode if you want).
+2. Bundle ID: `com.xiaoyuanzhu.MyHealth` (or change it in Xcode if you want).
 3. Copy the **iOS URL scheme** (the reversed client ID, e.g. `com.googleusercontent.apps.123-abc`) and the **client ID** into `MyHealth/Info.plist`, replacing the `REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID` placeholders in two places.
 
 If you skip this step, MyLifeDB sync still works.
@@ -223,12 +223,12 @@ The exact set depends on which types the user has enabled and which have data.
 
 ## Background sync
 
-MyHealth registers a `BGAppRefreshTask` (`org.foss.myhealth.ios.dailySync`) that runs ~daily when the system has spare capacity (typically while charging on Wi-Fi). It also enables `HKObserverQuery.enableBackgroundDelivery` for every monitored type, so meaningful events (e.g. a finished workout) wake the app sooner.
+MyHealth registers a `BGAppRefreshTask` (`com.xiaoyuanzhu.MyHealth.dailySync`) that runs ~daily when the system has spare capacity (typically while charging on Wi-Fi). It also enables `HKObserverQuery.enableBackgroundDelivery` for every monitored type, so meaningful events (e.g. a finished workout) wake the app sooner.
 
 You can fire the task manually from Xcode for testing:
 
 ```
-e -l "BGTaskScheduler.shared._simulateLaunchForTaskWithIdentifier:@\"org.foss.myhealth.ios.dailySync\""
+e -l "BGTaskScheduler.shared._simulateLaunchForTaskWithIdentifier:@\"com.xiaoyuanzhu.MyHealth.dailySync\""
 ```
 
 ## Privacy

@@ -9,7 +9,7 @@ import HealthKit
 /// so freshly-recorded workouts also trigger a sync without waiting for the
 /// daily window.
 enum BackgroundSync {
-    static let taskIdentifier = "org.foss.myhealth.ios.dailySync"
+    static let taskIdentifier = "com.xiaoyuanzhu.MyHealth.dailySync"
 
     /// Call from `applicationDidFinishLaunching` (App init) — registration must
     /// happen before the first responder runloop turn after launch.

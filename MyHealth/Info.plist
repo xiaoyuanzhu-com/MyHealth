@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>org.foss.myhealth.ios.dailySync</string>
+		<string>com.xiaoyuanzhu.MyHealth.dailySync</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -26,10 +26,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>org.foss.myhealth.ios.oauth</string>
+			<string>com.xiaoyuanzhu.MyHealth.oauth</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>org.foss.myhealth.ios</string>
+				<string>com.xiaoyuanzhu.MyHealth</string>
 				<string>com.googleusercontent.apps.REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID</string>
 			</array>
 		</dict>

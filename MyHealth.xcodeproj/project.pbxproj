@@ -540,7 +540,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyuanzhu.MyHealth.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyHealth.app/MyHealth";
@@ -557,7 +557,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.foss.myhealth.ios.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyuanzhu.MyHealth.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyHealth.app/MyHealth";

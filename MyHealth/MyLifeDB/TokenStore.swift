@@ -12,8 +12,8 @@ import Security
 /// atomically.
 struct MyLifeDBSession: Codable {
     var base_url: String           // e.g. "https://my.xiaoyuanzhu.com"
-    var client_id: String          // "org.foss.myhealth.ios"
-    var redirect_uri: String       // "org.foss.myhealth.ios://oauth/callback"
+    var client_id: String          // "com.xiaoyuanzhu.MyHealth"
+    var redirect_uri: String       // "com.xiaoyuanzhu.MyHealth://oauth/callback"
     var remote_path: String        // "/apps/apple-health"
     var scope: String              // granted scope echoed by /token
 
@@ -34,7 +34,7 @@ enum TokenStoreError: Error {
 }
 
 struct TokenStore {
-    static let service = "org.foss.myhealth.ios"
+    static let service = "com.xiaoyuanzhu.MyHealth"
     static let account = "mylifedb-session"
 
     static func save(_ session: MyLifeDBSession) throws {

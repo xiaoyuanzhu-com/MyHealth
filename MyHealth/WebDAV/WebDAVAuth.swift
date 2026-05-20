@@ -18,7 +18,7 @@ struct WebDAVCredentials: Codable, Equatable {
 /// Keychain-backed storage for WebDAV credentials. Mirrors `TokenStore` —
 /// delete-then-add to avoid `SecItemUpdate` accessibility edge cases.
 enum WebDAVStore {
-    static let service = "org.foss.myhealth.ios"
+    static let service = "com.xiaoyuanzhu.MyHealth"
     static let account = "webdav-credentials"
 
     static func save(_ creds: WebDAVCredentials) throws {

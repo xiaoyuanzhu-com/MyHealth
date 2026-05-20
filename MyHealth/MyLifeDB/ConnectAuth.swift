@@ -18,10 +18,10 @@ import UIKit
 /// `handleCallback(_:)` from the SwiftUI `.onOpenURL` handler at the app root.
 @MainActor
 final class ConnectAuth: NSObject {
-    nonisolated static let clientID = "org.foss.myhealth.ios"
+    nonisolated static let clientID = "com.xiaoyuanzhu.MyHealth"
     nonisolated static let appName = "MyHealth"
-    nonisolated static let redirectScheme = "org.foss.myhealth.ios"
-    nonisolated static let redirectURI = "org.foss.myhealth.ios://oauth/callback"
+    nonisolated static let redirectScheme = "com.xiaoyuanzhu.MyHealth"
+    nonisolated static let redirectURI = "com.xiaoyuanzhu.MyHealth://oauth/callback"
     nonisolated static let defaultRemotePath = "/apps/apple-health"
 
     /// How long we wait for the user to complete the external auth flow
