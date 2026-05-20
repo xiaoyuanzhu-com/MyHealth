@@ -5,11 +5,35 @@ import GoogleSignIn
 struct MyHealthApp: App {
     @StateObject private var coordinator = SyncCoordinator()
     @StateObject private var sessionStore = SessionStore()
+    @AppStorage("appLanguage") private var appLanguage = "system"
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
         Self.migrateLegacyOnDiskState()
         BackgroundSync.register()
+    }
+
+    private var selectedLocale: Locale {
+        switch appLanguage {
+        case "en": return Locale(identifier: "en")
+        case "zh-Hans": return Locale(identifier: "zh-Hans")
+        default: return .autoupdatingCurrent
+        }
+    }
+
+    /// Persist the choice into `AppleLanguages` so `String(localized:)` —
+    /// which reads from `Bundle.main.preferredLocalizations`, not the SwiftUI
+    /// environment — picks up the new language on the next view render.
+    private func applyAppleLanguages() {
+        let key = "AppleLanguages"
+        switch appLanguage {
+        case "en":
+            UserDefaults.standard.set(["en"], forKey: key)
+        case "zh-Hans":
+            UserDefaults.standard.set(["zh-Hans"], forKey: key)
+        default:
+            UserDefaults.standard.removeObject(forKey: key)
+        }
     }
 
     /// One-time cleanup of artefacts from the pre-day-by-day-sync layout:
@@ -38,11 +62,16 @@ struct MyHealthApp: App {
             HomeView()
                 .environmentObject(coordinator)
                 .environmentObject(sessionStore)
+                .environment(\.locale, selectedLocale)
                 .task {
+                    applyAppleLanguages()
                     _ = await DriveAuth.restorePreviousSignIn()
                     await sessionStore.refresh()
                     BackgroundSync.scheduleNext()
                     BackgroundSync.enableBackgroundDelivery()
+                }
+                .onChange(of: appLanguage) { _, _ in
+                    applyAppleLanguages()
                 }
                 .onOpenURL { url in
                     // Route OAuth callbacks back to the in-flight sign-in

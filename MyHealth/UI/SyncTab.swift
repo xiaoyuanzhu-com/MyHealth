@@ -1,11 +1,12 @@
 import SwiftUI
 
 /// Sync tab: auto-sync toggle, trigger button + status, sync targets list,
-/// and About section.
+/// settings, and About section.
 struct SyncTab: View {
     @EnvironmentObject var coordinator: SyncCoordinator
     @EnvironmentObject var sessionStore: SessionStore
     @AppStorage("backgroundSyncEnabled") private var backgroundSyncEnabled = true
+    @AppStorage("appLanguage") private var appLanguage = "system"
 
     var body: some View {
         NavigationStack {
@@ -76,6 +77,14 @@ struct SyncTab: View {
                             icon: .asset("onedrive"),
                             connected: false
                         )
+                    }
+                }
+
+                Section("Settings") {
+                    Picker("Language", selection: $appLanguage) {
+                        Text("System").tag("system")
+                        Text("English").tag("en")
+                        Text("中文").tag("zh-Hans")
                     }
                 }
 
