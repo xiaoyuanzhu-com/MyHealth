@@ -30,6 +30,8 @@ jobs:
           CERTIFICATES_P12_PASSWORD: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+          PROVISIONING_PROFILE_UUID: ${{ secrets.PROVISIONING_PROFILE_UUID }}
         run: |
           # Create temporary keychain
           KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
@@ -59,7 +61,14 @@ jobs:
           # Set keychain search list: temp keychain + system (for Apple root CAs)
           security list-keychains -d user -s "$KEYCHAIN_PATH" /Library/Keychains/System.keychain
 
-          # Write API key for altool and xcodebuild
+          # Install App Store provisioning profile (manual signing)
+          PROFILE_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILE_DIR"
+          PROFILE_PATH="$PROFILE_DIR/$PROVISIONING_PROFILE_UUID.mobileprovision"
+          echo "$PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+          echo "PROFILE_PATH=$PROFILE_PATH" >> "$GITHUB_ENV"
+
+          # Write API key for altool
           mkdir -p ~/private_keys
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" \
             > ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
@@ -69,19 +78,18 @@ jobs:
 
       - name: Build iOS archive
         env:
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }}
         run: |
           xcodebuild \
             -project MyHealth.xcodeproj \
             -scheme MyHealth \
             -archivePath "$RUNNER_TEMP/MyHealth-iOS.xcarchive" \
             -destination "generic/platform=iOS" \
-            -authenticationKeyPath ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8 \
-            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
-            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
-            -allowProvisioningUpdates \
             CURRENT_PROJECT_VERSION="$CI_BUILD_NUMBER" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_NAME" \
+            DEVELOPMENT_TEAM=R3845XW5FZ \
             archive
 
       - name: Verify iOS archive metadata
@@ -98,18 +106,11 @@ jobs:
           fi
 
       - name: Export IPA
-        env:
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
           xcodebuild -exportArchive \
             -archivePath "$RUNNER_TEMP/MyHealth-iOS.xcarchive" \
             -exportPath "$RUNNER_TEMP/ios-output" \
-            -exportOptionsPlist ExportOptions-iOS.plist \
-            -authenticationKeyPath ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8 \
-            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
-            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
-            -allowProvisioningUpdates
+            -exportOptionsPlist ExportOptions-iOS.plist
 
       - name: Validate IPA
         env:
@@ -158,5 +159,6 @@ jobs:
           security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
           rm -f "$RUNNER_TEMP/dist-cert.p12" "$RUNNER_TEMP"/AppleWWDRCA*.cer
           rm -f ~/private_keys/AuthKey_*.p8
+          rm -f "$PROFILE_PATH"
           rm -rf "$RUNNER_TEMP/MyHealth-iOS.xcarchive"
           rm -rf "$RUNNER_TEMP/ios-output"
