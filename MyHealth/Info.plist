@@ -12,6 +12,8 @@
 	<string>MyHealth</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -30,7 +32,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.xiaoyuanzhu.MyHealth</string>
-				<string>com.googleusercontent.apps.REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID</string>
 			</array>
 		</dict>
 	</array>
@@ -44,6 +45,8 @@
 	<string>MyHealth reads your Apple Health Clinical Records so it can sync them to the destinations you authorize.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>MyHealth reads your Apple Health data so it can sync it to MyLifeDB and Google Drive — only to destinations you authorize. Nothing is sent anywhere else.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>MyHealth does not write to Apple Health. This permission is requested only because the HealthKit authorization API requires the entry to be declared.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
