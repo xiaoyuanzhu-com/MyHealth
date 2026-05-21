@@ -77,8 +77,6 @@ jobs:
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
 
       - name: Build iOS archive
-        env:
-          PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }}
         run: |
           xcodebuild \
             -project MyHealth.xcodeproj \
@@ -86,10 +84,6 @@ jobs:
             -archivePath "$RUNNER_TEMP/MyHealth-iOS.xcarchive" \
             -destination "generic/platform=iOS" \
             CURRENT_PROJECT_VERSION="$CI_BUILD_NUMBER" \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_NAME" \
-            DEVELOPMENT_TEAM=R3845XW5FZ \
             archive
 
       - name: Verify iOS archive metadata
