@@ -41,6 +41,18 @@
           }
         }
       }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "comment" : "Privacy - Health Update Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "MyHealth does not write to Apple Health. This permission is requested only because the HealthKit authorization API requires the entry to be declared."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -51,6 +51,7 @@
 
     },
     "Abdominal Cramps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -78,6 +79,7 @@
       }
     },
     "About" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -88,6 +90,7 @@
       }
     },
     "Account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -98,6 +101,7 @@
       }
     },
     "Acne" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -114,6 +118,7 @@
       }
     },
     "Active Energy Burned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -130,6 +135,7 @@
       }
     },
     "Activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -140,6 +146,7 @@
       }
     },
     "Activity and energy data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -150,6 +157,7 @@
       }
     },
     "Activity Move Mode" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -166,6 +174,7 @@
       }
     },
     "Appetite Changes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -182,6 +191,7 @@
       }
     },
     "Apple Exercise Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -198,6 +208,7 @@
       }
     },
     "Apple Move Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -214,6 +225,7 @@
       }
     },
     "Apple Stand Hour" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -230,6 +242,7 @@
       }
     },
     "Apple Stand Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -246,6 +259,7 @@
       }
     },
     "Apple Walking Steadiness" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -262,6 +276,7 @@
       }
     },
     "Apple Walking Steadiness Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -278,6 +293,7 @@
       }
     },
     "Audio and hearing data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -288,6 +304,7 @@
       }
     },
     "Audiogram" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -308,6 +325,7 @@
       }
     },
     "Auto-sync daily" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -340,6 +358,7 @@
       }
     },
     "Basal Body Temperature" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -356,6 +375,7 @@
       }
     },
     "Basal Energy Burned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -372,6 +392,7 @@
       }
     },
     "Biological Sex" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -388,6 +409,7 @@
       }
     },
     "Bladder Incontinence" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -404,6 +426,7 @@
       }
     },
     "Bloating" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -420,6 +443,7 @@
       }
     },
     "Blood Glucose" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -436,6 +460,7 @@
       }
     },
     "Blood Pressure Diastolic" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -452,6 +477,7 @@
       }
     },
     "Blood Pressure Systolic" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -468,6 +494,7 @@
       }
     },
     "Blood Type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -484,6 +511,7 @@
       }
     },
     "Body Fat Percentage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -500,6 +528,7 @@
       }
     },
     "Body Mass" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -516,6 +545,7 @@
       }
     },
     "Body Mass Index" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -526,6 +556,7 @@
       }
     },
     "Body measurement recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -536,6 +567,7 @@
       }
     },
     "Body Measurements" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -546,6 +578,7 @@
       }
     },
     "Body Temperature" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -562,6 +595,7 @@
       }
     },
     "Breast Pain" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -589,6 +623,7 @@
       }
     },
     "Cardio fitness — maximum oxygen consumption during exercise." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -599,6 +634,7 @@
       }
     },
     "Cervical Mucus Quality" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -615,6 +651,7 @@
       }
     },
     "Characteristics" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -625,6 +662,7 @@
       }
     },
     "Checking for updates" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -646,6 +684,7 @@
       }
     },
     "Chest Tightness Or Pain" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -662,6 +701,7 @@
       }
     },
     "Chills" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -678,6 +718,7 @@
       }
     },
     "Choose “Apps and Services”" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -708,6 +749,7 @@
       }
     },
     "Connected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -718,6 +760,7 @@
       }
     },
     "Constipation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -734,6 +777,7 @@
       }
     },
     "Contraceptive" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -750,6 +794,7 @@
       }
     },
     "Coughing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -766,6 +811,7 @@
       }
     },
     "Cycle Tracking" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -776,6 +822,7 @@
       }
     },
     "Cycle tracking data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -786,6 +833,7 @@
       }
     },
     "Cycling Cadence" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -802,6 +850,7 @@
       }
     },
     "Cycling Functional Threshold Power" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -818,6 +867,7 @@
       }
     },
     "Cycling Power" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -834,6 +884,7 @@
       }
     },
     "Cycling Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -850,6 +901,7 @@
       }
     },
     "Data" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -860,6 +912,7 @@
       }
     },
     "Data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -870,6 +923,7 @@
       }
     },
     "Date Of Birth" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -929,6 +983,7 @@
       }
     },
     "Diarrhea" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -945,6 +1000,7 @@
       }
     },
     "Dietary Biotin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -961,6 +1017,7 @@
       }
     },
     "Dietary Caffeine" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -977,6 +1034,7 @@
       }
     },
     "Dietary Calcium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -993,6 +1051,7 @@
       }
     },
     "Dietary Carbohydrates" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1009,6 +1068,7 @@
       }
     },
     "Dietary Chloride" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1025,6 +1085,7 @@
       }
     },
     "Dietary Cholesterol" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1041,6 +1102,7 @@
       }
     },
     "Dietary Chromium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1057,6 +1119,7 @@
       }
     },
     "Dietary Copper" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1073,6 +1136,7 @@
       }
     },
     "Dietary Energy Consumed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1089,6 +1153,7 @@
       }
     },
     "Dietary Fat Monounsaturated" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1105,6 +1170,7 @@
       }
     },
     "Dietary Fat Polyunsaturated" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1121,6 +1187,7 @@
       }
     },
     "Dietary Fat Saturated" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1137,6 +1204,7 @@
       }
     },
     "Dietary Fat Total" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1153,6 +1221,7 @@
       }
     },
     "Dietary Fiber" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1169,6 +1238,7 @@
       }
     },
     "Dietary Folate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1185,6 +1255,7 @@
       }
     },
     "Dietary intake recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1195,6 +1266,7 @@
       }
     },
     "Dietary Iodine" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1211,6 +1283,7 @@
       }
     },
     "Dietary Iron" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1227,6 +1300,7 @@
       }
     },
     "Dietary Magnesium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1243,6 +1317,7 @@
       }
     },
     "Dietary Manganese" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1259,6 +1334,7 @@
       }
     },
     "Dietary Molybdenum" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1275,6 +1351,7 @@
       }
     },
     "Dietary Niacin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1291,6 +1368,7 @@
       }
     },
     "Dietary Pantothenic Acid" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1307,6 +1385,7 @@
       }
     },
     "Dietary Phosphorus" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1323,6 +1402,7 @@
       }
     },
     "Dietary Potassium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1339,6 +1419,7 @@
       }
     },
     "Dietary Protein" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1355,6 +1436,7 @@
       }
     },
     "Dietary Riboflavin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1371,6 +1453,7 @@
       }
     },
     "Dietary Selenium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1387,6 +1470,7 @@
       }
     },
     "Dietary Sodium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1403,6 +1487,7 @@
       }
     },
     "Dietary Sugar" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1419,6 +1504,7 @@
       }
     },
     "Dietary Thiamin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1435,6 +1521,7 @@
       }
     },
     "Dietary Vitamin A" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1451,6 +1538,7 @@
       }
     },
     "Dietary Vitamin B6" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1467,6 +1555,7 @@
       }
     },
     "Dietary Vitamin B12" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1483,6 +1572,7 @@
       }
     },
     "Dietary Vitamin C" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1499,6 +1589,7 @@
       }
     },
     "Dietary Vitamin D" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1515,6 +1606,7 @@
       }
     },
     "Dietary Vitamin E" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1531,6 +1623,7 @@
       }
     },
     "Dietary Vitamin K" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1547,6 +1640,7 @@
       }
     },
     "Dietary Water" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1563,6 +1657,7 @@
       }
     },
     "Dietary Zinc" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1579,6 +1674,7 @@
       }
     },
     "Distance Cycling" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1595,6 +1691,7 @@
       }
     },
     "Distance Downhill Snow Sports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1611,6 +1708,7 @@
       }
     },
     "Distance Swimming" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1627,6 +1725,7 @@
       }
     },
     "Distance Walking Running" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1643,6 +1742,7 @@
       }
     },
     "Distance Wheelchair" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1659,6 +1759,7 @@
       }
     },
     "Dizziness" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1675,6 +1776,7 @@
       }
     },
     "Drive" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1685,6 +1787,7 @@
       }
     },
     "Dry Skin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1701,6 +1804,7 @@
       }
     },
     "ECG" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1711,6 +1815,7 @@
       }
     },
     "Electrodermal Activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1727,6 +1832,7 @@
       }
     },
     "Email" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1747,6 +1853,7 @@
       }
     },
     "Energy burned by movement, in kilocalories." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1773,6 +1880,7 @@
       }
     },
     "Environmental Audio Exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1789,6 +1897,7 @@
       }
     },
     "Environmental Audio Exposure Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1805,6 +1914,7 @@
       }
     },
     "Environmental Sound Reduction" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1832,6 +1942,7 @@
       }
     },
     "Fainting" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1848,6 +1959,7 @@
       }
     },
     "Fatigue" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1864,6 +1976,7 @@
       }
     },
     "Fever" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1880,6 +1993,7 @@
       }
     },
     "Find “MyHealth” in the list" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1890,6 +2004,7 @@
       }
     },
     "Fitzpatrick Skin Type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1906,6 +2021,7 @@
       }
     },
     "Flights Climbed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1922,6 +2038,7 @@
       }
     },
     "Folder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1932,6 +2049,7 @@
       }
     },
     "Forced Expiratory Volume (1s)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1942,6 +2060,7 @@
       }
     },
     "Forced Vital Capacity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1958,6 +2077,7 @@
       }
     },
     "Generalized Body Ache" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1974,6 +2094,7 @@
       }
     },
     "Google Drive" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1984,6 +2105,7 @@
       }
     },
     "Hair Loss" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2000,6 +2122,7 @@
       }
     },
     "Handwashing Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2016,6 +2139,7 @@
       }
     },
     "Headache" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2032,6 +2156,7 @@
       }
     },
     "Headphone Audio Exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2048,6 +2173,7 @@
       }
     },
     "Headphone Audio Exposure Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2075,6 +2201,7 @@
       }
     },
     "Hearing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2085,6 +2212,7 @@
       }
     },
     "Heart" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2095,6 +2223,7 @@
       }
     },
     "Heart Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2111,6 +2240,7 @@
       }
     },
     "Heart Rate Recovery One Minute" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2127,6 +2257,7 @@
       }
     },
     "Heart Rate Variability" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2137,6 +2268,7 @@
       }
     },
     "Heart-related measurements recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2147,6 +2279,7 @@
       }
     },
     "Heartburn" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2163,6 +2296,7 @@
       }
     },
     "Height" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2179,6 +2313,7 @@
       }
     },
     "Height measurements, in meters." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2189,6 +2324,7 @@
       }
     },
     "High Heart Rate Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2205,6 +2341,7 @@
       }
     },
     "Hot Flashes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2221,6 +2358,7 @@
       }
     },
     "Infrequent Menstrual Cycles" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2237,6 +2375,7 @@
       }
     },
     "Inhaler Usage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2253,6 +2392,7 @@
       }
     },
     "Instance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2263,6 +2403,7 @@
       }
     },
     "Instance URL" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2273,6 +2414,7 @@
       }
     },
     "Instantaneous heart rate readings in beats per minute." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2283,6 +2425,7 @@
       }
     },
     "Insulin Delivery" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2299,6 +2442,7 @@
       }
     },
     "Intermenstrual Bleeding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2325,6 +2469,7 @@
       }
     },
     "Irregular Heart Rhythm Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2341,6 +2486,7 @@
       }
     },
     "Irregular Menstrual Cycles" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2357,6 +2503,7 @@
       }
     },
     "Lactation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2373,6 +2520,7 @@
       }
     },
     "Language" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2410,6 +2558,7 @@
       }
     },
     "Lean Body Mass" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2437,6 +2586,7 @@
       }
     },
     "Logged mindfulness or breathing sessions." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2447,6 +2597,7 @@
       }
     },
     "Loss Of Smell" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2463,6 +2614,7 @@
       }
     },
     "Loss Of Taste" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2479,6 +2631,7 @@
       }
     },
     "Low Cardio Fitness Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2495,6 +2648,7 @@
       }
     },
     "Low Heart Rate Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2511,6 +2665,7 @@
       }
     },
     "Lower Back Pain" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2527,6 +2682,7 @@
       }
     },
     "Manage Access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2547,6 +2703,7 @@
       }
     },
     "Memory Lapse" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2563,6 +2720,7 @@
       }
     },
     "Menstrual Flow" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2579,6 +2737,7 @@
       }
     },
     "Mindful Session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2595,6 +2754,7 @@
       }
     },
     "Mindfulness" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2605,6 +2765,7 @@
       }
     },
     "Mindfulness session recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2615,6 +2776,7 @@
       }
     },
     "Minutes counted toward your Exercise ring." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2625,6 +2787,7 @@
       }
     },
     "Minutes spent standing, counted toward your Stand ring." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2635,6 +2798,7 @@
       }
     },
     "Mobility" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2645,6 +2809,7 @@
       }
     },
     "Mood Changes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2661,6 +2826,7 @@
       }
     },
     "MyLifeDB" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2671,6 +2837,7 @@
       }
     },
     "MyLifeDB Connect docs" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2681,6 +2848,7 @@
       }
     },
     "Name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2691,6 +2859,7 @@
       }
     },
     "Nausea" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2707,6 +2876,7 @@
       }
     },
     "Night Sweats" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2723,6 +2893,7 @@
       }
     },
     "Nike Fuel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2759,6 +2930,7 @@
       }
     },
     "No window to present Google sign-in." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2769,6 +2941,7 @@
       }
     },
     "Not connected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2779,6 +2952,7 @@
       }
     },
     "Not requested" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2799,6 +2973,7 @@
       }
     },
     "Number Of Times Fallen" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2815,6 +2990,7 @@
       }
     },
     "Nutrition" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2846,6 +3022,7 @@
       }
     },
     "Open the Health app" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2856,6 +3033,7 @@
       }
     },
     "Other" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2866,6 +3044,7 @@
       }
     },
     "Ovulation Test Result" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2882,6 +3061,7 @@
       }
     },
     "Oxygen Saturation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2898,6 +3078,7 @@
       }
     },
     "Password or app password" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2908,6 +3089,7 @@
       }
     },
     "Path" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2935,6 +3117,7 @@
       }
     },
     "Peak Expiratory Flow Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2951,6 +3134,7 @@
       }
     },
     "Pelvic Pain" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2967,6 +3151,7 @@
       }
     },
     "Peripheral Perfusion Index" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2983,6 +3168,7 @@
       }
     },
     "Persistent Intermenstrual Bleeding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2999,6 +3185,7 @@
       }
     },
     "Physical Effort" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3015,6 +3202,7 @@
       }
     },
     "Please enter a valid URL" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3025,6 +3213,7 @@
       }
     },
     "Pregnancy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3041,6 +3230,7 @@
       }
     },
     "Pregnancy Test Result" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3057,6 +3247,7 @@
       }
     },
     "Profile attribute stored in Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3067,6 +3258,7 @@
       }
     },
     "Progesterone Test Result" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3083,6 +3275,7 @@
       }
     },
     "Prolonged Menstrual Periods" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3099,6 +3292,7 @@
       }
     },
     "Push Count" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3115,6 +3309,7 @@
       }
     },
     "Rapid Pounding Or Fluttering Heartbeat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3142,6 +3337,7 @@
       }
     },
     "Recent samples" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3152,6 +3348,7 @@
       }
     },
     "Recorded workout sessions including duration, energy, and (when available) GPS route." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3173,6 +3370,7 @@
       }
     },
     "Requested" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3183,6 +3381,7 @@
       }
     },
     "Respiratory" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3193,6 +3392,7 @@
       }
     },
     "Respiratory measurement recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3203,6 +3403,7 @@
       }
     },
     "Respiratory Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3219,6 +3420,7 @@
       }
     },
     "Resting Heart Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3235,6 +3437,7 @@
       }
     },
     "Resting metabolic energy expenditure, in kilocalories." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3267,6 +3470,7 @@
       }
     },
     "Running Ground Contact Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3283,6 +3487,7 @@
       }
     },
     "Running Power" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3299,6 +3504,7 @@
       }
     },
     "Running Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3315,6 +3521,7 @@
       }
     },
     "Running Stride Length" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3331,6 +3538,7 @@
       }
     },
     "Running Vertical Oscillation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3347,6 +3555,7 @@
       }
     },
     "Runny Nose" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3373,6 +3582,7 @@
       }
     },
     "Scope" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3383,6 +3593,7 @@
       }
     },
     "SDNN measurement of heart rate variability, in milliseconds." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3393,6 +3604,7 @@
       }
     },
     "Server" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3403,6 +3615,7 @@
       }
     },
     "Server URL" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3413,6 +3626,7 @@
       }
     },
     "Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3429,6 +3643,7 @@
       }
     },
     "Sexual Activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3445,6 +3660,7 @@
       }
     },
     "Shortness Of Breath" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3471,6 +3687,7 @@
       }
     },
     "Sign Out" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3481,6 +3698,7 @@
       }
     },
     "Signed in" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3491,6 +3709,7 @@
       }
     },
     "Single-lead ECG recordings from Apple Watch." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3501,6 +3720,7 @@
       }
     },
     "Sinus Congestion" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3517,6 +3737,7 @@
       }
     },
     "Six Minute Walk Test Distance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3533,6 +3754,7 @@
       }
     },
     "Skipped Heartbeat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3549,6 +3771,7 @@
       }
     },
     "Sleep" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3559,6 +3782,7 @@
       }
     },
     "Sleep Analysis" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3575,6 +3799,7 @@
       }
     },
     "Sleep Changes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3591,6 +3816,7 @@
       }
     },
     "Sleep data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3601,6 +3827,7 @@
       }
     },
     "Sleep stages and durations recorded automatically or entered manually." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3611,6 +3838,7 @@
       }
     },
     "Sore Throat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3627,6 +3855,7 @@
       }
     },
     "Source code on GitHub" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3637,6 +3866,7 @@
       }
     },
     "Stair Ascent Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3653,6 +3883,7 @@
       }
     },
     "Stair Descent Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3669,6 +3900,7 @@
       }
     },
     "Step Count" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3685,6 +3917,7 @@
       }
     },
     "Steps taken, recorded by Apple Watch or iPhone." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3695,6 +3928,7 @@
       }
     },
     "Stop" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3738,6 +3972,7 @@
       }
     },
     "Swimming Stroke Count" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3754,6 +3989,7 @@
       }
     },
     "Symptom logged in Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3764,6 +4000,7 @@
       }
     },
     "Symptoms" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3774,6 +4011,7 @@
       }
     },
     "Sync" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3784,6 +4022,7 @@
       }
     },
     "Sync now" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3794,6 +4033,7 @@
       }
     },
     "Sync Targets" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3863,6 +4103,7 @@
       }
     },
     "Tap your profile picture (top-right)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3883,6 +4124,7 @@
       }
     },
     "Time In Daylight" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3899,6 +4141,7 @@
       }
     },
     "Toggle the categories you want to share" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3909,6 +4152,7 @@
       }
     },
     "Toothbrushing Event" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3925,6 +4169,7 @@
       }
     },
     "Underwater Depth" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3952,6 +4197,7 @@
       }
     },
     "URL" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3962,6 +4208,7 @@
       }
     },
     "User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3972,6 +4219,7 @@
       }
     },
     "Username" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3982,6 +4230,7 @@
       }
     },
     "UV Exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3992,6 +4241,7 @@
       }
     },
     "Vaginal Dryness" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4008,6 +4258,7 @@
       }
     },
     "Version" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4018,6 +4269,7 @@
       }
     },
     "Vital sign recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4028,6 +4280,7 @@
       }
     },
     "Vitals" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4038,6 +4291,7 @@
       }
     },
     "VO₂ Max" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4048,6 +4302,7 @@
       }
     },
     "Vomiting" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4064,6 +4319,7 @@
       }
     },
     "Waist Circumference" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4080,6 +4336,7 @@
       }
     },
     "Walking and mobility data recorded by Apple Health." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4090,6 +4347,7 @@
       }
     },
     "Walking Asymmetry Percentage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4106,6 +4364,7 @@
       }
     },
     "Walking Double Support Percentage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4122,6 +4381,7 @@
       }
     },
     "Walking Heart Rate Average" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4138,6 +4398,7 @@
       }
     },
     "Walking Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4154,6 +4415,7 @@
       }
     },
     "Walking Step Length" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4170,6 +4432,7 @@
       }
     },
     "Water Temperature" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4186,6 +4449,7 @@
       }
     },
     "WebDAV" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4196,6 +4460,7 @@
       }
     },
     "Weight measurements, in kilograms." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4206,6 +4471,7 @@
       }
     },
     "Wheelchair Use" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4222,6 +4488,7 @@
       }
     },
     "Wheezing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4238,6 +4505,7 @@
       }
     },
     "Workout Routes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
