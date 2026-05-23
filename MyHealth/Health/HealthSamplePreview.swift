@@ -118,9 +118,6 @@ final class HealthSamplePreviewLoader: ObservableObject {
                 primary = "ECG"
             }
             secondary = ecgClassification(e.classification)
-        } else if let cr = sample as? HKClinicalRecord {
-            primary = cr.displayName
-            secondary = cr.fhirResource?.resourceType.rawValue
         } else {
             primary = "—"
             secondary = sample.sampleType.identifier

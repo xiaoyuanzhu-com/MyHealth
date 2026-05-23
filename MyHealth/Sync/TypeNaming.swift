@@ -35,7 +35,6 @@ enum TypeNaming {
         "HKQuantityTypeIdentifier",
         "HKCategoryTypeIdentifier",
         "HKCorrelationTypeIdentifier",
-        "HKClinicalTypeIdentifier",
         "HKDataTypeIdentifier",
     ]
 

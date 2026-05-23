@@ -31,7 +31,6 @@ enum HealthTypeGroup: String, CaseIterable, Identifiable {
     case mindfulness
     case symptoms
     case characteristics
-    case clinical
     case other
 
     var id: String { rawValue }
@@ -51,7 +50,6 @@ enum HealthTypeGroup: String, CaseIterable, Identifiable {
         case .mindfulness: return String(localized: "Mindfulness")
         case .symptoms: return String(localized: "Symptoms")
         case .characteristics: return String(localized: "Characteristics")
-        case .clinical: return String(localized: "Clinical Records")
         case .other: return String(localized: "Other")
         }
     }
@@ -112,9 +110,6 @@ enum HealthTypeCatalog {
         if let ch = HKCharacteristicType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier(rawValue: identifier)) {
             return ch
         }
-        if let cl = HKClinicalType.clinicalType(forIdentifier: HKClinicalTypeIdentifier(rawValue: identifier)) {
-            return cl
-        }
         if identifier == HKObjectType.workoutType().identifier {
             return HKObjectType.workoutType()
         }
@@ -138,7 +133,6 @@ enum HealthTypeCatalog {
             "HKQuantityTypeIdentifier",
             "HKCategoryTypeIdentifier",
             "HKCharacteristicTypeIdentifier",
-            "HKClinicalTypeIdentifier",
             "HKDataTypeIdentifier",
         ] {
             if s.hasPrefix(prefix) { s.removeFirst(prefix.count); break }
@@ -171,7 +165,6 @@ enum HealthTypeCatalog {
         case .mindfulness: return "brain.head.profile"
         case .symptoms: return "thermometer"
         case .characteristics: return "person.fill"
-        case .clinical: return "cross.case.fill"
         case .other: return "heart.text.square"
         }
     }
@@ -191,7 +184,6 @@ enum HealthTypeCatalog {
         case .mindfulness: return String(localized: "Mindfulness session recorded by Apple Health.")
         case .symptoms: return String(localized: "Symptom logged in Apple Health.")
         case .characteristics: return String(localized: "Profile attribute stored in Apple Health.")
-        case .clinical: return String(localized: "Clinical health record imported into Apple Health.")
         case .other: return String(localized: "Data recorded by Apple Health.")
         }
     }
@@ -387,15 +379,6 @@ enum HealthTypeCatalog {
         HKCharacteristicTypeIdentifier.fitzpatrickSkinType.rawValue: String(localized: "Fitzpatrick Skin Type"),
         HKCharacteristicTypeIdentifier.wheelchairUse.rawValue: String(localized: "Wheelchair Use"),
         HKCharacteristicTypeIdentifier.activityMoveMode.rawValue: String(localized: "Activity Move Mode"),
-        HKClinicalTypeIdentifier.allergyRecord.rawValue: String(localized: "Allergy Record"),
-        HKClinicalTypeIdentifier.conditionRecord.rawValue: String(localized: "Condition Record"),
-        HKClinicalTypeIdentifier.immunizationRecord.rawValue: String(localized: "Immunization Record"),
-        HKClinicalTypeIdentifier.labResultRecord.rawValue: String(localized: "Lab Result Record"),
-        HKClinicalTypeIdentifier.medicationRecord.rawValue: String(localized: "Medication Record"),
-        HKClinicalTypeIdentifier.procedureRecord.rawValue: String(localized: "Procedure Record"),
-        HKClinicalTypeIdentifier.vitalSignRecord.rawValue: String(localized: "Vital Sign Record"),
-        HKClinicalTypeIdentifier.coverageRecord.rawValue: String(localized: "Coverage Record"),
-        HKClinicalTypeIdentifier.clinicalNoteRecord.rawValue: String(localized: "Clinical Note Record"),
     ]
 
     private static let iconOverrides: [String: String] = [
@@ -461,7 +444,7 @@ enum HealthTypeCatalog {
     private static let groupAssignments: [(String, HealthTypeGroup)] = activityIDs
         + heartIDs + bodyIDs + sleepIDs + mobilityIDs + respiratoryIDs
         + hearingIDs + vitalsIDs + nutritionIDs + cycleIDs + mindfulnessIDs
-        + symptomIDs + characteristicIDs + clinicalIDs + otherIDs
+        + symptomIDs + characteristicIDs + otherIDs
 
     private static let activityIDs: [(String, HealthTypeGroup)] = [
         HKQuantityTypeIdentifier.stepCount,
@@ -589,13 +572,6 @@ enum HealthTypeCatalog {
         .dateOfBirth, .fitzpatrickSkinType, .wheelchairUse,
         .activityMoveMode,
     ].map { ($0.rawValue, .characteristics) }
-
-    private static let clinicalIDs: [(String, HealthTypeGroup)] = [
-        HKClinicalTypeIdentifier.allergyRecord, .conditionRecord,
-        .immunizationRecord, .labResultRecord, .medicationRecord,
-        .procedureRecord, .vitalSignRecord, .coverageRecord,
-        .clinicalNoteRecord,
-    ].map { ($0.rawValue, .clinical) }
 
     private static let otherIDs: [(String, HealthTypeGroup)] = []
 }

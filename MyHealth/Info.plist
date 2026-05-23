@@ -41,8 +41,6 @@
 	<string>REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
-	<string>MyHealth reads your Apple Health Clinical Records so it can sync them to the destinations you authorize.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>MyHealth reads your Apple Health data so it can sync it to MyLifeDB and Google Drive — only to destinations you authorize. Nothing is sent anywhere else.</string>
 	<key>NSHealthUpdateUsageDescription</key>

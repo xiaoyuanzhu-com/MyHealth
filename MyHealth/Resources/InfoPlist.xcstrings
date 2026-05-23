@@ -25,23 +25,6 @@
         }
       }
     },
-    "NSHealthClinicalHealthRecordsShareUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MyHealth reads your Apple Health Clinical Records so it can sync them to the destinations you authorize."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MyHealth 会读取你的 Apple 健康临床记录，以便同步到你授权的目标位置。"
-          }
-        }
-      }
-    },
     "NSHealthShareUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {

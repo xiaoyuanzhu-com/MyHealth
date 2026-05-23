@@ -165,22 +165,6 @@
         }
       }
     },
-    "Allergy Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allergy Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "过敏记录"
-          }
-        }
-      }
-    },
     "Appetite Changes" : {
       "localizations" : {
         "en" : {
@@ -703,64 +687,12 @@
         }
       }
     },
-    "Clinical health record imported into Apple Health." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "导入到 Apple 健康的临床健康记录。"
-          }
-        }
-      }
-    },
-    "Clinical Note Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clinical Note Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "临床记录"
-          }
-        }
-      }
-    },
-    "Clinical Records" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "临床记录"
-          }
-        }
-      }
-    },
     "Coming soon" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "敬请期待"
-          }
-        }
-      }
-    },
-    "Condition Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condition Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "病情记录"
           }
         }
       }
@@ -829,22 +761,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "咳嗽"
-          }
-        }
-      }
-    },
-    "Coverage Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coverage Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保险记录"
           }
         }
       }
@@ -2304,22 +2220,6 @@
         }
       }
     },
-    "Immunization Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Immunization Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "免疫接种记录"
-          }
-        }
-      }
-    },
     "Infrequent Menstrual Cycles" : {
       "localizations" : {
         "en" : {
@@ -2452,22 +2352,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "经期不规律"
-          }
-        }
-      }
-    },
-    "Lab Result Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lab Result Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "化验结果记录"
           }
         }
       }
@@ -2658,22 +2542,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "管理 HealthKit 权限"
-          }
-        }
-      }
-    },
-    "Medication Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medication Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用药记录"
           }
         }
       }
@@ -3184,22 +3052,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "怀孕测试结果"
-          }
-        }
-      }
-    },
-    "Procedure Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Procedure Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "操作记录"
           }
         }
       }
@@ -4161,22 +4013,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
-          }
-        }
-      }
-    },
-    "Vital Sign Record" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vital Sign Record"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "生命体征记录"
           }
         }
       }

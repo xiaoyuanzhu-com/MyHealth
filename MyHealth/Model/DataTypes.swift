@@ -30,12 +30,6 @@ enum HealthDataTypes {
         characteristicIdentifiers.compactMap { HKCharacteristicType.characteristicType(forIdentifier: $0) }
     }
 
-    /// Clinical Records — gated behind a separate Apple entitlement
-    /// (`health-records`). Apps without it will silently see zero samples.
-    static var clinicalTypes: [HKClinicalType] {
-        clinicalIdentifiers.compactMap { HKClinicalType.clinicalType(forIdentifier: $0) }
-    }
-
     /// Everything we ask `HKHealthStore.requestAuthorization` to read.
     static var allReadTypes: Set<HKObjectType> {
         var s: Set<HKObjectType> = []
@@ -45,7 +39,6 @@ enum HealthDataTypes {
         // directly — HealthKit requires auth on their underlying quantities,
         // which are already included above. Querying correlations still works.
         s.formUnion(characteristicTypes.map { $0 as HKObjectType })
-        s.formUnion(clinicalTypes.map { $0 as HKObjectType })
         s.insert(workoutType)
         s.insert(workoutRouteType)
         s.insert(ecgType)
@@ -55,8 +48,8 @@ enum HealthDataTypes {
 
     /// Sample types the sync coordinator iterates per-day with `HKSampleQuery`,
     /// and that `BackgroundSync` registers for HealthKit background delivery.
-    /// Excludes characteristic types, ECG, clinical records, audiograms, and
-    /// workout routes — none of these are part of the per-day JSON layout.
+    /// Excludes characteristic types, ECG, audiograms, and workout routes —
+    /// none of these are part of the per-day JSON layout.
     /// (Name is historical: the original implementation used
     /// `HKAnchoredObjectQuery`; this set is still used to subscribe to
     /// HealthKit background-delivery notifications.)
@@ -153,11 +146,5 @@ enum HealthDataTypes {
     static let characteristicIdentifiers: [HKCharacteristicTypeIdentifier] = [
         .biologicalSex, .bloodType, .dateOfBirth, .fitzpatrickSkinType,
         .wheelchairUse, .activityMoveMode,
-    ]
-
-    static let clinicalIdentifiers: [HKClinicalTypeIdentifier] = [
-        .allergyRecord, .conditionRecord, .immunizationRecord,
-        .labResultRecord, .medicationRecord, .procedureRecord,
-        .vitalSignRecord, .coverageRecord, .clinicalNoteRecord,
     ]
 }
