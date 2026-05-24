@@ -35,8 +35,32 @@ final class SyncCoordinator: ObservableObject {
 
     enum SyncStatus: Equatable {
         case idle
-        case running(stage: String)
+        case running(stage: Stage)
         case error(String)
+
+        /// What the coordinator is currently doing. Stored as structured data
+        /// so the view can re-resolve the localized text whenever the in-app
+        /// language changes mid-run.
+        enum Stage: Equatable {
+            case checkingForUpdates
+            case checkingForUpdatesOn(date: String)
+            case syncingDay(date: String)
+            case syncingDayType(date: String, typeID: String)
+
+            var localizedDescription: String {
+                switch self {
+                case .checkingForUpdates:
+                    return String(localized: "Checking for updates")
+                case .checkingForUpdatesOn(let date):
+                    return String(localized: "Checking for updates · \(date)")
+                case .syncingDay(let date):
+                    return String(localized: "Syncing \(date)")
+                case .syncingDayType(let date, let typeID):
+                    let name = HealthTypeCatalog.displayName(for: typeID)
+                    return String(localized: "Syncing \(date) · \(name)")
+                }
+            }
+        }
     }
 
     struct Progress: Equatable {
@@ -45,7 +69,13 @@ final class SyncCoordinator: ObservableObject {
         let currentDate: String?
         let currentTypeIndex: Int
         let totalTypes: Int
-        let currentTypeName: String?
+        /// HealthKit type identifier; resolved to the localized display name
+        /// at view time so language switches mid-sync update the label.
+        let currentTypeID: String?
+
+        var currentTypeName: String? {
+            currentTypeID.map { HealthTypeCatalog.displayName(for: $0) }
+        }
     }
 
     struct SyncRunResult: Equatable {
@@ -141,7 +171,7 @@ final class SyncCoordinator: ObservableObject {
             )
 
             // 1) Backward walk to discover the start day.
-            status = .running(stage: String(localized: "Checking for updates"))
+            status = .running(stage: .checkingForUpdates)
             self.progress = nil
             let start = await discoverStartDay(
                 anchor: cursor.lastSyncedDay,
@@ -200,7 +230,7 @@ final class SyncCoordinator: ObservableObject {
                 // will fire before any sync happens.
                 return today
             }
-            self.status = .running(stage: String(localized: "Checking for updates · \(cursor.date)"))
+            self.status = .running(stage: .checkingForUpdatesOn(date: cursor.date))
             let hasUpdates = await hasUpdates(day: cursor, storedHash: hashes[cursor.date])
             if hasUpdates {
                 cursor = dayMath.previousDay(cursor)
@@ -302,11 +332,11 @@ final class SyncCoordinator: ObservableObject {
                     return day.date > prev
                 }()
 
-                self.status = .running(stage: String(localized: "Syncing \(day.date)"))
+                self.status = .running(stage: .syncingDay(date: day.date))
                 self.progress = Progress(
                     completedDays: dayIdx, totalDays: state.daysToSync.count,
                     currentDate: day.date, currentTypeIndex: 0,
-                    totalTypes: totalSlots, currentTypeName: nil
+                    totalTypes: totalSlots, currentTypeID: nil
                 )
 
                 let outcome = try await runDayParallel(
@@ -378,7 +408,9 @@ final class SyncCoordinator: ObservableObject {
         let samples: Int
         let workouts: Int
         let didWork: Bool
-        let displayName: String
+        /// HealthKit type identifier (or `workoutType`'s identifier). The
+        /// localized display name is resolved at view time.
+        let typeID: String
     }
 
     /// Runs all `totalSlots` slots for a single day with bounded concurrency.
@@ -432,14 +464,14 @@ final class SyncCoordinator: ObservableObject {
                 completed += 1
 
                 if r.didWork {
-                    self.status = .running(stage: String(localized: "Syncing \(day.date) · \(r.displayName)"))
+                    self.status = .running(stage: .syncingDayType(date: day.date, typeID: r.typeID))
                 }
                 self.progress = Progress(
                     completedDays: dayIdx, totalDays: totalDays,
                     currentDate: day.date,
                     currentTypeIndex: completed - 1,
                     totalTypes: totalSlots,
-                    currentTypeName: r.didWork ? r.displayName : nil
+                    currentTypeID: r.didWork ? r.typeID : nil
                 )
 
                 if stopRequested {
@@ -468,17 +500,17 @@ final class SyncCoordinator: ObservableObject {
                 mld: mld, drive: drive, webdav: webdav
             )
             return SlotResult(samples: 0, workouts: n, didWork: n > 0,
-                              displayName: String(localized: "Workouts"))
+                              typeID: HKObjectType.workoutType().identifier)
         }
         let sampleType = typeSequence[slotIdx]
-        let displayName = TypeNaming.displayName(for: sampleType.identifier)
+        let typeID = sampleType.identifier
         if let q = sampleType as? HKQuantityType {
             let o = try await syncQuantity(
                 day: day, type: q, skipExistingFetch: skipExistingFetch,
                 mld: mld, drive: drive, webdav: webdav
             )
             return SlotResult(samples: o.uploaded, workouts: 0,
-                              didWork: o.didUpload, displayName: displayName)
+                              didWork: o.didUpload, typeID: typeID)
         }
         if let c = sampleType as? HKCategoryType {
             let o = try await syncCategory(
@@ -486,10 +518,10 @@ final class SyncCoordinator: ObservableObject {
                 mld: mld, drive: drive, webdav: webdav
             )
             return SlotResult(samples: o.uploaded, workouts: 0,
-                              didWork: o.didUpload, displayName: displayName)
+                              didWork: o.didUpload, typeID: typeID)
         }
         return SlotResult(samples: 0, workouts: 0, didWork: false,
-                          displayName: displayName)
+                          typeID: typeID)
     }
 
     private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int,

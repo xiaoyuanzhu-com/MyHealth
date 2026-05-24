@@ -263,7 +263,7 @@ private struct SyncNowButton: View {
             } else {
                 HStack(spacing: 8) {
                     ProgressView()
-                    Text(stage).foregroundStyle(.secondary).font(.caption)
+                    Text(stage.localizedDescription).foregroundStyle(.secondary).font(.caption)
                 }
             }
         case .error(let msg):

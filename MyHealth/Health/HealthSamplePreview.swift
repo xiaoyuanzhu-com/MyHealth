@@ -1,17 +1,20 @@
 import Foundation
 import HealthKit
 
-/// One row of preview text shown on a category's detail page.
+/// One row of preview text shown on a category's detail page. Holds the
+/// underlying `HKSample` so `primaryText`/`secondaryText` can be re-rendered
+/// in the current app language whenever the view is re-evaluated (e.g.
+/// after a language switch). The pretty-printed JSON is cached at load time
+/// since its content is language-agnostic.
 struct SamplePreviewRow: Identifiable, Hashable {
-    let id: UUID
-    let startDate: Date
-    let endDate: Date
-    let primaryText: String
-    let secondaryText: String?
-    /// Pretty-printed DTO JSON for this sample (the same shape uploaded by
-    /// the sync pipeline). Empty when no encoder exists for the sample type
-    /// (workout routes, audiograms, ECG today).
+    let sample: HKSample
     let json: String
+
+    var id: UUID { sample.uuid }
+    var startDate: Date { sample.startDate }
+    var endDate: Date { sample.endDate }
+    var primaryText: String { SamplePreviewFormatter.primary(for: sample) }
+    var secondaryText: String? { SamplePreviewFormatter.secondary(for: sample) }
 
     static func == (lhs: SamplePreviewRow, rhs: SamplePreviewRow) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
@@ -59,7 +62,9 @@ final class HealthSamplePreviewLoader: ObservableObject {
                 hasMore = false
                 return
             }
-            let newRows = samples.map { format(sample: $0) }
+            let newRows = samples.map { sample in
+                SamplePreviewRow(sample: sample, json: SamplePreviewFormatter.encodedJSON(for: sample))
+            }
             rows.append(contentsOf: newRows)
             cursor = samples.last?.startDate
             if samples.count < limit { hasMore = false }
@@ -88,59 +93,64 @@ final class HealthSamplePreviewLoader: ObservableObject {
             store.execute(q)
         }
     }
+}
 
-    // MARK: - Formatting
+/// Builds the user-facing strings for a `SamplePreviewRow`. Every word the
+/// user sees flows through `String(localized:)` so changing the in-app
+/// language refreshes the display when the row's view is re-rendered.
+enum SamplePreviewFormatter {
 
-    private func format(sample: HKSample) -> SamplePreviewRow {
-        let primary: String
-        let secondary: String?
+    // MARK: - Display
 
+    static func primary(for sample: HKSample) -> String {
         if let q = sample as? HKQuantitySample {
             let unit = SampleEncoder.canonicalUnit(for: q.quantityType)
             if q.quantity.is(compatibleWith: unit) {
                 let value = q.quantity.doubleValue(for: unit)
-                primary = "\(formatNumber(value)) \(unitLabel(unit, raw: unit.unitString))"
-            } else {
-                primary = q.quantity.description
+                let label = unitLabel(unit, raw: unit.unitString)
+                return label.isEmpty ? formatNumber(value) : "\(formatNumber(value)) \(label)"
             }
-            secondary = sample.sourceRevision.source.name
-        } else if let c = sample as? HKCategorySample {
-            primary = categoryDescription(for: c)
-            secondary = sample.sourceRevision.source.name
-        } else if let w = sample as? HKWorkout {
-            let mins = Int(w.duration / 60)
-            let kcal = w.totalEnergyBurned?.doubleValue(for: .kilocalorie())
-            var parts = ["\(mins) min"]
-            if let kcal { parts.append("\(Int(kcal.rounded())) kcal") }
-            primary = parts.joined(separator: " · ")
-            secondary = workoutActivityName(w.workoutActivityType)
-        } else if let e = sample as? HKElectrocardiogram {
-            let avg = e.averageHeartRate?.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
-            if let avg {
-                primary = "Avg \(Int(avg.rounded())) bpm"
-            } else {
-                primary = "ECG"
-            }
-            secondary = ecgClassification(e.classification)
-        } else {
-            primary = "—"
-            secondary = sample.sampleType.identifier
+            return q.quantity.description
         }
-
-        return SamplePreviewRow(
-            id: sample.uuid,
-            startDate: sample.startDate,
-            endDate: sample.endDate,
-            primaryText: primary,
-            secondaryText: secondary,
-            json: encodedJSON(for: sample)
-        )
+        if let c = sample as? HKCategorySample {
+            return categoryDescription(for: c)
+        }
+        if let w = sample as? HKWorkout {
+            let mins = Int(w.duration / 60)
+            var parts = ["\(mins) \(String(localized: "min"))"]
+            if let kcal = w.totalEnergyBurned?.doubleValue(for: .kilocalorie()) {
+                parts.append("\(Int(kcal.rounded())) \(String(localized: "kcal"))")
+            }
+            return parts.joined(separator: " · ")
+        }
+        if let e = sample as? HKElectrocardiogram {
+            if let avg = e.averageHeartRate?.doubleValue(for: HKUnit.count().unitDivided(by: .minute())) {
+                return String(localized: "Avg \(Int(avg.rounded())) bpm")
+            }
+            return String(localized: "ECG")
+        }
+        return "—"
     }
+
+    static func secondary(for sample: HKSample) -> String? {
+        if let w = sample as? HKWorkout {
+            return workoutActivityName(w.workoutActivityType)
+        }
+        if let e = sample as? HKElectrocardiogram {
+            return ecgClassification(e.classification)
+        }
+        if sample is HKQuantitySample || sample is HKCategorySample {
+            return sample.sourceRevision.source.name
+        }
+        return sample.sampleType.identifier
+    }
+
+    // MARK: - JSON
 
     /// Pretty-prints the sample using the same DTO encoders the sync pipeline
     /// uses. Returns "" for types we don't yet encode (ECG, workout routes,
     /// audiograms) so the UI can show an "unavailable" placeholder.
-    private func encodedJSON(for sample: HKSample) -> String {
+    static func encodedJSON(for sample: HKSample) -> String {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         do {
@@ -167,19 +177,25 @@ final class HealthSamplePreviewLoader: ObservableObject {
         }
     }
 
-    private func formatNumber(_ v: Double) -> String {
+    // MARK: - Helpers
+
+    private static func formatNumber(_ v: Double) -> String {
         let f = NumberFormatter()
         f.numberStyle = .decimal
         f.maximumFractionDigits = (v.rounded() == v) ? 0 : 2
         return f.string(from: NSNumber(value: v)) ?? String(v)
     }
 
-    private func unitLabel(_ unit: HKUnit, raw: String) -> String {
+    /// Unit suffix shown after a quantity sample's value. Symbol-only units
+    /// (kg, %, °C, ...) stay verbatim since they're universal; word-based
+    /// abbreviations (bpm, min, kcal) get localized so non-English readers
+    /// can swap them out.
+    private static func unitLabel(_ unit: HKUnit, raw: String) -> String {
         switch raw {
         case "count": return ""
-        case "count/min": return "bpm"
-        case "kcal": return "kcal"
-        case "min": return "min"
+        case "count/min": return String(localized: "bpm")
+        case "kcal": return String(localized: "kcal")
+        case "min": return String(localized: "min")
         case "m": return "m"
         case "kg": return "kg"
         case "%": return "%"
@@ -190,70 +206,79 @@ final class HealthSamplePreviewLoader: ObservableObject {
         }
     }
 
-    private func categoryDescription(for sample: HKCategorySample) -> String {
+    private static func categoryDescription(for sample: HKCategorySample) -> String {
         let id = sample.categoryType.identifier
         let value = sample.value
         if id == HKCategoryTypeIdentifier.sleepAnalysis.rawValue {
             switch value {
-            case HKCategoryValueSleepAnalysis.inBed.rawValue: return "In Bed"
-            case HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue: return "Asleep"
-            case HKCategoryValueSleepAnalysis.awake.rawValue: return "Awake"
-            case HKCategoryValueSleepAnalysis.asleepCore.rawValue: return "Core Sleep"
-            case HKCategoryValueSleepAnalysis.asleepDeep.rawValue: return "Deep Sleep"
-            case HKCategoryValueSleepAnalysis.asleepREM.rawValue: return "REM Sleep"
-            default: return "Sleep (\(value))"
+            case HKCategoryValueSleepAnalysis.inBed.rawValue:
+                return String(localized: "In Bed")
+            case HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue:
+                return String(localized: "Asleep")
+            case HKCategoryValueSleepAnalysis.awake.rawValue:
+                return String(localized: "Awake")
+            case HKCategoryValueSleepAnalysis.asleepCore.rawValue:
+                return String(localized: "Core Sleep")
+            case HKCategoryValueSleepAnalysis.asleepDeep.rawValue:
+                return String(localized: "Deep Sleep")
+            case HKCategoryValueSleepAnalysis.asleepREM.rawValue:
+                return String(localized: "REM Sleep")
+            default:
+                return String(localized: "Sleep (\(value))")
             }
         }
         if id == HKCategoryTypeIdentifier.appleStandHour.rawValue {
-            return value == HKCategoryValueAppleStandHour.stood.rawValue ? "Stood" : "Idle"
+            return value == HKCategoryValueAppleStandHour.stood.rawValue
+                ? String(localized: "Stood")
+                : String(localized: "Idle")
         }
         if id == HKCategoryTypeIdentifier.mindfulSession.rawValue {
             let mins = Int(sample.endDate.timeIntervalSince(sample.startDate) / 60)
-            return "\(mins) min mindful session"
+            return String(localized: "\(mins) min mindful session")
         }
         // Symptom-style category samples: severity scale 0..3
         switch value {
-        case 0: return "Not present"
-        case 1: return "Mild"
-        case 2: return "Moderate"
-        case 3: return "Severe"
-        default: return "Value \(value)"
+        case 0: return String(localized: "Not present")
+        case 1: return String(localized: "Mild")
+        case 2: return String(localized: "Moderate")
+        case 3: return String(localized: "Severe")
+        default: return String(localized: "Value \(value)")
         }
     }
 
-    private func workoutActivityName(_ t: HKWorkoutActivityType) -> String {
+    private static func workoutActivityName(_ t: HKWorkoutActivityType) -> String {
         switch t {
-        case .walking: return "Walking"
-        case .running: return "Running"
-        case .cycling: return "Cycling"
-        case .swimming: return "Swimming"
-        case .hiking: return "Hiking"
-        case .yoga: return "Yoga"
-        case .functionalStrengthTraining: return "Functional Strength"
-        case .traditionalStrengthTraining: return "Strength Training"
-        case .crossTraining: return "Cross Training"
-        case .elliptical: return "Elliptical"
-        case .rowing: return "Rowing"
-        case .stairClimbing: return "Stair Climbing"
-        case .highIntensityIntervalTraining: return "HIIT"
-        case .dance: return "Dance"
-        case .pilates: return "Pilates"
-        case .other: return "Other"
-        default: return "Workout"
+        case .walking: return String(localized: "Walking")
+        case .running: return String(localized: "Running")
+        case .cycling: return String(localized: "Cycling")
+        case .swimming: return String(localized: "Swimming")
+        case .hiking: return String(localized: "Hiking")
+        case .yoga: return String(localized: "Yoga")
+        case .functionalStrengthTraining: return String(localized: "Functional Strength")
+        case .traditionalStrengthTraining: return String(localized: "Strength Training")
+        case .crossTraining: return String(localized: "Cross Training")
+        case .elliptical: return String(localized: "Elliptical")
+        case .rowing: return String(localized: "Rowing")
+        case .stairClimbing: return String(localized: "Stair Climbing")
+        case .highIntensityIntervalTraining: return String(localized: "HIIT")
+        case .dance: return String(localized: "Dance")
+        case .pilates: return String(localized: "Pilates")
+        case .other: return String(localized: "Other")
+        default: return String(localized: "Workout")
         }
     }
 
-    private func ecgClassification(_ c: HKElectrocardiogram.Classification) -> String {
+    private static func ecgClassification(_ c: HKElectrocardiogram.Classification) -> String {
         switch c {
-        case .sinusRhythm: return "Sinus rhythm"
-        case .atrialFibrillation: return "Atrial fibrillation"
-        case .inconclusiveLowHeartRate: return "Inconclusive — low HR"
-        case .inconclusiveHighHeartRate: return "Inconclusive — high HR"
-        case .inconclusivePoorReading: return "Inconclusive — poor reading"
-        case .inconclusiveOther: return "Inconclusive"
-        case .unrecognized: return "Unrecognized"
-        case .notSet: return "Not classified"
-        @unknown default: return "Unknown"
+        case .sinusRhythm: return String(localized: "Sinus rhythm")
+        case .atrialFibrillation: return String(localized: "Atrial fibrillation")
+        case .inconclusiveLowHeartRate: return String(localized: "Inconclusive — low HR")
+        case .inconclusiveHighHeartRate: return String(localized: "Inconclusive — high HR")
+        case .inconclusivePoorReading: return String(localized: "Inconclusive — poor reading")
+        case .inconclusiveOther: return String(localized: "Inconclusive")
+        case .unrecognized: return String(localized: "Unrecognized")
+        case .notSet: return String(localized: "Not classified")
+        @unknown default: return String(localized: "Unknown")
         }
     }
 }
