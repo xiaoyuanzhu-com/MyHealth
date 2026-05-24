@@ -3,13 +3,19 @@ import HealthKit
 
 /// One entry in the Data-tab list — a single HealthKit permission type with
 /// the metadata needed to render a row and its detail page.
+///
+/// `displayName` and `description` are computed at access time so they
+/// re-resolve to the current localization whenever the user switches the
+/// in-app language. (Storing them would freeze the strings to whatever
+/// language was active when the static catalog was first built.)
 struct HealthTypeEntry: Identifiable, Hashable {
     let objectType: HKObjectType
-    let displayName: String
     let icon: String
-    let description: String
+    let group: HealthTypeGroup
 
     var id: String { objectType.identifier }
+    var displayName: String { HealthTypeCatalog.displayName(for: id) }
+    var description: String { HealthTypeCatalog.description(for: id, group: group) }
 
     static func == (lhs: HealthTypeEntry, rhs: HealthTypeEntry) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
@@ -77,6 +83,21 @@ enum HealthTypeCatalog {
         all.first { $0.id == identifier }
     }
 
+    /// Localized display name for a given HK identifier. Re-resolves
+    /// `String(localized:)` on every call so language changes take effect
+    /// without rebuilding the static catalog.
+    static func displayName(for id: String) -> String {
+        if let v = nameOverrides[id] { return String(localized: v) }
+        return autoName(from: id)
+    }
+
+    /// Localized description for a given HK identifier. Falls back to the
+    /// group's default description when no per-id override exists.
+    static func description(for id: String, group: HealthTypeGroup) -> String {
+        if let v = descriptionOverrides[id] { return String(localized: v) }
+        return String(localized: defaultDescription(for: group))
+    }
+
     // MARK: - Building the catalog
 
     private static let entriesByGroup: [HealthTypeGroup: [HealthTypeEntry]] = build()
@@ -87,15 +108,20 @@ enum HealthTypeCatalog {
             guard let type = objectType(for: id) else { continue }
             let entry = HealthTypeEntry(
                 objectType: type,
-                displayName: nameOverrides[id] ?? autoName(from: id),
                 icon: iconOverrides[id] ?? defaultIcon(for: group),
-                description: descriptionOverrides[id] ?? defaultDescription(for: group)
+                group: group
             )
             out[group, default: []].append(entry)
         }
         // Sort each group alphabetically by display name for stable output.
+        // Sort key uses whatever language is active on first access; we
+        // accept a fixed order rather than re-sorting on every render.
         for k in out.keys {
-            out[k]?.sort { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
+            out[k]?.sort {
+                displayName(for: $0.id)
+                    .localizedCaseInsensitiveCompare(displayName(for: $1.id))
+                    == .orderedAscending
+            }
         }
         return out
     }
@@ -169,216 +195,216 @@ enum HealthTypeCatalog {
         }
     }
 
-    private static func defaultDescription(for group: HealthTypeGroup) -> String {
+    private static func defaultDescription(for group: HealthTypeGroup) -> String.LocalizationValue {
         switch group {
-        case .activity: return String(localized: "Activity and energy data recorded by Apple Health.")
-        case .heart: return String(localized: "Heart-related measurements recorded by Apple Health.")
-        case .bodyMeasurements: return String(localized: "Body measurement recorded by Apple Health.")
-        case .sleep: return String(localized: "Sleep data recorded by Apple Health.")
-        case .mobility: return String(localized: "Walking and mobility data recorded by Apple Health.")
-        case .respiratory: return String(localized: "Respiratory measurement recorded by Apple Health.")
-        case .hearing: return String(localized: "Audio and hearing data recorded by Apple Health.")
-        case .vitals: return String(localized: "Vital sign recorded by Apple Health.")
-        case .nutrition: return String(localized: "Dietary intake recorded by Apple Health.")
-        case .cycleTracking: return String(localized: "Cycle tracking data recorded by Apple Health.")
-        case .mindfulness: return String(localized: "Mindfulness session recorded by Apple Health.")
-        case .symptoms: return String(localized: "Symptom logged in Apple Health.")
-        case .characteristics: return String(localized: "Profile attribute stored in Apple Health.")
-        case .other: return String(localized: "Data recorded by Apple Health.")
+        case .activity: return "Activity and energy data recorded by Apple Health."
+        case .heart: return "Heart-related measurements recorded by Apple Health."
+        case .bodyMeasurements: return "Body measurement recorded by Apple Health."
+        case .sleep: return "Sleep data recorded by Apple Health."
+        case .mobility: return "Walking and mobility data recorded by Apple Health."
+        case .respiratory: return "Respiratory measurement recorded by Apple Health."
+        case .hearing: return "Audio and hearing data recorded by Apple Health."
+        case .vitals: return "Vital sign recorded by Apple Health."
+        case .nutrition: return "Dietary intake recorded by Apple Health."
+        case .cycleTracking: return "Cycle tracking data recorded by Apple Health."
+        case .mindfulness: return "Mindfulness session recorded by Apple Health."
+        case .symptoms: return "Symptom logged in Apple Health."
+        case .characteristics: return "Profile attribute stored in Apple Health."
+        case .other: return "Data recorded by Apple Health."
         }
     }
 
     // MARK: - Per-identifier overrides
 
-    private static let nameOverrides: [String: String] = [
+    private static let nameOverrides: [String: String.LocalizationValue] = [
         // Curated overrides — preferred display names that differ from the
         // auto-derived form (or use special characters).
-        HKObjectType.workoutType().identifier: String(localized: "Workouts"),
-        HKSeriesType.workoutRoute().identifier: String(localized: "Workout Routes"),
-        HKObjectType.electrocardiogramType().identifier: String(localized: "ECG"),
-        HKObjectType.audiogramSampleType().identifier: String(localized: "Audiogram"),
-        HKQuantityTypeIdentifier.bodyMassIndex.rawValue: String(localized: "Body Mass Index"),
-        HKQuantityTypeIdentifier.vo2Max.rawValue: String(localized: "VO\u{2082} Max"),
-        HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue: String(localized: "Heart Rate Variability"),
-        HKQuantityTypeIdentifier.forcedExpiratoryVolume1.rawValue: String(localized: "Forced Expiratory Volume (1s)"),
-        HKQuantityTypeIdentifier.uvExposure.rawValue: String(localized: "UV Exposure"),
+        HKObjectType.workoutType().identifier: "Workouts",
+        HKSeriesType.workoutRoute().identifier: "Workout Routes",
+        HKObjectType.electrocardiogramType().identifier: "ECG",
+        HKObjectType.audiogramSampleType().identifier: "Audiogram",
+        HKQuantityTypeIdentifier.bodyMassIndex.rawValue: "Body Mass Index",
+        HKQuantityTypeIdentifier.vo2Max.rawValue: "VO\u{2082} Max",
+        HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue: "Heart Rate Variability",
+        HKQuantityTypeIdentifier.forcedExpiratoryVolume1.rawValue: "Forced Expiratory Volume (1s)",
+        HKQuantityTypeIdentifier.uvExposure.rawValue: "UV Exposure",
 
         // Per-identifier names for the rest of the catalog. The English
         // value matches what autoName() would produce, so the English UX
         // is unchanged; this exposes every identifier to the String Catalog
         // so other languages can be translated without code changes.
-        HKQuantityTypeIdentifier.stepCount.rawValue: String(localized: "Step Count"),
-        HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue: String(localized: "Distance Walking Running"),
-        HKQuantityTypeIdentifier.distanceCycling.rawValue: String(localized: "Distance Cycling"),
-        HKQuantityTypeIdentifier.distanceSwimming.rawValue: String(localized: "Distance Swimming"),
-        HKQuantityTypeIdentifier.distanceWheelchair.rawValue: String(localized: "Distance Wheelchair"),
-        HKQuantityTypeIdentifier.distanceDownhillSnowSports.rawValue: String(localized: "Distance Downhill Snow Sports"),
-        HKQuantityTypeIdentifier.pushCount.rawValue: String(localized: "Push Count"),
-        HKQuantityTypeIdentifier.swimmingStrokeCount.rawValue: String(localized: "Swimming Stroke Count"),
-        HKQuantityTypeIdentifier.flightsClimbed.rawValue: String(localized: "Flights Climbed"),
-        HKQuantityTypeIdentifier.nikeFuel.rawValue: String(localized: "Nike Fuel"),
-        HKQuantityTypeIdentifier.activeEnergyBurned.rawValue: String(localized: "Active Energy Burned"),
-        HKQuantityTypeIdentifier.basalEnergyBurned.rawValue: String(localized: "Basal Energy Burned"),
-        HKQuantityTypeIdentifier.appleExerciseTime.rawValue: String(localized: "Apple Exercise Time"),
-        HKQuantityTypeIdentifier.appleStandTime.rawValue: String(localized: "Apple Stand Time"),
-        HKQuantityTypeIdentifier.appleMoveTime.rawValue: String(localized: "Apple Move Time"),
-        HKQuantityTypeIdentifier.physicalEffort.rawValue: String(localized: "Physical Effort"),
-        HKCategoryTypeIdentifier.appleStandHour.rawValue: String(localized: "Apple Stand Hour"),
-        HKQuantityTypeIdentifier.heartRate.rawValue: String(localized: "Heart Rate"),
-        HKQuantityTypeIdentifier.restingHeartRate.rawValue: String(localized: "Resting Heart Rate"),
-        HKQuantityTypeIdentifier.walkingHeartRateAverage.rawValue: String(localized: "Walking Heart Rate Average"),
-        HKQuantityTypeIdentifier.heartRateRecoveryOneMinute.rawValue: String(localized: "Heart Rate Recovery One Minute"),
-        HKCategoryTypeIdentifier.lowHeartRateEvent.rawValue: String(localized: "Low Heart Rate Event"),
-        HKCategoryTypeIdentifier.highHeartRateEvent.rawValue: String(localized: "High Heart Rate Event"),
-        HKCategoryTypeIdentifier.irregularHeartRhythmEvent.rawValue: String(localized: "Irregular Heart Rhythm Event"),
-        HKCategoryTypeIdentifier.lowCardioFitnessEvent.rawValue: String(localized: "Low Cardio Fitness Event"),
-        HKQuantityTypeIdentifier.bodyMass.rawValue: String(localized: "Body Mass"),
-        HKQuantityTypeIdentifier.bodyFatPercentage.rawValue: String(localized: "Body Fat Percentage"),
-        HKQuantityTypeIdentifier.height.rawValue: String(localized: "Height"),
-        HKQuantityTypeIdentifier.leanBodyMass.rawValue: String(localized: "Lean Body Mass"),
-        HKQuantityTypeIdentifier.waistCircumference.rawValue: String(localized: "Waist Circumference"),
-        HKCategoryTypeIdentifier.sleepAnalysis.rawValue: String(localized: "Sleep Analysis"),
-        HKCategoryTypeIdentifier.sleepChanges.rawValue: String(localized: "Sleep Changes"),
-        HKQuantityTypeIdentifier.walkingSpeed.rawValue: String(localized: "Walking Speed"),
-        HKQuantityTypeIdentifier.walkingStepLength.rawValue: String(localized: "Walking Step Length"),
-        HKQuantityTypeIdentifier.walkingAsymmetryPercentage.rawValue: String(localized: "Walking Asymmetry Percentage"),
-        HKQuantityTypeIdentifier.walkingDoubleSupportPercentage.rawValue: String(localized: "Walking Double Support Percentage"),
-        HKQuantityTypeIdentifier.stairAscentSpeed.rawValue: String(localized: "Stair Ascent Speed"),
-        HKQuantityTypeIdentifier.stairDescentSpeed.rawValue: String(localized: "Stair Descent Speed"),
-        HKQuantityTypeIdentifier.sixMinuteWalkTestDistance.rawValue: String(localized: "Six Minute Walk Test Distance"),
-        HKQuantityTypeIdentifier.appleWalkingSteadiness.rawValue: String(localized: "Apple Walking Steadiness"),
-        HKQuantityTypeIdentifier.runningGroundContactTime.rawValue: String(localized: "Running Ground Contact Time"),
-        HKQuantityTypeIdentifier.runningStrideLength.rawValue: String(localized: "Running Stride Length"),
-        HKQuantityTypeIdentifier.runningVerticalOscillation.rawValue: String(localized: "Running Vertical Oscillation"),
-        HKQuantityTypeIdentifier.runningPower.rawValue: String(localized: "Running Power"),
-        HKQuantityTypeIdentifier.runningSpeed.rawValue: String(localized: "Running Speed"),
-        HKQuantityTypeIdentifier.cyclingCadence.rawValue: String(localized: "Cycling Cadence"),
-        HKQuantityTypeIdentifier.cyclingFunctionalThresholdPower.rawValue: String(localized: "Cycling Functional Threshold Power"),
-        HKQuantityTypeIdentifier.cyclingPower.rawValue: String(localized: "Cycling Power"),
-        HKQuantityTypeIdentifier.cyclingSpeed.rawValue: String(localized: "Cycling Speed"),
-        HKCategoryTypeIdentifier.appleWalkingSteadinessEvent.rawValue: String(localized: "Apple Walking Steadiness Event"),
-        HKQuantityTypeIdentifier.respiratoryRate.rawValue: String(localized: "Respiratory Rate"),
-        HKQuantityTypeIdentifier.oxygenSaturation.rawValue: String(localized: "Oxygen Saturation"),
-        HKQuantityTypeIdentifier.forcedVitalCapacity.rawValue: String(localized: "Forced Vital Capacity"),
-        HKQuantityTypeIdentifier.peakExpiratoryFlowRate.rawValue: String(localized: "Peak Expiratory Flow Rate"),
-        HKQuantityTypeIdentifier.inhalerUsage.rawValue: String(localized: "Inhaler Usage"),
-        HKQuantityTypeIdentifier.environmentalAudioExposure.rawValue: String(localized: "Environmental Audio Exposure"),
-        HKQuantityTypeIdentifier.environmentalSoundReduction.rawValue: String(localized: "Environmental Sound Reduction"),
-        HKQuantityTypeIdentifier.headphoneAudioExposure.rawValue: String(localized: "Headphone Audio Exposure"),
-        HKCategoryTypeIdentifier.environmentalAudioExposureEvent.rawValue: String(localized: "Environmental Audio Exposure Event"),
-        HKCategoryTypeIdentifier.headphoneAudioExposureEvent.rawValue: String(localized: "Headphone Audio Exposure Event"),
-        HKQuantityTypeIdentifier.bodyTemperature.rawValue: String(localized: "Body Temperature"),
-        HKQuantityTypeIdentifier.basalBodyTemperature.rawValue: String(localized: "Basal Body Temperature"),
-        HKQuantityTypeIdentifier.bloodPressureSystolic.rawValue: String(localized: "Blood Pressure Systolic"),
-        HKQuantityTypeIdentifier.bloodPressureDiastolic.rawValue: String(localized: "Blood Pressure Diastolic"),
-        HKQuantityTypeIdentifier.bloodGlucose.rawValue: String(localized: "Blood Glucose"),
-        HKQuantityTypeIdentifier.electrodermalActivity.rawValue: String(localized: "Electrodermal Activity"),
-        HKQuantityTypeIdentifier.numberOfTimesFallen.rawValue: String(localized: "Number Of Times Fallen"),
-        HKQuantityTypeIdentifier.peripheralPerfusionIndex.rawValue: String(localized: "Peripheral Perfusion Index"),
-        HKQuantityTypeIdentifier.underwaterDepth.rawValue: String(localized: "Underwater Depth"),
-        HKQuantityTypeIdentifier.waterTemperature.rawValue: String(localized: "Water Temperature"),
-        HKQuantityTypeIdentifier.timeInDaylight.rawValue: String(localized: "Time In Daylight"),
-        HKQuantityTypeIdentifier.insulinDelivery.rawValue: String(localized: "Insulin Delivery"),
-        HKQuantityTypeIdentifier.dietaryEnergyConsumed.rawValue: String(localized: "Dietary Energy Consumed"),
-        HKQuantityTypeIdentifier.dietaryFatTotal.rawValue: String(localized: "Dietary Fat Total"),
-        HKQuantityTypeIdentifier.dietaryFatSaturated.rawValue: String(localized: "Dietary Fat Saturated"),
-        HKQuantityTypeIdentifier.dietaryFatPolyunsaturated.rawValue: String(localized: "Dietary Fat Polyunsaturated"),
-        HKQuantityTypeIdentifier.dietaryFatMonounsaturated.rawValue: String(localized: "Dietary Fat Monounsaturated"),
-        HKQuantityTypeIdentifier.dietaryCholesterol.rawValue: String(localized: "Dietary Cholesterol"),
-        HKQuantityTypeIdentifier.dietarySodium.rawValue: String(localized: "Dietary Sodium"),
-        HKQuantityTypeIdentifier.dietaryCarbohydrates.rawValue: String(localized: "Dietary Carbohydrates"),
-        HKQuantityTypeIdentifier.dietaryFiber.rawValue: String(localized: "Dietary Fiber"),
-        HKQuantityTypeIdentifier.dietarySugar.rawValue: String(localized: "Dietary Sugar"),
-        HKQuantityTypeIdentifier.dietaryProtein.rawValue: String(localized: "Dietary Protein"),
-        HKQuantityTypeIdentifier.dietaryVitaminA.rawValue: String(localized: "Dietary Vitamin A"),
-        HKQuantityTypeIdentifier.dietaryVitaminB6.rawValue: String(localized: "Dietary Vitamin B6"),
-        HKQuantityTypeIdentifier.dietaryVitaminB12.rawValue: String(localized: "Dietary Vitamin B12"),
-        HKQuantityTypeIdentifier.dietaryVitaminC.rawValue: String(localized: "Dietary Vitamin C"),
-        HKQuantityTypeIdentifier.dietaryVitaminD.rawValue: String(localized: "Dietary Vitamin D"),
-        HKQuantityTypeIdentifier.dietaryVitaminE.rawValue: String(localized: "Dietary Vitamin E"),
-        HKQuantityTypeIdentifier.dietaryVitaminK.rawValue: String(localized: "Dietary Vitamin K"),
-        HKQuantityTypeIdentifier.dietaryCalcium.rawValue: String(localized: "Dietary Calcium"),
-        HKQuantityTypeIdentifier.dietaryIron.rawValue: String(localized: "Dietary Iron"),
-        HKQuantityTypeIdentifier.dietaryThiamin.rawValue: String(localized: "Dietary Thiamin"),
-        HKQuantityTypeIdentifier.dietaryRiboflavin.rawValue: String(localized: "Dietary Riboflavin"),
-        HKQuantityTypeIdentifier.dietaryNiacin.rawValue: String(localized: "Dietary Niacin"),
-        HKQuantityTypeIdentifier.dietaryFolate.rawValue: String(localized: "Dietary Folate"),
-        HKQuantityTypeIdentifier.dietaryBiotin.rawValue: String(localized: "Dietary Biotin"),
-        HKQuantityTypeIdentifier.dietaryPantothenicAcid.rawValue: String(localized: "Dietary Pantothenic Acid"),
-        HKQuantityTypeIdentifier.dietaryPhosphorus.rawValue: String(localized: "Dietary Phosphorus"),
-        HKQuantityTypeIdentifier.dietaryIodine.rawValue: String(localized: "Dietary Iodine"),
-        HKQuantityTypeIdentifier.dietaryMagnesium.rawValue: String(localized: "Dietary Magnesium"),
-        HKQuantityTypeIdentifier.dietaryZinc.rawValue: String(localized: "Dietary Zinc"),
-        HKQuantityTypeIdentifier.dietarySelenium.rawValue: String(localized: "Dietary Selenium"),
-        HKQuantityTypeIdentifier.dietaryCopper.rawValue: String(localized: "Dietary Copper"),
-        HKQuantityTypeIdentifier.dietaryManganese.rawValue: String(localized: "Dietary Manganese"),
-        HKQuantityTypeIdentifier.dietaryChromium.rawValue: String(localized: "Dietary Chromium"),
-        HKQuantityTypeIdentifier.dietaryMolybdenum.rawValue: String(localized: "Dietary Molybdenum"),
-        HKQuantityTypeIdentifier.dietaryChloride.rawValue: String(localized: "Dietary Chloride"),
-        HKQuantityTypeIdentifier.dietaryPotassium.rawValue: String(localized: "Dietary Potassium"),
-        HKQuantityTypeIdentifier.dietaryCaffeine.rawValue: String(localized: "Dietary Caffeine"),
-        HKQuantityTypeIdentifier.dietaryWater.rawValue: String(localized: "Dietary Water"),
-        HKCategoryTypeIdentifier.cervicalMucusQuality.rawValue: String(localized: "Cervical Mucus Quality"),
-        HKCategoryTypeIdentifier.menstrualFlow.rawValue: String(localized: "Menstrual Flow"),
-        HKCategoryTypeIdentifier.ovulationTestResult.rawValue: String(localized: "Ovulation Test Result"),
-        HKCategoryTypeIdentifier.sexualActivity.rawValue: String(localized: "Sexual Activity"),
-        HKCategoryTypeIdentifier.intermenstrualBleeding.rawValue: String(localized: "Intermenstrual Bleeding"),
-        HKCategoryTypeIdentifier.pregnancy.rawValue: String(localized: "Pregnancy"),
-        HKCategoryTypeIdentifier.lactation.rawValue: String(localized: "Lactation"),
-        HKCategoryTypeIdentifier.contraceptive.rawValue: String(localized: "Contraceptive"),
-        HKCategoryTypeIdentifier.pregnancyTestResult.rawValue: String(localized: "Pregnancy Test Result"),
-        HKCategoryTypeIdentifier.progesteroneTestResult.rawValue: String(localized: "Progesterone Test Result"),
-        HKCategoryTypeIdentifier.persistentIntermenstrualBleeding.rawValue: String(localized: "Persistent Intermenstrual Bleeding"),
-        HKCategoryTypeIdentifier.prolongedMenstrualPeriods.rawValue: String(localized: "Prolonged Menstrual Periods"),
-        HKCategoryTypeIdentifier.irregularMenstrualCycles.rawValue: String(localized: "Irregular Menstrual Cycles"),
-        HKCategoryTypeIdentifier.infrequentMenstrualCycles.rawValue: String(localized: "Infrequent Menstrual Cycles"),
-        HKCategoryTypeIdentifier.mindfulSession.rawValue: String(localized: "Mindful Session"),
-        HKCategoryTypeIdentifier.toothbrushingEvent.rawValue: String(localized: "Toothbrushing Event"),
-        HKCategoryTypeIdentifier.handwashingEvent.rawValue: String(localized: "Handwashing Event"),
-        HKCategoryTypeIdentifier.abdominalCramps.rawValue: String(localized: "Abdominal Cramps"),
-        HKCategoryTypeIdentifier.acne.rawValue: String(localized: "Acne"),
-        HKCategoryTypeIdentifier.appetiteChanges.rawValue: String(localized: "Appetite Changes"),
-        HKCategoryTypeIdentifier.bladderIncontinence.rawValue: String(localized: "Bladder Incontinence"),
-        HKCategoryTypeIdentifier.bloating.rawValue: String(localized: "Bloating"),
-        HKCategoryTypeIdentifier.breastPain.rawValue: String(localized: "Breast Pain"),
-        HKCategoryTypeIdentifier.chestTightnessOrPain.rawValue: String(localized: "Chest Tightness Or Pain"),
-        HKCategoryTypeIdentifier.chills.rawValue: String(localized: "Chills"),
-        HKCategoryTypeIdentifier.constipation.rawValue: String(localized: "Constipation"),
-        HKCategoryTypeIdentifier.coughing.rawValue: String(localized: "Coughing"),
-        HKCategoryTypeIdentifier.diarrhea.rawValue: String(localized: "Diarrhea"),
-        HKCategoryTypeIdentifier.dizziness.rawValue: String(localized: "Dizziness"),
-        HKCategoryTypeIdentifier.drySkin.rawValue: String(localized: "Dry Skin"),
-        HKCategoryTypeIdentifier.fainting.rawValue: String(localized: "Fainting"),
-        HKCategoryTypeIdentifier.fatigue.rawValue: String(localized: "Fatigue"),
-        HKCategoryTypeIdentifier.fever.rawValue: String(localized: "Fever"),
-        HKCategoryTypeIdentifier.generalizedBodyAche.rawValue: String(localized: "Generalized Body Ache"),
-        HKCategoryTypeIdentifier.hairLoss.rawValue: String(localized: "Hair Loss"),
-        HKCategoryTypeIdentifier.headache.rawValue: String(localized: "Headache"),
-        HKCategoryTypeIdentifier.heartburn.rawValue: String(localized: "Heartburn"),
-        HKCategoryTypeIdentifier.hotFlashes.rawValue: String(localized: "Hot Flashes"),
-        HKCategoryTypeIdentifier.lossOfSmell.rawValue: String(localized: "Loss Of Smell"),
-        HKCategoryTypeIdentifier.lossOfTaste.rawValue: String(localized: "Loss Of Taste"),
-        HKCategoryTypeIdentifier.lowerBackPain.rawValue: String(localized: "Lower Back Pain"),
-        HKCategoryTypeIdentifier.memoryLapse.rawValue: String(localized: "Memory Lapse"),
-        HKCategoryTypeIdentifier.moodChanges.rawValue: String(localized: "Mood Changes"),
-        HKCategoryTypeIdentifier.nausea.rawValue: String(localized: "Nausea"),
-        HKCategoryTypeIdentifier.nightSweats.rawValue: String(localized: "Night Sweats"),
-        HKCategoryTypeIdentifier.pelvicPain.rawValue: String(localized: "Pelvic Pain"),
-        HKCategoryTypeIdentifier.rapidPoundingOrFlutteringHeartbeat.rawValue: String(localized: "Rapid Pounding Or Fluttering Heartbeat"),
-        HKCategoryTypeIdentifier.runnyNose.rawValue: String(localized: "Runny Nose"),
-        HKCategoryTypeIdentifier.shortnessOfBreath.rawValue: String(localized: "Shortness Of Breath"),
-        HKCategoryTypeIdentifier.sinusCongestion.rawValue: String(localized: "Sinus Congestion"),
-        HKCategoryTypeIdentifier.skippedHeartbeat.rawValue: String(localized: "Skipped Heartbeat"),
-        HKCategoryTypeIdentifier.soreThroat.rawValue: String(localized: "Sore Throat"),
-        HKCategoryTypeIdentifier.vaginalDryness.rawValue: String(localized: "Vaginal Dryness"),
-        HKCategoryTypeIdentifier.vomiting.rawValue: String(localized: "Vomiting"),
-        HKCategoryTypeIdentifier.wheezing.rawValue: String(localized: "Wheezing"),
-        HKCharacteristicTypeIdentifier.biologicalSex.rawValue: String(localized: "Biological Sex"),
-        HKCharacteristicTypeIdentifier.bloodType.rawValue: String(localized: "Blood Type"),
-        HKCharacteristicTypeIdentifier.dateOfBirth.rawValue: String(localized: "Date Of Birth"),
-        HKCharacteristicTypeIdentifier.fitzpatrickSkinType.rawValue: String(localized: "Fitzpatrick Skin Type"),
-        HKCharacteristicTypeIdentifier.wheelchairUse.rawValue: String(localized: "Wheelchair Use"),
-        HKCharacteristicTypeIdentifier.activityMoveMode.rawValue: String(localized: "Activity Move Mode"),
+        HKQuantityTypeIdentifier.stepCount.rawValue: "Step Count",
+        HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue: "Distance Walking Running",
+        HKQuantityTypeIdentifier.distanceCycling.rawValue: "Distance Cycling",
+        HKQuantityTypeIdentifier.distanceSwimming.rawValue: "Distance Swimming",
+        HKQuantityTypeIdentifier.distanceWheelchair.rawValue: "Distance Wheelchair",
+        HKQuantityTypeIdentifier.distanceDownhillSnowSports.rawValue: "Distance Downhill Snow Sports",
+        HKQuantityTypeIdentifier.pushCount.rawValue: "Push Count",
+        HKQuantityTypeIdentifier.swimmingStrokeCount.rawValue: "Swimming Stroke Count",
+        HKQuantityTypeIdentifier.flightsClimbed.rawValue: "Flights Climbed",
+        HKQuantityTypeIdentifier.nikeFuel.rawValue: "Nike Fuel",
+        HKQuantityTypeIdentifier.activeEnergyBurned.rawValue: "Active Energy Burned",
+        HKQuantityTypeIdentifier.basalEnergyBurned.rawValue: "Basal Energy Burned",
+        HKQuantityTypeIdentifier.appleExerciseTime.rawValue: "Apple Exercise Time",
+        HKQuantityTypeIdentifier.appleStandTime.rawValue: "Apple Stand Time",
+        HKQuantityTypeIdentifier.appleMoveTime.rawValue: "Apple Move Time",
+        HKQuantityTypeIdentifier.physicalEffort.rawValue: "Physical Effort",
+        HKCategoryTypeIdentifier.appleStandHour.rawValue: "Apple Stand Hour",
+        HKQuantityTypeIdentifier.heartRate.rawValue: "Heart Rate",
+        HKQuantityTypeIdentifier.restingHeartRate.rawValue: "Resting Heart Rate",
+        HKQuantityTypeIdentifier.walkingHeartRateAverage.rawValue: "Walking Heart Rate Average",
+        HKQuantityTypeIdentifier.heartRateRecoveryOneMinute.rawValue: "Heart Rate Recovery One Minute",
+        HKCategoryTypeIdentifier.lowHeartRateEvent.rawValue: "Low Heart Rate Event",
+        HKCategoryTypeIdentifier.highHeartRateEvent.rawValue: "High Heart Rate Event",
+        HKCategoryTypeIdentifier.irregularHeartRhythmEvent.rawValue: "Irregular Heart Rhythm Event",
+        HKCategoryTypeIdentifier.lowCardioFitnessEvent.rawValue: "Low Cardio Fitness Event",
+        HKQuantityTypeIdentifier.bodyMass.rawValue: "Body Mass",
+        HKQuantityTypeIdentifier.bodyFatPercentage.rawValue: "Body Fat Percentage",
+        HKQuantityTypeIdentifier.height.rawValue: "Height",
+        HKQuantityTypeIdentifier.leanBodyMass.rawValue: "Lean Body Mass",
+        HKQuantityTypeIdentifier.waistCircumference.rawValue: "Waist Circumference",
+        HKCategoryTypeIdentifier.sleepAnalysis.rawValue: "Sleep Analysis",
+        HKCategoryTypeIdentifier.sleepChanges.rawValue: "Sleep Changes",
+        HKQuantityTypeIdentifier.walkingSpeed.rawValue: "Walking Speed",
+        HKQuantityTypeIdentifier.walkingStepLength.rawValue: "Walking Step Length",
+        HKQuantityTypeIdentifier.walkingAsymmetryPercentage.rawValue: "Walking Asymmetry Percentage",
+        HKQuantityTypeIdentifier.walkingDoubleSupportPercentage.rawValue: "Walking Double Support Percentage",
+        HKQuantityTypeIdentifier.stairAscentSpeed.rawValue: "Stair Ascent Speed",
+        HKQuantityTypeIdentifier.stairDescentSpeed.rawValue: "Stair Descent Speed",
+        HKQuantityTypeIdentifier.sixMinuteWalkTestDistance.rawValue: "Six Minute Walk Test Distance",
+        HKQuantityTypeIdentifier.appleWalkingSteadiness.rawValue: "Apple Walking Steadiness",
+        HKQuantityTypeIdentifier.runningGroundContactTime.rawValue: "Running Ground Contact Time",
+        HKQuantityTypeIdentifier.runningStrideLength.rawValue: "Running Stride Length",
+        HKQuantityTypeIdentifier.runningVerticalOscillation.rawValue: "Running Vertical Oscillation",
+        HKQuantityTypeIdentifier.runningPower.rawValue: "Running Power",
+        HKQuantityTypeIdentifier.runningSpeed.rawValue: "Running Speed",
+        HKQuantityTypeIdentifier.cyclingCadence.rawValue: "Cycling Cadence",
+        HKQuantityTypeIdentifier.cyclingFunctionalThresholdPower.rawValue: "Cycling Functional Threshold Power",
+        HKQuantityTypeIdentifier.cyclingPower.rawValue: "Cycling Power",
+        HKQuantityTypeIdentifier.cyclingSpeed.rawValue: "Cycling Speed",
+        HKCategoryTypeIdentifier.appleWalkingSteadinessEvent.rawValue: "Apple Walking Steadiness Event",
+        HKQuantityTypeIdentifier.respiratoryRate.rawValue: "Respiratory Rate",
+        HKQuantityTypeIdentifier.oxygenSaturation.rawValue: "Oxygen Saturation",
+        HKQuantityTypeIdentifier.forcedVitalCapacity.rawValue: "Forced Vital Capacity",
+        HKQuantityTypeIdentifier.peakExpiratoryFlowRate.rawValue: "Peak Expiratory Flow Rate",
+        HKQuantityTypeIdentifier.inhalerUsage.rawValue: "Inhaler Usage",
+        HKQuantityTypeIdentifier.environmentalAudioExposure.rawValue: "Environmental Audio Exposure",
+        HKQuantityTypeIdentifier.environmentalSoundReduction.rawValue: "Environmental Sound Reduction",
+        HKQuantityTypeIdentifier.headphoneAudioExposure.rawValue: "Headphone Audio Exposure",
+        HKCategoryTypeIdentifier.environmentalAudioExposureEvent.rawValue: "Environmental Audio Exposure Event",
+        HKCategoryTypeIdentifier.headphoneAudioExposureEvent.rawValue: "Headphone Audio Exposure Event",
+        HKQuantityTypeIdentifier.bodyTemperature.rawValue: "Body Temperature",
+        HKQuantityTypeIdentifier.basalBodyTemperature.rawValue: "Basal Body Temperature",
+        HKQuantityTypeIdentifier.bloodPressureSystolic.rawValue: "Blood Pressure Systolic",
+        HKQuantityTypeIdentifier.bloodPressureDiastolic.rawValue: "Blood Pressure Diastolic",
+        HKQuantityTypeIdentifier.bloodGlucose.rawValue: "Blood Glucose",
+        HKQuantityTypeIdentifier.electrodermalActivity.rawValue: "Electrodermal Activity",
+        HKQuantityTypeIdentifier.numberOfTimesFallen.rawValue: "Number Of Times Fallen",
+        HKQuantityTypeIdentifier.peripheralPerfusionIndex.rawValue: "Peripheral Perfusion Index",
+        HKQuantityTypeIdentifier.underwaterDepth.rawValue: "Underwater Depth",
+        HKQuantityTypeIdentifier.waterTemperature.rawValue: "Water Temperature",
+        HKQuantityTypeIdentifier.timeInDaylight.rawValue: "Time In Daylight",
+        HKQuantityTypeIdentifier.insulinDelivery.rawValue: "Insulin Delivery",
+        HKQuantityTypeIdentifier.dietaryEnergyConsumed.rawValue: "Dietary Energy Consumed",
+        HKQuantityTypeIdentifier.dietaryFatTotal.rawValue: "Dietary Fat Total",
+        HKQuantityTypeIdentifier.dietaryFatSaturated.rawValue: "Dietary Fat Saturated",
+        HKQuantityTypeIdentifier.dietaryFatPolyunsaturated.rawValue: "Dietary Fat Polyunsaturated",
+        HKQuantityTypeIdentifier.dietaryFatMonounsaturated.rawValue: "Dietary Fat Monounsaturated",
+        HKQuantityTypeIdentifier.dietaryCholesterol.rawValue: "Dietary Cholesterol",
+        HKQuantityTypeIdentifier.dietarySodium.rawValue: "Dietary Sodium",
+        HKQuantityTypeIdentifier.dietaryCarbohydrates.rawValue: "Dietary Carbohydrates",
+        HKQuantityTypeIdentifier.dietaryFiber.rawValue: "Dietary Fiber",
+        HKQuantityTypeIdentifier.dietarySugar.rawValue: "Dietary Sugar",
+        HKQuantityTypeIdentifier.dietaryProtein.rawValue: "Dietary Protein",
+        HKQuantityTypeIdentifier.dietaryVitaminA.rawValue: "Dietary Vitamin A",
+        HKQuantityTypeIdentifier.dietaryVitaminB6.rawValue: "Dietary Vitamin B6",
+        HKQuantityTypeIdentifier.dietaryVitaminB12.rawValue: "Dietary Vitamin B12",
+        HKQuantityTypeIdentifier.dietaryVitaminC.rawValue: "Dietary Vitamin C",
+        HKQuantityTypeIdentifier.dietaryVitaminD.rawValue: "Dietary Vitamin D",
+        HKQuantityTypeIdentifier.dietaryVitaminE.rawValue: "Dietary Vitamin E",
+        HKQuantityTypeIdentifier.dietaryVitaminK.rawValue: "Dietary Vitamin K",
+        HKQuantityTypeIdentifier.dietaryCalcium.rawValue: "Dietary Calcium",
+        HKQuantityTypeIdentifier.dietaryIron.rawValue: "Dietary Iron",
+        HKQuantityTypeIdentifier.dietaryThiamin.rawValue: "Dietary Thiamin",
+        HKQuantityTypeIdentifier.dietaryRiboflavin.rawValue: "Dietary Riboflavin",
+        HKQuantityTypeIdentifier.dietaryNiacin.rawValue: "Dietary Niacin",
+        HKQuantityTypeIdentifier.dietaryFolate.rawValue: "Dietary Folate",
+        HKQuantityTypeIdentifier.dietaryBiotin.rawValue: "Dietary Biotin",
+        HKQuantityTypeIdentifier.dietaryPantothenicAcid.rawValue: "Dietary Pantothenic Acid",
+        HKQuantityTypeIdentifier.dietaryPhosphorus.rawValue: "Dietary Phosphorus",
+        HKQuantityTypeIdentifier.dietaryIodine.rawValue: "Dietary Iodine",
+        HKQuantityTypeIdentifier.dietaryMagnesium.rawValue: "Dietary Magnesium",
+        HKQuantityTypeIdentifier.dietaryZinc.rawValue: "Dietary Zinc",
+        HKQuantityTypeIdentifier.dietarySelenium.rawValue: "Dietary Selenium",
+        HKQuantityTypeIdentifier.dietaryCopper.rawValue: "Dietary Copper",
+        HKQuantityTypeIdentifier.dietaryManganese.rawValue: "Dietary Manganese",
+        HKQuantityTypeIdentifier.dietaryChromium.rawValue: "Dietary Chromium",
+        HKQuantityTypeIdentifier.dietaryMolybdenum.rawValue: "Dietary Molybdenum",
+        HKQuantityTypeIdentifier.dietaryChloride.rawValue: "Dietary Chloride",
+        HKQuantityTypeIdentifier.dietaryPotassium.rawValue: "Dietary Potassium",
+        HKQuantityTypeIdentifier.dietaryCaffeine.rawValue: "Dietary Caffeine",
+        HKQuantityTypeIdentifier.dietaryWater.rawValue: "Dietary Water",
+        HKCategoryTypeIdentifier.cervicalMucusQuality.rawValue: "Cervical Mucus Quality",
+        HKCategoryTypeIdentifier.menstrualFlow.rawValue: "Menstrual Flow",
+        HKCategoryTypeIdentifier.ovulationTestResult.rawValue: "Ovulation Test Result",
+        HKCategoryTypeIdentifier.sexualActivity.rawValue: "Sexual Activity",
+        HKCategoryTypeIdentifier.intermenstrualBleeding.rawValue: "Intermenstrual Bleeding",
+        HKCategoryTypeIdentifier.pregnancy.rawValue: "Pregnancy",
+        HKCategoryTypeIdentifier.lactation.rawValue: "Lactation",
+        HKCategoryTypeIdentifier.contraceptive.rawValue: "Contraceptive",
+        HKCategoryTypeIdentifier.pregnancyTestResult.rawValue: "Pregnancy Test Result",
+        HKCategoryTypeIdentifier.progesteroneTestResult.rawValue: "Progesterone Test Result",
+        HKCategoryTypeIdentifier.persistentIntermenstrualBleeding.rawValue: "Persistent Intermenstrual Bleeding",
+        HKCategoryTypeIdentifier.prolongedMenstrualPeriods.rawValue: "Prolonged Menstrual Periods",
+        HKCategoryTypeIdentifier.irregularMenstrualCycles.rawValue: "Irregular Menstrual Cycles",
+        HKCategoryTypeIdentifier.infrequentMenstrualCycles.rawValue: "Infrequent Menstrual Cycles",
+        HKCategoryTypeIdentifier.mindfulSession.rawValue: "Mindful Session",
+        HKCategoryTypeIdentifier.toothbrushingEvent.rawValue: "Toothbrushing Event",
+        HKCategoryTypeIdentifier.handwashingEvent.rawValue: "Handwashing Event",
+        HKCategoryTypeIdentifier.abdominalCramps.rawValue: "Abdominal Cramps",
+        HKCategoryTypeIdentifier.acne.rawValue: "Acne",
+        HKCategoryTypeIdentifier.appetiteChanges.rawValue: "Appetite Changes",
+        HKCategoryTypeIdentifier.bladderIncontinence.rawValue: "Bladder Incontinence",
+        HKCategoryTypeIdentifier.bloating.rawValue: "Bloating",
+        HKCategoryTypeIdentifier.breastPain.rawValue: "Breast Pain",
+        HKCategoryTypeIdentifier.chestTightnessOrPain.rawValue: "Chest Tightness Or Pain",
+        HKCategoryTypeIdentifier.chills.rawValue: "Chills",
+        HKCategoryTypeIdentifier.constipation.rawValue: "Constipation",
+        HKCategoryTypeIdentifier.coughing.rawValue: "Coughing",
+        HKCategoryTypeIdentifier.diarrhea.rawValue: "Diarrhea",
+        HKCategoryTypeIdentifier.dizziness.rawValue: "Dizziness",
+        HKCategoryTypeIdentifier.drySkin.rawValue: "Dry Skin",
+        HKCategoryTypeIdentifier.fainting.rawValue: "Fainting",
+        HKCategoryTypeIdentifier.fatigue.rawValue: "Fatigue",
+        HKCategoryTypeIdentifier.fever.rawValue: "Fever",
+        HKCategoryTypeIdentifier.generalizedBodyAche.rawValue: "Generalized Body Ache",
+        HKCategoryTypeIdentifier.hairLoss.rawValue: "Hair Loss",
+        HKCategoryTypeIdentifier.headache.rawValue: "Headache",
+        HKCategoryTypeIdentifier.heartburn.rawValue: "Heartburn",
+        HKCategoryTypeIdentifier.hotFlashes.rawValue: "Hot Flashes",
+        HKCategoryTypeIdentifier.lossOfSmell.rawValue: "Loss Of Smell",
+        HKCategoryTypeIdentifier.lossOfTaste.rawValue: "Loss Of Taste",
+        HKCategoryTypeIdentifier.lowerBackPain.rawValue: "Lower Back Pain",
+        HKCategoryTypeIdentifier.memoryLapse.rawValue: "Memory Lapse",
+        HKCategoryTypeIdentifier.moodChanges.rawValue: "Mood Changes",
+        HKCategoryTypeIdentifier.nausea.rawValue: "Nausea",
+        HKCategoryTypeIdentifier.nightSweats.rawValue: "Night Sweats",
+        HKCategoryTypeIdentifier.pelvicPain.rawValue: "Pelvic Pain",
+        HKCategoryTypeIdentifier.rapidPoundingOrFlutteringHeartbeat.rawValue: "Rapid Pounding Or Fluttering Heartbeat",
+        HKCategoryTypeIdentifier.runnyNose.rawValue: "Runny Nose",
+        HKCategoryTypeIdentifier.shortnessOfBreath.rawValue: "Shortness Of Breath",
+        HKCategoryTypeIdentifier.sinusCongestion.rawValue: "Sinus Congestion",
+        HKCategoryTypeIdentifier.skippedHeartbeat.rawValue: "Skipped Heartbeat",
+        HKCategoryTypeIdentifier.soreThroat.rawValue: "Sore Throat",
+        HKCategoryTypeIdentifier.vaginalDryness.rawValue: "Vaginal Dryness",
+        HKCategoryTypeIdentifier.vomiting.rawValue: "Vomiting",
+        HKCategoryTypeIdentifier.wheezing.rawValue: "Wheezing",
+        HKCharacteristicTypeIdentifier.biologicalSex.rawValue: "Biological Sex",
+        HKCharacteristicTypeIdentifier.bloodType.rawValue: "Blood Type",
+        HKCharacteristicTypeIdentifier.dateOfBirth.rawValue: "Date Of Birth",
+        HKCharacteristicTypeIdentifier.fitzpatrickSkinType.rawValue: "Fitzpatrick Skin Type",
+        HKCharacteristicTypeIdentifier.wheelchairUse.rawValue: "Wheelchair Use",
+        HKCharacteristicTypeIdentifier.activityMoveMode.rawValue: "Activity Move Mode",
     ]
 
     private static let iconOverrides: [String: String] = [
@@ -406,35 +432,35 @@ enum HealthTypeCatalog {
         HKCategoryTypeIdentifier.handwashingEvent.rawValue: "hands.sparkles.fill",
     ]
 
-    private static let descriptionOverrides: [String: String] = [
+    private static let descriptionOverrides: [String: String.LocalizationValue] = [
         HKQuantityTypeIdentifier.stepCount.rawValue:
-            String(localized: "Steps taken, recorded by Apple Watch or iPhone."),
+            "Steps taken, recorded by Apple Watch or iPhone.",
         HKQuantityTypeIdentifier.heartRate.rawValue:
-            String(localized: "Instantaneous heart rate readings in beats per minute."),
+            "Instantaneous heart rate readings in beats per minute.",
         HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue:
-            String(localized: "SDNN measurement of heart rate variability, in milliseconds."),
+            "SDNN measurement of heart rate variability, in milliseconds.",
         HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
-            String(localized: "Energy burned by movement, in kilocalories."),
+            "Energy burned by movement, in kilocalories.",
         HKQuantityTypeIdentifier.basalEnergyBurned.rawValue:
-            String(localized: "Resting metabolic energy expenditure, in kilocalories."),
+            "Resting metabolic energy expenditure, in kilocalories.",
         HKQuantityTypeIdentifier.appleExerciseTime.rawValue:
-            String(localized: "Minutes counted toward your Exercise ring."),
+            "Minutes counted toward your Exercise ring.",
         HKQuantityTypeIdentifier.appleStandTime.rawValue:
-            String(localized: "Minutes spent standing, counted toward your Stand ring."),
+            "Minutes spent standing, counted toward your Stand ring.",
         HKQuantityTypeIdentifier.bodyMass.rawValue:
-            String(localized: "Weight measurements, in kilograms."),
+            "Weight measurements, in kilograms.",
         HKQuantityTypeIdentifier.height.rawValue:
-            String(localized: "Height measurements, in meters."),
+            "Height measurements, in meters.",
         HKQuantityTypeIdentifier.vo2Max.rawValue:
-            String(localized: "Cardio fitness — maximum oxygen consumption during exercise."),
+            "Cardio fitness — maximum oxygen consumption during exercise.",
         HKObjectType.workoutType().identifier:
-            String(localized: "Recorded workout sessions including duration, energy, and (when available) GPS route."),
+            "Recorded workout sessions including duration, energy, and (when available) GPS route.",
         HKObjectType.electrocardiogramType().identifier:
-            String(localized: "Single-lead ECG recordings from Apple Watch."),
+            "Single-lead ECG recordings from Apple Watch.",
         HKCategoryTypeIdentifier.sleepAnalysis.rawValue:
-            String(localized: "Sleep stages and durations recorded automatically or entered manually."),
+            "Sleep stages and durations recorded automatically or entered manually.",
         HKCategoryTypeIdentifier.mindfulSession.rawValue:
-            String(localized: "Logged mindfulness or breathing sessions."),
+            "Logged mindfulness or breathing sessions.",
     ]
 
     // MARK: - Group assignments

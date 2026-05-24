@@ -8,6 +8,10 @@ struct SamplePreviewRow: Identifiable, Hashable {
     let endDate: Date
     let primaryText: String
     let secondaryText: String?
+    /// Pretty-printed DTO JSON for this sample (the same shape uploaded by
+    /// the sync pipeline). Empty when no encoder exists for the sample type
+    /// (workout routes, audiograms, ECG today).
+    let json: String
 
     static func == (lhs: SamplePreviewRow, rhs: SamplePreviewRow) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
@@ -128,8 +132,39 @@ final class HealthSamplePreviewLoader: ObservableObject {
             startDate: sample.startDate,
             endDate: sample.endDate,
             primaryText: primary,
-            secondaryText: secondary
+            secondaryText: secondary,
+            json: encodedJSON(for: sample)
         )
+    }
+
+    /// Pretty-prints the sample using the same DTO encoders the sync pipeline
+    /// uses. Returns "" for types we don't yet encode (ECG, workout routes,
+    /// audiograms) so the UI can show an "unavailable" placeholder.
+    private func encodedJSON(for sample: HKSample) -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        do {
+            if let q = sample as? HKQuantitySample {
+                guard let dto = SampleEncoder.encode(q) else { return "" }
+                return String(data: try encoder.encode(dto), encoding: .utf8) ?? ""
+            }
+            if let c = sample as? HKCategorySample {
+                let dto = SampleEncoder.encode(c)
+                return String(data: try encoder.encode(dto), encoding: .utf8) ?? ""
+            }
+            if let w = sample as? HKWorkout {
+                let deviceInfo = WorkoutFile.DeviceInfo(
+                    name: w.device?.name ?? "",
+                    model: w.device?.model ?? "",
+                    systemVersion: w.device?.softwareVersion ?? ""
+                )
+                let dto = SampleEncoder.encode(w, events: nil, route: nil, deviceInfo: deviceInfo)
+                return String(data: try encoder.encode(dto), encoding: .utf8) ?? ""
+            }
+            return ""
+        } catch {
+            return "{ \"error\": \"\(error.localizedDescription)\" }"
+        }
     }
 
     private func formatNumber(_ v: Double) -> String {

@@ -1,11 +1,14 @@
 import SwiftUI
 import HealthKit
+import UIKit
 
 /// Detail page for a single HealthKit permission type. Shows description and
-/// a paginated list of recent samples for that type (newest first).
+/// a paginated list of recent samples for that type (newest first). Tap a
+/// row to inspect the sample's underlying JSON.
 struct DataTypeDetailView: View {
     let entry: HealthTypeEntry
     @StateObject private var loader: HealthSamplePreviewLoader
+    @State private var selectedRow: SamplePreviewRow?
 
     init(entry: HealthTypeEntry) {
         self.entry = entry
@@ -40,12 +43,18 @@ struct DataTypeDetailView: View {
                         .foregroundStyle(.secondary).font(.callout)
                 } else {
                     ForEach(loader.rows) { row in
-                        SampleRowView(row: row)
-                            .onAppear {
-                                if row.id == loader.rows.last?.id {
-                                    Task { await loader.loadNextPage() }
-                                }
+                        Button {
+                            selectedRow = row
+                        } label: {
+                            SampleRowView(row: row)
+                        }
+                        .buttonStyle(.plain)
+                        .contentShape(Rectangle())
+                        .onAppear {
+                            if row.id == loader.rows.last?.id {
+                                Task { await loader.loadNextPage() }
                             }
+                        }
                     }
                     if loader.isLoading {
                         HStack {
@@ -71,6 +80,9 @@ struct DataTypeDetailView: View {
         .listStyle(.insetGrouped)
         .navigationTitle(entry.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $selectedRow) { row in
+            SampleJSONSheet(row: row)
+        }
         .task {
             if loader.rows.isEmpty { await loader.loadNextPage() }
         }
@@ -98,5 +110,43 @@ private struct SampleRowView: View {
             }
         }
         .padding(.vertical, 2)
+    }
+}
+
+/// Modal sheet showing the pretty-printed DTO JSON for a single sample.
+/// The text is selectable; the toolbar copy button puts the full document
+/// on the pasteboard.
+private struct SampleJSONSheet: View {
+    let row: SamplePreviewRow
+    @Environment(\.dismiss) private var dismiss
+
+    private var hasJSON: Bool { !row.json.isEmpty }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView([.vertical, .horizontal]) {
+                Text(hasJSON ? row.json : String(localized: "No JSON preview available for this sample type."))
+                    .font(.system(.footnote, design: .monospaced))
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+            }
+            .navigationTitle("Sample JSON")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Done") { dismiss() }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        UIPasteboard.general.string = row.json
+                    } label: {
+                        Image(systemName: "doc.on.doc")
+                    }
+                    .disabled(!hasJSON)
+                    .accessibilityLabel("Copy JSON")
+                }
+            }
+        }
     }
 }
