@@ -78,26 +78,43 @@ enum BackgroundSync {
         let workItem = Task { @MainActor in
             // Pure BG launches don't attach a scene, so HomeView's .task —
             // where Google sign-in is restored — never runs. Restore here
-            // so Drive is included in defaultDestinations() instead of
-            // being silently skipped.
+            // so Drive is included in the enabled set instead of being
+            // silently skipped.
             _ = await DriveAuth.restorePreviousSignIn()
 
-            let coordinator = SyncCoordinator()
-            await coordinator.runOnce(enabledDestinations: defaultDestinations())
+            let destinations = enabledDestinations()
+            if destinations.isEmpty {
+                return true
+            }
+
+            // Run each destination sequentially with its own coordinator.
+            // Sequential keeps HKHealthStore pressure bounded and means
+            // expiration only needs to stop the one currently in-flight.
+            // Coordinators share `HKHealthStore` happily but we don't gain
+            // much from parallel runs in the BG window — daily diffs are
+            // small.
+            var allClean = true
+            for destination in destinations {
+                let coordinator = SyncCoordinator(destination: destination)
+                await coordinator.runOnce()
+                switch coordinator.status {
+                case .idle: continue
+                case .running, .error: allClean = false
+                }
+            }
             // A clean finish AND a stop-on-expiration both land at .idle
             // (stop persists the (day, type) checkpoint; the next run
-            // resumes from it). Both count as graceful so iOS doesn't
+            // resumes from it). Either counts as graceful so iOS doesn't
             // deprioritize future BG slots.
-            switch coordinator.status {
-            case .idle: return true
-            case .running, .error: return false
-            }
+            return allClean
         }
         task.expirationHandler = {
-            // Stop gracefully rather than cancel — SyncCoordinator will
+            // Stop gracefully rather than cancel — each coordinator will
             // checkpoint state at the next (day, type) boundary so the
             // next run (BG or foreground) resumes from where we left off.
-            Task { @MainActor in SyncCoordinator.currentlyActive?.stop() }
+            Task { @MainActor in
+                for c in SyncCoordinator.allActive { c.stop() }
+            }
         }
         Task {
             let success = (try? await workItem.value) ?? false
@@ -105,12 +122,24 @@ enum BackgroundSync {
         }
     }
 
+    /// Destinations that should run in this background pass: must have
+    /// credentials AND have their per-target auto-sync flag enabled.
     @MainActor
-    private static func defaultDestinations() -> Set<SyncCoordinator.Destination> {
-        var s: Set<SyncCoordinator.Destination> = []
-        if (try? TokenStore.load()) != nil { s.insert(.myLifeDB) }
-        if DriveAuth.currentUser != nil { s.insert(.googleDrive) }
-        if WebDAVStore.load() != nil { s.insert(.webdav) }
-        return s
+    private static func enabledDestinations() -> [Destination] {
+        let defaults = UserDefaults.standard
+        var out: [Destination] = []
+        if defaults.object(forKey: "autoSyncMyLifeDB") as? Bool ?? true,
+           (try? TokenStore.load()) != nil {
+            out.append(.myLifeDB)
+        }
+        if defaults.object(forKey: "autoSyncGoogleDrive") as? Bool ?? true,
+           DriveAuth.currentUser != nil {
+            out.append(.googleDrive)
+        }
+        if defaults.object(forKey: "autoSyncWebDAV") as? Bool ?? true,
+           WebDAVStore.load() != nil {
+            out.append(.webdav)
+        }
+        return out
     }
 }

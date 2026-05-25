@@ -2,20 +2,18 @@ import XCTest
 @testable import MyHealth
 
 final class SyncCursorTests: XCTestCase {
-
-    private var tmpURL: URL!
+    private let dest: Destination = .myLifeDB
 
     override func setUp() {
-        tmpURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("sync-cursor-\(UUID()).json")
+        try? FileManager.default.removeItem(at: SyncCursor.url(for: dest))
     }
 
     override func tearDown() {
-        try? FileManager.default.removeItem(at: tmpURL)
+        try? FileManager.default.removeItem(at: SyncCursor.url(for: dest))
     }
 
     func testLoadReturnsEmptyCursorWhenFileMissing() {
-        let cursor = SyncCursor.load(at: tmpURL)
+        let cursor = SyncCursor.load(for: dest)
         XCTAssertNil(cursor.lastSyncedDay)
     }
 
@@ -23,14 +21,31 @@ final class SyncCursorTests: XCTestCase {
         let original = SyncCursor(
             lastSyncedDay: DayBucketer.DayKey(date: "2026-05-12", timezone: "Asia/Shanghai")
         )
-        try SyncCursor.save(original, at: tmpURL)
-        let loaded = SyncCursor.load(at: tmpURL)
+        try SyncCursor.save(original, for: dest)
+        let loaded = SyncCursor.load(for: dest)
         XCTAssertEqual(loaded, original)
     }
 
     func testLoadReturnsEmptyCursorOnCorruptJSON() throws {
-        try "{not valid json".data(using: .utf8)!.write(to: tmpURL, options: .atomic)
-        let cursor = SyncCursor.load(at: tmpURL)
+        try "{not valid json".data(using: .utf8)!.write(to: SyncCursor.url(for: dest), options: .atomic)
+        let cursor = SyncCursor.load(for: dest)
         XCTAssertNil(cursor.lastSyncedDay)
+    }
+
+    func testPerDestinationIsolation() throws {
+        let mldCursor = SyncCursor(
+            lastSyncedDay: DayBucketer.DayKey(date: "2026-05-12", timezone: "UTC")
+        )
+        let driveCursor = SyncCursor(
+            lastSyncedDay: DayBucketer.DayKey(date: "2026-05-01", timezone: "UTC")
+        )
+        defer {
+            try? FileManager.default.removeItem(at: SyncCursor.url(for: .myLifeDB))
+            try? FileManager.default.removeItem(at: SyncCursor.url(for: .googleDrive))
+        }
+        try SyncCursor.save(mldCursor, for: .myLifeDB)
+        try SyncCursor.save(driveCursor, for: .googleDrive)
+        XCTAssertEqual(SyncCursor.load(for: .myLifeDB), mldCursor)
+        XCTAssertEqual(SyncCursor.load(for: .googleDrive), driveCursor)
     }
 }

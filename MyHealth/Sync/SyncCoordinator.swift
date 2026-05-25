@@ -2,15 +2,16 @@ import Foundation
 import HealthKit
 import UIKit
 
-/// Orchestrates one sync run with a single unified flow:
+/// Orchestrates one sync run for a single destination with a unified flow:
 ///
-///   1. Backward walk to find the start day. Begin at the anchor (or
-///      today if no anchor). For each day, check whether the locally-
+///   1. Backward walk to find the start day. Begin at the destination's
+///      anchor (or today if none). For each day, check whether the locally-
 ///      stored fingerprint still matches HealthKit's content. Match ⇒
 ///      wall found, the next day is the start. Mismatch ⇒ walk back one
-///      day and check again. On first sync the fingerprint store is
-///      empty, so the check degrades to "does this day have any sample
-///      at all?" and the walk terminates at the first empty day.
+///      day and check again. On first sync to this destination the
+///      fingerprint store is empty, so the check degrades to "does this
+///      day have any sample at all?" and the walk terminates at the first
+///      empty day.
 ///
 ///   2. Forward sync from `start` to today, oldest → newest. Each day's
 ///      types are processed in a bounded TaskGroup so HealthKit reads
@@ -22,45 +23,29 @@ import UIKit
 ///      the day's freshly-computed hash is stored.
 ///
 ///   3. On full completion: `cursor.lastSyncedDay = today`, run-state
-///      cleared. The walk-back state is not persisted; if the run is
-///      paused or aborted before forward sync begins, the next start
-///      simply re-runs the walk (cheap in the steady state). A run
-///      stopped mid-day resumes from the start of that day on the
-///      next run — uploads are idempotent thanks to the merge step.
+///      cleared, `LastSyncStore` stamped. The walk-back state is not
+///      persisted; if the run is paused or aborted before forward sync
+///      begins, the next start simply re-runs the walk (cheap in the
+///      steady state). A run stopped mid-day resumes from the start of
+///      that day on the next run — uploads are idempotent thanks to the
+///      merge step.
+///
+/// Each remote destination has its own `SyncCoordinator` instance. They
+/// share `HKHealthStore` (which tolerates concurrent reads) but their
+/// cursor, day-hashes, and run-state files are scoped by `destination.slug`,
+/// so runs are fully independent.
 @MainActor
 final class SyncCoordinator: ObservableObject {
+    let destination: Destination
+
     @Published private(set) var status: SyncStatus = .idle
     @Published private(set) var lastResult: SyncRunResult?
     @Published private(set) var progress: Progress?
 
     enum SyncStatus: Equatable {
         case idle
-        case running(stage: Stage)
+        case running(stage: String)
         case error(String)
-
-        /// What the coordinator is currently doing. Stored as structured data
-        /// so the view can re-resolve the localized text whenever the in-app
-        /// language changes mid-run.
-        enum Stage: Equatable {
-            case checkingForUpdates
-            case checkingForUpdatesOn(date: String)
-            case syncingDay(date: String)
-            case syncingDayType(date: String, typeID: String)
-
-            var localizedDescription: String {
-                switch self {
-                case .checkingForUpdates:
-                    return String(localized: "Checking for updates")
-                case .checkingForUpdatesOn(let date):
-                    return String(localized: "Checking for updates · \(date)")
-                case .syncingDay(let date):
-                    return String(localized: "Syncing \(date)")
-                case .syncingDayType(let date, let typeID):
-                    let name = HealthTypeCatalog.displayName(for: typeID)
-                    return String(localized: "Syncing \(date) · \(name)")
-                }
-            }
-        }
     }
 
     struct Progress: Equatable {
@@ -69,13 +54,7 @@ final class SyncCoordinator: ObservableObject {
         let currentDate: String?
         let currentTypeIndex: Int
         let totalTypes: Int
-        /// HealthKit type identifier; resolved to the localized display name
-        /// at view time so language switches mid-sync update the label.
-        let currentTypeID: String?
-
-        var currentTypeName: String? {
-            currentTypeID.map { HealthTypeCatalog.displayName(for: $0) }
-        }
+        let currentTypeName: String?
     }
 
     struct SyncRunResult: Equatable {
@@ -83,13 +62,8 @@ final class SyncCoordinator: ObservableObject {
         let totalSamples: Int
         let totalWorkouts: Int
         let totalDays: Int
-        let myLifeDBUploaded: Bool
-        let driveUploaded: Bool
-        let webdavUploaded: Bool
         let finishedAt: Date
     }
-
-    enum Destination { case myLifeDB, googleDrive, webdav }
 
     private let reader: HealthKitReader
     private var stopRequested = false
@@ -104,31 +78,39 @@ final class SyncCoordinator: ObservableObject {
     /// round-trip; this also caps memory and HealthKit/network pressure.
     private static let maxConcurrentSlotsPerDay = 8
 
-    static weak var currentlyActive: SyncCoordinator?
+    /// Weak registry of every coordinator currently inside `runOnce`. The
+    /// BG-task expiration handler walks this to stop in-flight runs across
+    /// destinations without having to thread refs through.
+    private static let activeRegistry = NSHashTable<SyncCoordinator>.weakObjects()
 
-    init(reader: HealthKitReader = HealthKitReader()) {
+    static var allActive: [SyncCoordinator] {
+        activeRegistry.allObjects
+    }
+
+    init(destination: Destination, reader: HealthKitReader = HealthKitReader()) {
+        self.destination = destination
         self.reader = reader
     }
 
     // MARK: - Public control surface
 
-    func runOnce(enabledDestinations: Set<Destination>) async {
-        Self.currentlyActive = self
-        defer { if Self.currentlyActive === self { Self.currentlyActive = nil } }
+    func runOnce() async {
+        Self.activeRegistry.add(self)
+        defer { Self.activeRegistry.remove(self) }
         stopRequested = false
         pausedByBackgrounding = false
-        if let existing = SyncRunStore.load() {
-            print("MyHealth: resuming run id=\(existing.runID) at day \(existing.completedDayIndex)/\(existing.daysToSync.count) typeIndex=\(existing.inProgressTypeIndex)")
-            await runLoop(state: existing, enabledDestinations: enabledDestinations)
+        if let existing = SyncRunStore.load(for: destination) {
+            print("MyHealth[\(destination.slug)]: resuming run id=\(existing.runID) at day \(existing.completedDayIndex)/\(existing.daysToSync.count) typeIndex=\(existing.inProgressTypeIndex)")
+            await runLoop(state: existing)
         } else {
-            await freshRun(enabledDestinations: enabledDestinations)
+            await freshRun()
         }
     }
 
     /// Halts the sync at the next (day, type) boundary and persists progress.
     /// The next `runOnce` resumes from the saved checkpoint. Days fully
     /// uploaded so far stay uploaded; their fingerprints are kept in
-    /// day-hashes.json so future runs can skip them quickly via the walk-back.
+    /// day-hashes-{slug}.json so future runs can skip them quickly.
     func stop() { stopRequested = true }
 
     /// Like `stop()`, but flags the teardown as a background-triggered pause
@@ -140,10 +122,10 @@ final class SyncCoordinator: ObservableObject {
         guard case .running = status else { return }
         pausedByBackgrounding = true
         stopRequested = true
-        print("MyHealth: pausing sync — app moved to background")
+        print("MyHealth[\(destination.slug)]: pausing sync — app moved to background")
     }
 
-    var hasPendingRun: Bool { SyncRunStore.load() != nil }
+    var hasPendingRun: Bool { SyncRunStore.load(for: destination) != nil }
 
     /// Brief summary of the pending (stopped) run, if any. Used by the UI's
     /// idle-state status line.
@@ -152,18 +134,18 @@ final class SyncCoordinator: ObservableObject {
         let totalDays: Int
     }
     var pendingRunSummary: PendingRunSummary? {
-        guard let s = SyncRunStore.load() else { return nil }
+        guard let s = SyncRunStore.load(for: destination) else { return nil }
         return PendingRunSummary(completedDays: s.completedDayIndex, totalDays: s.daysToSync.count)
     }
 
     // MARK: - Fresh run: walk back, then plan forward sync
 
-    private func freshRun(enabledDestinations: Set<Destination>) async {
+    private func freshRun() async {
         let started = Date()
         let runID = makeRunID(date: started)
         do {
-            let cursor = SyncCursor.load()
-            let hashes = DayHashStore.load()
+            let cursor = SyncCursor.load(for: destination)
+            let hashes = DayHashStore.load(for: destination)
             let today = DayBucketer.dayKey(start: started, timezone: TimeZone.current)
             let earliestPermitted = DayBucketer.dayKey(
                 start: HKHealthStore().earliestPermittedSampleDate(),
@@ -171,7 +153,7 @@ final class SyncCoordinator: ObservableObject {
             )
 
             // 1) Backward walk to discover the start day.
-            status = .running(stage: .checkingForUpdates)
+            status = .running(stage: String(localized: "Checking for updates"))
             self.progress = nil
             let start = await discoverStartDay(
                 anchor: cursor.lastSyncedDay,
@@ -188,7 +170,7 @@ final class SyncCoordinator: ObservableObject {
 
             // 2) Plan forward sync.
             let days = daysInRange(from: start, through: today)
-            print("MyHealth: walk done start=\(start.date) today=\(today.date) days=\(days.count)")
+            print("MyHealth[\(destination.slug)]: walk done start=\(start.date) today=\(today.date) days=\(days.count)")
 
             let state = SyncRunState(
                 runID: runID,
@@ -197,16 +179,16 @@ final class SyncCoordinator: ObservableObject {
                 completedDayIndex: 0,
                 inProgressTypeIndex: 0
             )
-            try SyncRunStore.save(state)
-            await runLoop(state: state, enabledDestinations: enabledDestinations)
+            try SyncRunStore.save(state, for: destination)
+            await runLoop(state: state)
         } catch {
             if pausedByBackgrounding {
                 self.status = .idle
                 self.progress = nil
-                print("MyHealth: sync paused by backgrounding during fresh-run setup")
+                print("MyHealth[\(destination.slug)]: sync paused by backgrounding during fresh-run setup")
             } else {
                 status = .error(error.localizedDescription)
-                print("MyHealth: sync FAILED stage=fresh-run error=\(error.localizedDescription)")
+                print("MyHealth[\(destination.slug)]: sync FAILED stage=fresh-run error=\(error.localizedDescription)")
             }
         }
     }
@@ -230,7 +212,7 @@ final class SyncCoordinator: ObservableObject {
                 // will fire before any sync happens.
                 return today
             }
-            self.status = .running(stage: .checkingForUpdatesOn(date: cursor.date))
+            self.status = .running(stage: String(localized: "Checking for updates · \(cursor.date)"))
             let hasUpdates = await hasUpdates(day: cursor, storedHash: hashes[cursor.date])
             if hasUpdates {
                 cursor = dayMath.previousDay(cursor)
@@ -278,17 +260,16 @@ final class SyncCoordinator: ObservableObject {
 
     // MARK: - Day loop
 
-    private func runLoop(state initialState: SyncRunState,
-                         enabledDestinations: Set<Destination>) async {
+    private func runLoop(state initialState: SyncRunState) async {
         var state = initialState
-        let mldSession: MyLifeDBSession? = enabledDestinations.contains(.myLifeDB)
-            ? (try? TokenStore.load()) ?? nil : nil
-        let mldClient: MyLifeDBClient? = mldSession.map { MyLifeDBClient(session: $0) }
-        let driveAvailable = enabledDestinations.contains(.googleDrive) && DriveAuth.currentUser != nil
-        let drive: GoogleDriveClient? = driveAvailable ? GoogleDriveClient() : nil
-        let webdavCreds: WebDAVCredentials? = enabledDestinations.contains(.webdav)
-            ? WebDAVStore.load() : nil
-        let webdav: WebDAVClient? = webdavCreds.map { WebDAVClient(credentials: $0) }
+        guard let client = makeClient() else {
+            // No credentials for this destination — bail cleanly. The caller
+            // (UI button or BG task) is supposed to gate on auth before
+            // calling, but treat the race as idle rather than failing.
+            self.status = .idle
+            self.progress = nil
+            return
+        }
 
         let deviceInfo = WorkoutFile.DeviceInfo(
             name: UIDevice.current.name,
@@ -302,14 +283,14 @@ final class SyncCoordinator: ObservableObject {
         let totalSlots = workoutSlotIndex + 1
 
         // Days strictly newer than the previous run's anchor have never been
-        // uploaded — their remote file is guaranteed absent, so the GET that
-        // the merge step would issue can be skipped. Days at-or-before the
-        // anchor were either uploaded by a previous run or got re-included
-        // by the walk-back; for those we still GET to merge with whatever
-        // is remote. `cursor.lastSyncedDay` is read here (not at run start)
-        // so resumed runs pick up the same anchor — `finalize` is the only
-        // thing that advances the cursor.
-        let previousAnchorDate: String? = SyncCursor.load().lastSyncedDay?.date
+        // uploaded to this destination — their remote file is guaranteed
+        // absent, so the GET that the merge step would issue can be
+        // skipped. Days at-or-before the anchor were either uploaded by a
+        // previous run or got re-included by the walk-back; for those we
+        // still GET to merge with whatever is remote. `cursor.lastSyncedDay`
+        // is read here (not at run start) so resumed runs pick up the same
+        // anchor — `finalize` is the only thing that advances the cursor.
+        let previousAnchorDate: String? = SyncCursor.load(for: destination).lastSyncedDay?.date
 
         var totalSamples = 0
         var totalWorkouts = 0
@@ -317,10 +298,10 @@ final class SyncCoordinator: ObservableObject {
         do {
             for dayIdx in state.completedDayIndex..<state.daysToSync.count {
                 if stopRequested {
-                    print("MyHealth: stopped at day \(dayIdx)/\(state.daysToSync.count)")
+                    print("MyHealth[\(destination.slug)]: stopped at day \(dayIdx)/\(state.daysToSync.count)")
                     state.completedDayIndex = dayIdx
                     state.inProgressTypeIndex = 0
-                    try SyncRunStore.save(state)
+                    try SyncRunStore.save(state, for: destination)
                     self.status = .idle
                     self.progress = nil
                     return
@@ -332,11 +313,11 @@ final class SyncCoordinator: ObservableObject {
                     return day.date > prev
                 }()
 
-                self.status = .running(stage: .syncingDay(date: day.date))
+                self.status = .running(stage: String(localized: "Syncing \(day.date)"))
                 self.progress = Progress(
                     completedDays: dayIdx, totalDays: state.daysToSync.count,
                     currentDate: day.date, currentTypeIndex: 0,
-                    totalTypes: totalSlots, currentTypeID: nil
+                    totalTypes: totalSlots, currentTypeName: nil
                 )
 
                 let outcome = try await runDayParallel(
@@ -348,16 +329,16 @@ final class SyncCoordinator: ObservableObject {
                     totalSlots: totalSlots,
                     skipExistingFetch: skipExistingFetch,
                     deviceInfo: deviceInfo,
-                    mld: mldClient, drive: drive, webdav: webdav
+                    client: client
                 )
                 totalSamples += outcome.samples
                 totalWorkouts += outcome.workouts
 
                 if stopRequested {
-                    print("MyHealth: stopped mid-day at day \(dayIdx)/\(state.daysToSync.count) — day will be retried on next run")
+                    print("MyHealth[\(destination.slug)]: stopped mid-day at day \(dayIdx)/\(state.daysToSync.count) — day will be retried on next run")
                     state.completedDayIndex = dayIdx
                     state.inProgressTypeIndex = 0
-                    try SyncRunStore.save(state)
+                    try SyncRunStore.save(state, for: destination)
                     self.status = .idle
                     self.progress = nil
                     return
@@ -368,31 +349,29 @@ final class SyncCoordinator: ObservableObject {
                 // hash represents the local HK state at the time of sync;
                 // any later HK change will not match.
                 if let hash = try? await reader.dayHash(day: day) {
-                    var hashes = DayHashStore.load()
+                    var hashes = DayHashStore.load(for: destination)
                     hashes[day.date] = hash
-                    try? DayHashStore.save(hashes)
+                    try? DayHashStore.save(hashes, for: destination)
                 }
 
                 state.completedDayIndex = dayIdx + 1
                 state.inProgressTypeIndex = 0
-                try SyncRunStore.save(state)
+                try SyncRunStore.save(state, for: destination)
             }
 
-            try await finalize(state: state, totalSamples: totalSamples, totalWorkouts: totalWorkouts,
-                               mldUploaded: mldClient != nil, driveUploaded: drive != nil,
-                               webdavUploaded: webdav != nil)
+            try await finalize(state: state, totalSamples: totalSamples, totalWorkouts: totalWorkouts)
         } catch {
-            try? SyncRunStore.save(state)
+            try? SyncRunStore.save(state, for: destination)
             if pausedByBackgrounding {
                 // Expected fallout from the app being suspended mid-run
                 // (URLSession cancelled, HealthKit locked, etc). State is
                 // checkpointed; resume on next foreground run.
                 self.status = .idle
                 self.progress = nil
-                print("MyHealth: sync paused by backgrounding mid-day — will resume on next run")
+                print("MyHealth[\(destination.slug)]: sync paused by backgrounding mid-day — will resume on next run")
             } else {
                 self.status = .error(error.localizedDescription)
-                print("MyHealth: sync FAILED stage=day-loop error=\(error.localizedDescription)")
+                print("MyHealth[\(destination.slug)]: sync FAILED stage=day-loop error=\(error.localizedDescription)")
             }
         }
     }
@@ -408,9 +387,7 @@ final class SyncCoordinator: ObservableObject {
         let samples: Int
         let workouts: Int
         let didWork: Bool
-        /// HealthKit type identifier (or `workoutType`'s identifier). The
-        /// localized display name is resolved at view time.
-        let typeID: String
+        let displayName: String
     }
 
     /// Runs all `totalSlots` slots for a single day with bounded concurrency.
@@ -427,7 +404,7 @@ final class SyncCoordinator: ObservableObject {
         totalSlots: Int,
         skipExistingFetch: Bool,
         deviceInfo: WorkoutFile.DeviceInfo,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
+        client: DayFileClient
     ) async throws -> DayOutcome {
         var outcome = DayOutcome()
         var completed = 0
@@ -448,7 +425,7 @@ final class SyncCoordinator: ObservableObject {
                         workoutSlotIndex: workoutSlotIndex,
                         skipExistingFetch: skipExistingFetch,
                         deviceInfo: deviceInfo,
-                        mld: mld, drive: drive, webdav: webdav
+                        client: client
                     )
                 }
             }
@@ -464,14 +441,14 @@ final class SyncCoordinator: ObservableObject {
                 completed += 1
 
                 if r.didWork {
-                    self.status = .running(stage: .syncingDayType(date: day.date, typeID: r.typeID))
+                    self.status = .running(stage: String(localized: "Syncing \(day.date) · \(r.displayName)"))
                 }
                 self.progress = Progress(
                     completedDays: dayIdx, totalDays: totalDays,
                     currentDate: day.date,
                     currentTypeIndex: completed - 1,
                     totalTypes: totalSlots,
-                    currentTypeID: r.didWork ? r.typeID : nil
+                    currentTypeName: r.didWork ? r.displayName : nil
                 )
 
                 if stopRequested {
@@ -486,69 +463,64 @@ final class SyncCoordinator: ObservableObject {
 
     /// One (day, type) slot. Pure dispatch — picks the right slot helper
     /// based on the type's Swift class. Safe to run concurrently with other
-    /// slots: HKHealthStore and the destination clients tolerate concurrent
+    /// slots: HKHealthStore and the destination client tolerate concurrent
     /// requests, and each slot only touches its own file path.
     private func runSlot(
         slotIdx: Int, day: DayBucketer.DayKey,
         typeSequence: [HKSampleType], workoutSlotIndex: Int,
         skipExistingFetch: Bool, deviceInfo: WorkoutFile.DeviceInfo,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
+        client: DayFileClient
     ) async throws -> SlotResult {
         if slotIdx == workoutSlotIndex {
             let n = try await syncWorkouts(
-                day: day, deviceInfo: deviceInfo,
-                mld: mld, drive: drive, webdav: webdav
+                day: day, deviceInfo: deviceInfo, client: client
             )
             return SlotResult(samples: 0, workouts: n, didWork: n > 0,
-                              typeID: HKObjectType.workoutType().identifier)
+                              displayName: String(localized: "Workouts"))
         }
         let sampleType = typeSequence[slotIdx]
-        let typeID = sampleType.identifier
+        let displayName = TypeNaming.displayName(for: sampleType.identifier)
         if let q = sampleType as? HKQuantityType {
             let o = try await syncQuantity(
-                day: day, type: q, skipExistingFetch: skipExistingFetch,
-                mld: mld, drive: drive, webdav: webdav
+                day: day, type: q, skipExistingFetch: skipExistingFetch, client: client
             )
             return SlotResult(samples: o.uploaded, workouts: 0,
-                              didWork: o.didUpload, typeID: typeID)
+                              didWork: o.didUpload, displayName: displayName)
         }
         if let c = sampleType as? HKCategoryType {
             let o = try await syncCategory(
-                day: day, type: c, skipExistingFetch: skipExistingFetch,
-                mld: mld, drive: drive, webdav: webdav
+                day: day, type: c, skipExistingFetch: skipExistingFetch, client: client
             )
             return SlotResult(samples: o.uploaded, workouts: 0,
-                              didWork: o.didUpload, typeID: typeID)
+                              didWork: o.didUpload, displayName: displayName)
         }
         return SlotResult(samples: 0, workouts: 0, didWork: false,
-                          typeID: typeID)
+                          displayName: displayName)
     }
 
-    private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int,
-                          mldUploaded: Bool, driveUploaded: Bool, webdavUploaded: Bool) async throws {
+    private func finalize(state: SyncRunState, totalSamples: Int, totalWorkouts: Int) async throws {
         // Anchor advances to the newest day we covered. The forward plan is
         // oldest → newest, so the last entry is the freshest day. If the plan
         // is empty (clock skew / degenerate) the anchor stays put.
         if let newest = state.daysToSync.last {
-            var cursor = SyncCursor.load()
+            var cursor = SyncCursor.load(for: destination)
             cursor.lastSyncedDay = newest
-            try SyncCursor.save(cursor)
+            try SyncCursor.save(cursor, for: destination)
         }
-        SyncRunStore.clear()
+        SyncRunStore.clear(for: destination)
+        let finishedAt = Date()
+        LastSyncStore.stamp(finishedAt, for: destination)
         let result = SyncRunResult(
             runID: state.runID,
             totalSamples: totalSamples,
             totalWorkouts: totalWorkouts,
             totalDays: state.daysToSync.count,
-            myLifeDBUploaded: mldUploaded,
-            driveUploaded: driveUploaded,
-            webdavUploaded: webdavUploaded,
-            finishedAt: Date()
+            finishedAt: finishedAt
         )
         self.lastResult = result
         self.status = .idle
         self.progress = nil
-        print("MyHealth: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.daysToSync.count) anchor=\(state.daysToSync.last?.date ?? "-")")
+        print("MyHealth[\(destination.slug)]: sync done run=\(state.runID) samples=\(totalSamples) workouts=\(totalWorkouts) days=\(state.daysToSync.count) anchor=\(state.daysToSync.last?.date ?? "-")")
     }
 
     // MARK: - Per-(day, type) slots
@@ -560,15 +532,21 @@ final class SyncCoordinator: ObservableObject {
 
     private func syncQuantity(
         day: DayBucketer.DayKey, type: HKQuantityType, skipExistingFetch: Bool,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
+        client: DayFileClient
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readQuantity(type: type, day: day)
         if incoming.isEmpty { return SlotOutcome(uploaded: 0, didUpload: false) }
         let filename = TypeNaming.filename(for: type.identifier)
         let path = "\(day.pathPrefix)/\(filename)"
-        let existing: [QuantitySample] = skipExistingFetch
-            ? []
-            : try await getExistingQuantity(path: path, mld: mld, drive: drive, webdav: webdav)
+        let existing: [QuantitySample]
+        if skipExistingFetch {
+            existing = []
+        } else if let data = try await client.getFile(relativePath: path),
+                  let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
+            existing = decoded.samples
+        } else {
+            existing = []
+        }
         let merged = SnapshotMerger.merge(existing: existing, incoming: incoming)
         // If the merged content equals what is already on the remote, skip
         // the network PUT. This is the steady-state fast path: re-syncing a
@@ -582,21 +560,27 @@ final class SyncCoordinator: ObservableObject {
             unit: unit, samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
-        try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
+        try await client.putBytes(relativePath: path, body: body, contentType: "application/json")
         return SlotOutcome(uploaded: merged.count, didUpload: true)
     }
 
     private func syncCategory(
         day: DayBucketer.DayKey, type: HKCategoryType, skipExistingFetch: Bool,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
+        client: DayFileClient
     ) async throws -> SlotOutcome {
         let incoming = try await reader.readCategory(type: type, day: day)
         if incoming.isEmpty { return SlotOutcome(uploaded: 0, didUpload: false) }
         let filename = TypeNaming.filename(for: type.identifier)
         let path = "\(day.pathPrefix)/\(filename)"
-        let existing: [CategorySample] = skipExistingFetch
-            ? []
-            : try await getExistingCategory(path: path, mld: mld, drive: drive, webdav: webdav)
+        let existing: [CategorySample]
+        if skipExistingFetch {
+            existing = []
+        } else if let data = try await client.getFile(relativePath: path),
+                  let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
+            existing = decoded.samples
+        } else {
+            existing = []
+        }
         let merged = SnapshotMerger.mergeCategory(existing: existing, incoming: incoming)
         if merged == existing {
             return SlotOutcome(uploaded: merged.count, didUpload: false)
@@ -606,13 +590,13 @@ final class SyncCoordinator: ObservableObject {
             samples: merged
         )
         let body = try JSONEncoder.daySorted.encode(envelope)
-        try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
+        try await client.putBytes(relativePath: path, body: body, contentType: "application/json")
         return SlotOutcome(uploaded: merged.count, didUpload: true)
     }
 
     private func syncWorkouts(
         day: DayBucketer.DayKey, deviceInfo: WorkoutFile.DeviceInfo,
-        mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?
+        client: DayFileClient
     ) async throws -> Int {
         let workouts = try await reader.readWorkouts(day: day)
         var uploaded = 0
@@ -623,53 +607,25 @@ final class SyncCoordinator: ObservableObject {
             let filename = TypeNaming.workoutFilename(uuid: wf.uuid)
             let path = "\(day.pathPrefix)/\(filename)"
             let body = try JSONEncoder.daySorted.encode(wf)
-            try await put(path: path, body: body, mld: mld, drive: drive, webdav: webdav)
+            try await client.putBytes(relativePath: path, body: body, contentType: "application/json")
             uploaded += 1
         }
         return uploaded
     }
 
-    private func getExistingQuantity(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws -> [QuantitySample] {
-        if let mld, let data = try await mld.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
-            return decoded.samples
-        }
-        if let drive, let data = try await drive.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
-            return decoded.samples
-        }
-        if let webdav, let data = try await webdav.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<QuantitySample>.self, from: data) {
-            return decoded.samples
-        }
-        return []
-    }
+    // MARK: - Client factory
 
-    private func getExistingCategory(path: String, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws -> [CategorySample] {
-        if let mld, let data = try await mld.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
-            return decoded.samples
-        }
-        if let drive, let data = try await drive.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
-            return decoded.samples
-        }
-        if let webdav, let data = try await webdav.getFile(relativePath: path),
-           let decoded = try? JSONDecoder().decode(DayFile<CategorySample>.self, from: data) {
-            return decoded.samples
-        }
-        return []
-    }
-
-    private func put(path: String, body: Data, mld: MyLifeDBClient?, drive: GoogleDriveClient?, webdav: WebDAVClient?) async throws {
-        if let mld {
-            try await mld.putBytes(relativePath: path, body: body, contentType: "application/json")
-        }
-        if let drive {
-            try await drive.uploadBytes(relativePath: path, body: body)
-        }
-        if let webdav {
-            try await webdav.uploadBytes(relativePath: path, body: body)
+    private func makeClient() -> DayFileClient? {
+        switch destination {
+        case .myLifeDB:
+            guard let session = try? TokenStore.load() else { return nil }
+            return MyLifeDBClient(session: session)
+        case .googleDrive:
+            guard DriveAuth.currentUser != nil else { return nil }
+            return GoogleDriveClient()
+        case .webdav:
+            guard let creds = WebDAVStore.load() else { return nil }
+            return WebDAVClient(credentials: creds)
         }
     }
 
@@ -687,6 +643,26 @@ final class SyncCoordinator: ObservableObject {
         return withUnsafePointer(to: &sysinfo.machine) {
             $0.withMemoryRebound(to: CChar.self, capacity: 1) { String(cString: $0) }
         }
+    }
+}
+
+/// Common shape the three remote-target clients implement. SyncCoordinator
+/// is parameterized over this so it doesn't need to know whether it's
+/// talking to MyLifeDB, Drive, or WebDAV.
+protocol DayFileClient {
+    func getFile(relativePath: String) async throws -> Data?
+    func putBytes(relativePath: String, body: Data, contentType: String) async throws
+}
+
+extension MyLifeDBClient: DayFileClient {}
+extension GoogleDriveClient: DayFileClient {
+    func putBytes(relativePath: String, body: Data, contentType: String) async throws {
+        try await uploadBytes(relativePath: relativePath, body: body)
+    }
+}
+extension WebDAVClient: DayFileClient {
+    func putBytes(relativePath: String, body: Data, contentType: String) async throws {
+        try await uploadBytes(relativePath: relativePath, body: body)
     }
 }
 

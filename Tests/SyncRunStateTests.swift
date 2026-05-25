@@ -2,16 +2,14 @@ import XCTest
 @testable import MyHealth
 
 final class SyncRunStateTests: XCTestCase {
-
-    private var tmpURL: URL!
+    private let dest: Destination = .myLifeDB
 
     override func setUp() {
-        tmpURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("sync-run-state-\(UUID()).json")
+        SyncRunStore.clear(for: dest)
     }
 
     override func tearDown() {
-        try? FileManager.default.removeItem(at: tmpURL)
+        SyncRunStore.clear(for: dest)
     }
 
     func testRoundTrip() throws {
@@ -26,13 +24,13 @@ final class SyncRunStateTests: XCTestCase {
             completedDayIndex: 1,
             inProgressTypeIndex: 45
         )
-        try SyncRunStore.save(state, at: tmpURL)
-        let loaded = try XCTUnwrap(SyncRunStore.load(at: tmpURL))
+        try SyncRunStore.save(state, for: dest)
+        let loaded = try XCTUnwrap(SyncRunStore.load(for: dest))
         XCTAssertEqual(loaded, state)
     }
 
     func testLoadReturnsNilWhenFileMissing() {
-        XCTAssertNil(SyncRunStore.load(at: tmpURL))
+        XCTAssertNil(SyncRunStore.load(for: dest))
     }
 
     func testClearRemovesFile() throws {
@@ -40,9 +38,9 @@ final class SyncRunStateTests: XCTestCase {
             runID: "x", startedAt: "x",
             daysToSync: [], completedDayIndex: 0, inProgressTypeIndex: 0
         )
-        try SyncRunStore.save(state, at: tmpURL)
-        XCTAssertNotNil(SyncRunStore.load(at: tmpURL))
-        SyncRunStore.clear(at: tmpURL)
-        XCTAssertNil(SyncRunStore.load(at: tmpURL))
+        try SyncRunStore.save(state, for: dest)
+        XCTAssertNotNil(SyncRunStore.load(for: dest))
+        SyncRunStore.clear(for: dest)
+        XCTAssertNil(SyncRunStore.load(for: dest))
     }
 }

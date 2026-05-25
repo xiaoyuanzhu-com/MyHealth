@@ -1,32 +1,33 @@
 import Foundation
 
-/// File-backed storage for `SyncRunState`. Default location is
-/// `<Application Support>/sync-run-state.json`.
+/// File-backed storage for a destination's in-progress `SyncRunState`. Lives
+/// at `<Application Support>/sync-run-state-{slug}.json` while a run is
+/// active or paused for that destination; deleted when the run completes
+/// or the user aborts.
 enum SyncRunStore {
-
-    static let defaultURL: URL = {
+    static func url(for destination: Destination) -> URL {
         let dir = try! FileManager.default.url(
             for: .applicationSupportDirectory,
             in: .userDomainMask,
             appropriateFor: nil,
             create: true
         )
-        return dir.appendingPathComponent("sync-run-state.json")
-    }()
+        return dir.appendingPathComponent("sync-run-state-\(destination.slug).json")
+    }
 
-    static func save(_ state: SyncRunState, at url: URL = defaultURL) throws {
+    static func save(_ state: SyncRunState, for destination: Destination) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
         let data = try encoder.encode(state)
-        try data.write(to: url, options: .atomic)
+        try data.write(to: url(for: destination), options: .atomic)
     }
 
-    static func load(at url: URL = defaultURL) -> SyncRunState? {
-        guard let data = try? Data(contentsOf: url) else { return nil }
+    static func load(for destination: Destination) -> SyncRunState? {
+        guard let data = try? Data(contentsOf: url(for: destination)) else { return nil }
         return try? JSONDecoder().decode(SyncRunState.self, from: data)
     }
 
-    static func clear(at url: URL = defaultURL) {
-        try? FileManager.default.removeItem(at: url)
+    static func clear(for destination: Destination) {
+        try? FileManager.default.removeItem(at: url(for: destination))
     }
 }

@@ -1,14 +1,23 @@
 import SwiftUI
 
-/// MyLifeDB sync target configuration: instance URL, authorize, sign-out.
+/// MyLifeDB sync target configuration: instance URL, authorize, sign-out,
+/// plus the per-target Sync controls (auto-sync toggle, Sync now button,
+/// status, last-run summary).
 struct MyLifeDBDetailView: View {
     @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var coordinators: SyncCoordinators
     @State private var instanceURL: String = "https://my.xiaoyuanzhu.com"
     @State private var error: String?
     @State private var working = false
 
     var body: some View {
         Form {
+            SyncControlsSection(
+                coordinator: coordinators.myLifeDB,
+                autoSyncKey: "autoSyncMyLifeDB",
+                isConnected: sessionStore.myLifeDB != nil
+            )
+
             Section("Instance") {
                 if let session = sessionStore.myLifeDB {
                     LabeledContent("URL", value: session.base_url)

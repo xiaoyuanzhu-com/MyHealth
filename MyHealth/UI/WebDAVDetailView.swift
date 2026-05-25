@@ -1,9 +1,11 @@
 import SwiftUI
 
 /// WebDAV sync target configuration: server URL, credentials, folder, and a
-/// connectivity check before saving.
+/// connectivity check before saving — plus the per-target Sync controls
+/// (auto-sync toggle, Sync now button, status, last-run summary).
 struct WebDAVDetailView: View {
     @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var coordinators: SyncCoordinators
 
     @State private var baseURL: String = ""
     @State private var username: String = ""
@@ -15,6 +17,12 @@ struct WebDAVDetailView: View {
 
     var body: some View {
         Form {
+            SyncControlsSection(
+                coordinator: coordinators.webdav,
+                autoSyncKey: "autoSyncWebDAV",
+                isConnected: sessionStore.webdav != nil
+            )
+
             Section("Server") {
                 if let creds = sessionStore.webdav {
                     LabeledContent("URL", value: creds.base_url)

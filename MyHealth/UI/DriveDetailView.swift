@@ -1,14 +1,23 @@
 import SwiftUI
 import UIKit
 
-/// Google Drive sync target configuration: sign-in / sign-out.
+/// Google Drive sync target configuration: sign-in / sign-out, plus the
+/// per-target Sync controls (auto-sync toggle, Sync now button, status,
+/// last-run summary).
 struct DriveDetailView: View {
     @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var coordinators: SyncCoordinators
     @State private var error: String?
     @State private var working = false
 
     var body: some View {
         Form {
+            SyncControlsSection(
+                coordinator: coordinators.googleDrive,
+                autoSyncKey: "autoSyncGoogleDrive",
+                isConnected: sessionStore.googleSignedIn
+            )
+
             Section("Account") {
                 if sessionStore.googleSignedIn, let user = DriveAuth.currentUser {
                     LabeledContent("Email", value: user.profile?.email ?? "—")

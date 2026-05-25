@@ -19,6 +19,7 @@
 		78CD6B7E1544089E3DCBCCDE /* SyncTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B632BB8727BAE65C4CEB33B /* SyncTab.swift */; };
 		90C39B2AC6C3959D5293A7FF /* HealthSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */; };
 		966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */; };
+		7E1F040000000000B0BB0001 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7E1F040000000000B0BB0002 /* ZIPFoundation */; };
 		A10000010000000000000001 /* TypeNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* TypeNaming.swift */; };
 		A10000010000000000000002 /* TypeNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* TypeNamingTests.swift */; };
 		A10000010000000000000003 /* DaySample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000003 /* DaySample.swift */; };
@@ -50,6 +51,13 @@
 		DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F44EF3902C3AF3610F16D1 /* HealthSamplePreview.swift */; };
 		DE62E05D3417337320E51EF1 /* MyLifeDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CD568565F0146AC27DFB /* MyLifeDBClient.swift */; };
 		E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */; };
+		7E1F0401000000000000F001 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F001 /* Destination.swift */; };
+		7E1F0401000000000000F002 /* LastSyncStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F002 /* LastSyncStore.swift */; };
+		7E1F0401000000000000F003 /* SyncCoordinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F003 /* SyncCoordinators.swift */; };
+		7E1F0401000000000000F004 /* FilesExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F004 /* FilesExporter.swift */; };
+		7E1F0401000000000000F005 /* SyncControlsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F005 /* SyncControlsSection.swift */; };
+		7E1F0401000000000000F006 /* FilesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F006 /* FilesDetailView.swift */; };
+		7E1F0401000000000000F007 /* DocumentExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1F0402000000000000F007 /* DocumentExporter.swift */; };
 		EF6DBA9EF67D19675EA1B460 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F50952E1DA754F2F6CF611 /* PKCE.swift */; };
 		F6D48DDC7DDE16B8650CB7CA /* SampleEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55AECA8837B439CEBC8927 /* SampleEncoder.swift */; };
 		FCE2573131E978EDF92D65A8 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C317B907897869E73E2FAA /* TokenStore.swift */; };
@@ -76,6 +84,13 @@
 		432584E94A90584BCBC8ABD3 /* HealthSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSampleTests.swift; sourceTree = "<group>"; };
 		48B4FA69F226DA4AA76CA839 /* DriveAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAuth.swift; sourceTree = "<group>"; };
 		5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSync.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F001 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F002 /* LastSyncStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastSyncStore.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F003 /* SyncCoordinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinators.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F004 /* FilesExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesExporter.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F005 /* SyncControlsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncControlsSection.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F006 /* FilesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesDetailView.swift; sourceTree = "<group>"; };
+		7E1F0402000000000000F007 /* DocumentExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentExporter.swift; sourceTree = "<group>"; };
 		60AA1719224422B218DC46DE /* MyHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70B2D72DD5D4090C0D879AA3 /* ConnectAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAuth.swift; sourceTree = "<group>"; };
 		71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeDetailView.swift; sourceTree = "<group>"; };
@@ -121,6 +136,7 @@
 			files = (
 				3782002DE98F80CD09B1FFBC /* GoogleSignIn in Frameworks */,
 				966237C3A2F0E263BA568D7E /* GoogleSignInSwift in Frameworks */,
+				7E1F040000000000B0BB0001 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +178,10 @@
 				10B83990180897E0F78FA4A2 /* HomeView.swift */,
 				2E61954C91F9C5FB66239F66 /* DataTab.swift */,
 				71246662736D6AE6097AAAF2 /* DataTypeDetailView.swift */,
+				7E1F0402000000000000F007 /* DocumentExporter.swift */,
+				7E1F0402000000000000F006 /* FilesDetailView.swift */,
 				8B632BB8727BAE65C4CEB33B /* SyncTab.swift */,
+				7E1F0402000000000000F005 /* SyncControlsSection.swift */,
 				B3FE21DB97C2875CEC9320AC /* MyLifeDBDetailView.swift */,
 				D34640D30825341890180357 /* DriveDetailView.swift */,
 				A10000020000000000000012 /* WebDAVDetailView.swift */,
@@ -248,8 +267,12 @@
 			children = (
 				5B334CEE0E63EA2518D77A4E /* BackgroundSync.swift */,
 				A10000020000000000000005 /* DayBucketer.swift */,
+				7E1F0402000000000000F001 /* Destination.swift */,
+				7E1F0402000000000000F004 /* FilesExporter.swift */,
+				7E1F0402000000000000F002 /* LastSyncStore.swift */,
 				A10000020000000000000007 /* SnapshotMerger.swift */,
 				D98456748D6490844950A6C5 /* SyncCoordinator.swift */,
+				7E1F0402000000000000F003 /* SyncCoordinators.swift */,
 				A1000002000000000000000A /* SyncRunStore.swift */,
 				A1000002000000000000000C /* SyncCursor.swift */,
 				A1000002000000000000000D /* DayHashStore.swift */,
@@ -286,6 +309,7 @@
 			packageProductDependencies = (
 				B37DC1DC7575E9FDF03F6B18 /* GoogleSignIn */,
 				36DD47E99CB4EA2EBAF5CB8E /* GoogleSignInSwift */,
+				7E1F040000000000B0BB0002 /* ZIPFoundation */,
 			);
 			productName = MyHealth;
 			productReference = 60AA1719224422B218DC46DE /* MyHealth.app */;
@@ -335,6 +359,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				7E1F040000000000B0BB0003 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22144979E3A15F717F63CAAD /* Products */;
@@ -374,6 +399,13 @@
 				D6D9A6EF12ED2CC400D89FCC /* HealthTypeCatalog.swift in Sources */,
 				DE28FC0B150FCEAAD6DB3CDE /* HealthSamplePreview.swift in Sources */,
 				E8BB28CB39A20CE03D7DB7E7 /* BackgroundSync.swift in Sources */,
+				7E1F0401000000000000F001 /* Destination.swift in Sources */,
+				7E1F0401000000000000F002 /* LastSyncStore.swift in Sources */,
+				7E1F0401000000000000F003 /* SyncCoordinators.swift in Sources */,
+				7E1F0401000000000000F004 /* FilesExporter.swift in Sources */,
+				7E1F0401000000000000F005 /* SyncControlsSection.swift in Sources */,
+				7E1F0401000000000000F006 /* FilesDetailView.swift in Sources */,
+				7E1F0401000000000000F007 /* DocumentExporter.swift in Sources */,
 				C44331B986415F44957C5FF3 /* ConnectAuth.swift in Sources */,
 				56A06D72F4C5125FF39A0C9F /* DataTypes.swift in Sources */,
 				C1C3B8E781158A911A955FB0 /* DriveAuth.swift in Sources */,
@@ -678,6 +710,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		7E1F040000000000B0BB0003 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -690,6 +730,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F5735EA5C81B6122995EA936 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		7E1F040000000000B0BB0002 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7E1F040000000000B0BB0003 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

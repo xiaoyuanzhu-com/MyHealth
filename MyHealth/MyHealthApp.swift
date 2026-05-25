@@ -3,13 +3,18 @@ import GoogleSignIn
 
 @main
 struct MyHealthApp: App {
-    @StateObject private var coordinator = SyncCoordinator()
+    @StateObject private var coordinators = SyncCoordinators()
     @StateObject private var sessionStore = SessionStore()
     @AppStorage("appLanguage") private var appLanguage = "system"
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
         Self.migrateLegacyOnDiskState()
+        // Migrate the old global sync-state files into per-destination buckets
+        // BEFORE background tasks register, so a BG launch (which never
+        // instantiates the SyncCoordinators env object) still sees the
+        // migrated state on its first coordinator read.
+        SyncCoordinators.migrateGlobalStateIfNeeded()
         BackgroundSync.register()
         // Observer queries don't survive process termination, so re-register
         // on every launch — including BGTask launches that never reach the
@@ -64,7 +69,7 @@ struct MyHealthApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environmentObject(coordinator)
+                .environmentObject(coordinators)
                 .environmentObject(sessionStore)
                 .environment(\.locale, selectedLocale)
                 .task {
@@ -83,12 +88,12 @@ struct MyHealthApp: App {
                     GIDSignIn.sharedInstance.handle(url)
                 }
                 .onChange(of: scenePhase) { _, newPhase in
-                    // iOS suspends a backgrounded app within ~5s; let the
+                    // iOS suspends a backgrounded app within ~5s; let each
                     // coordinator checkpoint and exit cleanly before the
                     // in-flight URLSessions get cancelled and HealthKit
                     // becomes inaccessible on device lock.
                     if newPhase == .background {
-                        coordinator.pauseForBackgrounding()
+                        coordinators.pauseAllForBackgrounding()
                     }
                 }
         }
