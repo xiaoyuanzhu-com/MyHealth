@@ -1,20 +1,27 @@
 import Foundation
 import HealthKit
 
-/// One row of preview text shown on a category's detail page. Holds the
-/// underlying `HKSample` so `primaryText`/`secondaryText` can be re-rendered
-/// in the current app language whenever the view is re-evaluated (e.g.
-/// after a language switch). The pretty-printed JSON is cached at load time
-/// since its content is language-agnostic.
+/// One row of preview text shown on a category's detail page. Pre-rendered
+/// at load time and stores no `HKSample` reference — a long-scrolled list of
+/// heavy types (heart rate, accelerometer-derived) otherwise pins tens of
+/// thousands of HK objects in memory. Trade-off: a mid-session language
+/// switch won't re-render already-loaded rows; navigating away and back will.
 struct SamplePreviewRow: Identifiable, Hashable {
-    let sample: HKSample
+    let id: UUID
+    let startDate: Date
+    let endDate: Date
+    let primaryText: String
+    let secondaryText: String?
     let json: String
 
-    var id: UUID { sample.uuid }
-    var startDate: Date { sample.startDate }
-    var endDate: Date { sample.endDate }
-    var primaryText: String { SamplePreviewFormatter.primary(for: sample) }
-    var secondaryText: String? { SamplePreviewFormatter.secondary(for: sample) }
+    init(sample: HKSample) {
+        self.id = sample.uuid
+        self.startDate = sample.startDate
+        self.endDate = sample.endDate
+        self.primaryText = SamplePreviewFormatter.primary(for: sample)
+        self.secondaryText = SamplePreviewFormatter.secondary(for: sample)
+        self.json = SamplePreviewFormatter.encodedJSON(for: sample)
+    }
 
     static func == (lhs: SamplePreviewRow, rhs: SamplePreviewRow) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
@@ -62,9 +69,7 @@ final class HealthSamplePreviewLoader: ObservableObject {
                 hasMore = false
                 return
             }
-            let newRows = samples.map { sample in
-                SamplePreviewRow(sample: sample, json: SamplePreviewFormatter.encodedJSON(for: sample))
-            }
+            let newRows = samples.map(SamplePreviewRow.init(sample:))
             rows.append(contentsOf: newRows)
             cursor = samples.last?.startDate
             if samples.count < limit { hasMore = false }
